@@ -9,7 +9,8 @@
 
             if (config.LoadConfigFile())
             {
-                Game game = new Game();
+                Game game = new();
+                game.Run();
             }
         }
     }
