@@ -32,5 +32,18 @@
       "chapter": "Chapter ",
       "epilogue": "Epilogue"
     }
+  },
+  "story": {
+    "prologue": {
+      "title": "\n\tPrologue",
+      "subtitle": "\n\n\tPARADISE LOST",
+      "intro": [
+        "\n\tIt's 2050.",
+        " Megacity is a place overrun by poverty and feuding gangs, where powerful\n\tcorporations have the most influence. The violence in the streets is a clear sign of\n\tan impending war. Government operating from behind the secure walls of City Hall are\n\ttrying to combat this, but so far without success. There are rumors that they themselves\n\tare secretly supporting the chaos to create a New Order on the ruins of the city.\n\n",
+        "\n\tStanding at the edge of the tallest tower...",
+        "\n\tHolding your hand and dive...",
+        "\n\tFalling and falling for what feels like hours..."
+      ]
+    }
   }
 }
