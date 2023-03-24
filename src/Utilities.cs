@@ -1,4 +1,7 @@
-﻿namespace Nocturnal.src
+﻿using System.Globalization;
+using System.Text.RegularExpressions;
+
+namespace Nocturnal.src
 {
     class Display
     {
@@ -45,6 +48,21 @@
             text = Convert.ToString(Console.ReadLine());
             Console.Out.Flush();
             return text;
+        }
+    }
+
+    class Logger
+    {
+        public static string GetFormattedTimestamp()
+        {
+            DateTime localDate = DateTime.Now;
+            return Convert.ToString(localDate);
+        }
+
+        public static string GetFormattedUtcTimestamp()
+        {
+            DateTime localDate = DateTime.UtcNow;
+            return localDate.ToString();
         }
     }
 }
