@@ -1,0 +1,36 @@
+{
+  "messages": {
+    "game_introduce": "\n\tRadosław 'Doic' Michalak presents a text game titled",
+    "press_any_key": "\tPress ANY KEY to continue...",
+    "select_language": "\n\tSelect your language:\n",
+    "back_to_menu": "\n\n\tBack to menu...",
+    "feature_unavailable": "\n\tThis feature is currently unavailable.\n\n",
+    "no_saves_found": "\tNo saves have been found.",
+    "quit_game": "\n\tAre you sure you want to end the game?",
+    "and": " and ",
+    "was_found": " was found.",
+    "download_completed": "\n\tDownload completed",
+    "you_are_dead": "\tYOU ARE DEAD!",
+    "the_end": "\tTHE END"
+  },
+  "actions": {
+    "visit": "Visit: ",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "options": {
+    "main_menu": [
+      "New game",
+      "Load game",
+      "Change language",
+      "Quit game"
+    ]
+  },
+  "names": {
+    "story": {
+      "prologue": "Prologue",
+      "chapter": "Chapter ",
+      "epilogue": "Epilogue"
+    }
+  }
+}

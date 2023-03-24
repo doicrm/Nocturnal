@@ -1,0 +1,36 @@
+{
+  "messages": {
+    "game_introduce": "\n\tRadosław 'Doic' Michalak prezentuje grę tekstową pod tytułem",
+    "press_any_key": "\tWciśnij DOWOLNY PRZYCISK, aby kontynuować...",
+    "select_language": "\n\tWybierz swój język:\n",
+    "back_to_menu": "\n\n\tWróć do menu...",
+    "feature_unavailable": "\n\tTa funkcja jest obecnie niedostępna.\n\n",
+    "no_saves_found": "\tNie znaleziono żadnych zapisów gry.",
+    "quit_game": "\n\tJesteś pewien, że chcesz wyjść z gry?",
+    "and": " i ",
+    "was_found": "Znaleziono ",
+    "download_completed": "\n\tPobieranie zakończone",
+    "you_are_dead": "\tNIE ŻYJESZ!",
+    "the_end": "\tKONIEC"
+  },
+  "actions": {
+    "visit": "Odwiedź: ",
+    "yes": "Tak",
+    "no": "Nie"
+  },
+  "options": {
+    "main_menu": [
+      "Nowa gra",
+      "Wczytaj grę",
+      "Zmień język",
+      "Wyjdź z gry"
+    ]
+  },
+  "names": {
+    "story": {
+      "prologue": "Prolog",
+      "chapter": "Rozdział ",
+      "epilogue": "Epilog"
+    }
+  }
+}
