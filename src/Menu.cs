@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace Nocturnal.src
+﻿namespace Nocturnal.src
 {
-    internal class Menu
+    public class Menu
     {
         private int OptionNr = 1;
         private int Choice = 0;

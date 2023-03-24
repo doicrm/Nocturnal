@@ -1,9 +1,6 @@
-﻿using System.Globalization;
-using System.Text.RegularExpressions;
-
-namespace Nocturnal.src
+﻿namespace Nocturnal.src
 {
-    class Display
+    public class Display
     {
         public static void Write(string text, int speed = 50)
         {
@@ -30,7 +27,7 @@ namespace Nocturnal.src
         }
     }
 
-    class Input
+    public class Input
     {
         public static int GetChoice()
         {
@@ -51,7 +48,7 @@ namespace Nocturnal.src
         }
     }
 
-    class Logger
+    public class Logger
     {
         public static string GetFormattedTimestamp()
         {

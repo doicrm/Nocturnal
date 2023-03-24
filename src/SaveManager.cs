@@ -10,7 +10,7 @@
         public int Stage;
     };
 
-    internal class SaveManager
+    public class SaveManager
     {
         private static int saveNr = 0;
 
@@ -41,8 +41,8 @@
 
             if (!File.Exists(path))
             {
+                Globals.Game.LoadLogo();
                 return;
-                //return Game.LoadLogo();
             }
 
             using (StreamReader oldSave = File.OpenText(path))
@@ -80,13 +80,13 @@
         {
             if (chapter == 0 || chapter < 0)
             {
-                return "Prologue";
+                return Globals.JsonReader["names"]["story"]["prologue"].ToString();
             }
             else if (chapter == 1 || chapter == 2)
             {
-                return $"Chapter {chapter}";
+                return $"{Globals.JsonReader["names"]["story"]["chapter"].ToString()} {chapter}";
             }
-            return "Epilogue";
+            return Globals.JsonReader["names"]["story"]["epilogue"].ToString();
         }
 
         private static void LoadSaveInfo(string saveToLoad)
@@ -95,7 +95,7 @@
 
             if (!File.Exists(saveToLoad))
             {
-                Console.WriteLine($"{saveToLoad} - Nie ma takiego pliku!");
+                Console.WriteLine($"{saveToLoad} - nie ma takiego pliku!");
                 return;
             }
 
@@ -125,7 +125,7 @@
             else
             {
                 Console.ForegroundColor = ConsoleColor.Gray;
-                Console.WriteLine("\tNie znaleziono żadnych zapisów gry.");
+                Console.WriteLine(Globals.JsonReader["messages"]["no_saves_found"].ToString());
                 Console.ResetColor();
             }
         }

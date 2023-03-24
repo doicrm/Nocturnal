@@ -2,7 +2,7 @@
 {
     public enum Weather { Sunny, Cloudy, Stormy, Rainy, Snowfall }
 
-    internal class Game
+    public class Game
     {
         public static readonly Game Instance = new();
         private bool IsPlaying { get; set; }
@@ -30,39 +30,28 @@
             CurrentLocation = null;
         }
 
-        //public static void InitHeroIventory();
-
-        //public static void InitHeroJournal();
-
-        public static void Pause()
-        {
-            Console.Write("\tPress any key...");
-            Console.ReadKey();
-        }
-
         public void Run()
         {
             while (IsPlaying)
             {
                 Welcome();
-                //WriteLogo();
-                LoadLogo();
+                WriteLogo();
                 MainMenu();
                 End();
             }
         }
 
-        public void InitAll()
+        public static void Pause()
         {
-            InitLocations();
+            Console.Write(Globals.JsonReader["messages"]["press_any_key"].ToString());
+            Console.ReadKey();
         }
-
 
         public static void Welcome()
         {
             Console.Clear();
             Thread.Sleep(500);
-            Display.Write("\n\tRadosław 'Doic' Michalak presents", 40);
+            Display.Write(Globals.JsonReader["messages"]["game_introduce"].ToString(), 40);
             Thread.Sleep(2000);
             Console.Clear();
         }
@@ -88,11 +77,10 @@
 
             var options = new Dictionary<string, Action>()
             {
-                { "Nowa gra", NewGame },
-                { "Wczytaj grę", LoadGame },
-                { "Zmień język", ChangeLanguage },
-                { "Autorzy", Credits },
-                { "Wyjdź z gry", EndGame }
+                { Globals.JsonReader["options"]["main_menu"][0].ToString(), NewGame },
+                { Globals.JsonReader["options"]["main_menu"][1].ToString(), LoadGame },
+                { Globals.JsonReader["options"]["main_menu"][2].ToString(), ChangeLanguage },
+                { Globals.JsonReader["options"]["main_menu"][3].ToString(), EndGame }
             };
 
             Menu mainMenu = new(options);
@@ -103,12 +91,24 @@
             SaveManager.CreateSave();
             InitAll();
             Console.Clear();
-            //SetCurrentLocation(DarkAlley);
+            //SetCurrentLocation(Globals.Locations["DarkAlley"]);
         }
 
         public void LoadGame()
         {
             Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write(Globals.JsonReader["messages"]["feature_unavailable"].ToString());
+            Console.ResetColor();
+            SaveManager.SearchForSaves();
+            Thread.Sleep(1000);
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write(Globals.JsonReader["messages"]["back_to_menu"].ToString());
+            Console.ReadKey();
+            Console.ResetColor();
+            Console.Clear();
+            LoadLogo();
+            MainMenu();
         }
 
         public void ChangeLanguage()
@@ -143,18 +143,23 @@
         public void EndGame()
         {
             Console.Clear();
-            Display.Write("\tCzy na pewno chcesz zakończyć rozgrywkę?", 25);
+            Display.Write(Globals.JsonReader["messages"]["quit_game"].ToString(), 25);
 
             var options = new Dictionary<string, Action>()
             {
-                { "Tak", End },
-                { "Nie", LoadLogo }
+                { Globals.JsonReader["Yes"].ToString(), End },
+                { Globals.JsonReader["No"].ToString(), LoadLogo }
             };
 
             Menu quitMenu = new(options);
         }
 
-        public void End() { IsPlaying = false; }
+        public void End()
+        {
+            IsPlaying = false;
+            Console.Clear();
+            Environment.Exit(1);
+        }
 
         public void SetCurrentLocation(Location location)
         {
@@ -164,11 +169,26 @@
 
         public void SetWeather(Weather weather) { Weather = weather; }
 
+        public static void InitHeroIventory()
+        {
+
+        }
+
+        public static void InitHeroJournal()
+        {
+
+        }
+
         public static void InitLocations()
         {
             Location DarkAlley = new("Dark alley", null, null);
 
-            //Locations.Add("Dark Alley", DarkAlley);
+            Globals.Locations.Add("Dark Alley", DarkAlley);
+        }
+
+        public static void InitAll()
+        {
+            InitLocations();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Nocturnal.src
 {
-    internal class Location
+    public class Location
     {
         private string Name { get; set; }
         private Fraction Occupation { get; set; }

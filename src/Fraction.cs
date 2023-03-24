@@ -2,7 +2,7 @@
 {
     public enum Attitudes { Neutral, Angry, Hostile, Friendly };
 
-    internal class Fraction
+    public class Fraction
     {
         private string Name { get; set; }
         private int HeroReputation { get; set; }

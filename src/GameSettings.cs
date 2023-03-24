@@ -1,5 +1,5 @@
-﻿using System;
-using System.Text.Json;
+﻿using System.Text.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Nocturnal.src
 {
@@ -11,7 +11,7 @@ namespace Nocturnal.src
         public int Language { get; set; }
     }
 
-    internal class GameSettings
+    public class GameSettings
     {
         public static int lang = 0;
 
@@ -21,8 +21,21 @@ namespace Nocturnal.src
                 CreateConfigFile();
             else
             {
-                string jsonString = File.ReadAllText("config.json");
-                ConfigFileData configFileData = JsonSerializer.Deserialize<ConfigFileData>(jsonString)!;
+                string jsonString;
+                ConfigFileData configFileData;
+
+                try
+                {
+                    jsonString = File.ReadAllText("config.json");
+                    configFileData = JsonSerializer.Deserialize<ConfigFileData>(jsonString)!;
+                }
+                catch (Exception e)
+                {
+                    Console.Clear();
+                    Console.WriteLine(e.Message);
+                    return false;
+                }
+
                 lang = configFileData.Language;
             }
 
@@ -48,9 +61,9 @@ namespace Nocturnal.src
 
         public static void LoadDataFromFile(int lang)
         {
-            string fileName = GetFileName(lang);
-            string path = Directory.GetCurrentDirectory() + "\\data\\localisation\\" + fileName + ".json";
-            File.ReadAllText(path);
+            string path = Directory.GetCurrentDirectory() + "\\data\\lang\\" + GetFileName(lang) + ".json";
+            string jsonString = File.ReadAllText(path);
+            Globals.JsonReader = JObject.Parse(jsonString);
         }
 
         public static int SelectLanguage()
@@ -70,7 +83,6 @@ namespace Nocturnal.src
                     break;
                 else continue;
             }
-
             return choice;
         }
 

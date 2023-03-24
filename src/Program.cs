@@ -1,6 +1,6 @@
 ﻿namespace Nocturnal.src
 {
-    class Program
+    public class Program
     {
         static void Main()
         {
@@ -9,8 +9,7 @@
 
             if (config.LoadConfigFile())
             {
-                Game game = new();
-                game.Run();
+                Globals.Game.Run();
             }
         }
     }
