@@ -1,49 +1,43 @@
 {
-  "messages": {
-    "game_introduce": "\n\tRadosław 'Doic' Michalak presents a text game titled",
-    "press_any_key": "\tPress ANY KEY to continue...",
-    "select_language": "\n\tSelect your language:\n",
-    "back_to_menu": "\n\n\tBack to menu...",
-    "feature_unavailable": "\n\tThis feature is currently unavailable.\n\n",
-    "no_saves_found": "\tNo saves have been found.",
-    "quit_game": "\n\tAre you sure you want to end the game?",
-    "and": " and ",
-    "was_found": " was found.",
-    "download_completed": "\n\tDownload completed",
-    "you_are_dead": "\tYOU ARE DEAD!",
-    "the_end": "\tTHE END"
-  },
-  "actions": {
-    "visit": "Visit: ",
-    "yes": "Yes",
-    "no": "No"
-  },
-  "options": {
-    "main_menu": [
-      "New game",
-      "Load game",
-      "Change language",
-      "Quit game"
-    ]
-  },
-  "names": {
-    "story": {
-      "prologue": "Prologue",
-      "chapter": "Chapter ",
-      "epilogue": "Epilogue"
-    }
-  },
-  "story": {
-    "prologue": {
-      "title": "\n\tPrologue",
-      "subtitle": "\n\n\tPARADISE LOST",
-      "intro": [
-        "\n\tIt's 2050.",
-        " Megacity is a place overrun by poverty and feuding gangs, where powerful\n\tcorporations have the most influence. The violence in the streets is a clear sign of\n\tan impending war. Government operating from behind the secure walls of City Hall are\n\ttrying to combat this, but so far without success. There are rumors that they themselves\n\tare secretly supporting the chaos to create a New Order on the ruins of the city.\n\n",
-        "\n\tStanding at the edge of the tallest tower...",
-        "\n\tHolding your hand and dive...",
-        "\n\tFalling and falling for what feels like hours..."
-      ]
-    }
-  }
+    "AUTHOR_PRESENTS": "Radosław 'Doic' Michalak presents a text game titled",
+    "MAIN_MENU.NEW_GAME": "New game",
+    "MAIN_MENU.LOAD_GAME": "Load game",
+    "MAIN_MENU.CHANGE_LANG": "Change language",
+    "MAIN_MENU.QUIT_GAME": "Quit game",
+    "LOAD_GAME.NO_SAVES_FOUND": "No saves have been found.",
+    "FEATURE_UNAVAILABLE": "This feature is currently unavailable.",
+    "BACK_TO_MENU": "Back to menu...",
+    "QUIT_GAME.PROMPT": "Are you sure you want to end the game?",
+    "YES": "Yes",
+    "NO": "No",
+    "PRESS_ANY_KEY": "Press ANY KEY to continue...",
+    "YOU_ARE_DEAD": "YOU ARE DEAD!",
+    "GAME_OVER": "GAME OVER",
+    "SEX.MALE": "Male",
+    "SEX.FEMALE": "Female",
+    "SEX.UNDEFINED": "Undefined",
+    "ATTITUDE.HOSTILE": "Hostile",
+    "ATTITUDE.ANGRY": "Angry",
+    "ATTITUDE.FRIENDLY": "Friendly",
+    "ATTITUDE.NEUTRAL": "Neutral",
+    "NAME": "Name",
+    "DESCRIPTION": "Description",
+    "STATUS": "Status",
+    "VALUE": "Value",
+    "QUEST_STATUS.NOT_STARTED": "Not started",
+    "QUEST_STATUS.RUNNING": "Running",
+    "QUEST_STATUS.SUCCESS": "Success",
+    "QUEST_STATUS.FAILED": "Failed",
+    "QUEST_STATUS.OBSOLETE": "Obsolete",
+    "JOURNAL.ENTRY": "New quest added to the journal",
+    "JOURNAL.NO_QUESTS": "You do not have any quests in your journal.",
+    "PROLOGUE": "Prologue",
+    "PARADISE_LOST": "PARADISE LOST",
+    "INTRO_ZERO": "It's 2050.",
+    "INTRO_ONE": "Megacity is a place overrun by poverty and feuding gangs, where powerful\n\tcorporations have the most influence. The violence in the streets is a clear sign of\n\tan impending war. Government operating from behind the secure walls of City Hall are\n\ttrying to combat this, but so far without success. There are rumors that they themselves\n\tare secretly supporting the chaos to create a New Order on the ruins of the city.\n\n",
+    "INTRO_TWO": "Standing at the edge of the tallest tower...",
+    "INTRO_THREE": "Holding your hand and dive...",
+    "INTRO_FOUR": "Falling and falling for what feels like hours...",
+    "CHAPTER": "Chapter",
+    "EPILOGUE": "Epilogue"
 }

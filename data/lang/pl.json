@@ -1,49 +1,43 @@
 {
-  "messages": {
-    "game_introduce": "\n\tRadosław 'Doic' Michalak prezentuje grę tekstową pod tytułem",
-    "press_any_key": "\tWciśnij DOWOLNY PRZYCISK, aby kontynuować...",
-    "select_language": "\n\tWybierz swój język:\n",
-    "back_to_menu": "\n\n\tWróć do menu...",
-    "feature_unavailable": "\n\tTa funkcja jest obecnie niedostępna.\n\n",
-    "no_saves_found": "\tNie znaleziono żadnych zapisów gry.",
-    "quit_game": "\n\tJesteś pewien, że chcesz wyjść z gry?",
-    "and": " i ",
-    "was_found": "Znaleziono ",
-    "download_completed": "\n\tPobieranie zakończone",
-    "you_are_dead": "\tNIE ŻYJESZ!",
-    "the_end": "\tKONIEC"
-  },
-  "actions": {
-    "visit": "Odwiedź: ",
-    "yes": "Tak",
-    "no": "Nie"
-  },
-  "options": {
-    "main_menu": [
-      "Nowa gra",
-      "Wczytaj grę",
-      "Zmień język",
-      "Wyjdź z gry"
-    ]
-  },
-  "names": {
-    "story": {
-      "prologue": "Prolog",
-      "chapter": "Rozdział ",
-      "epilogue": "Epilog"
-    }
-  },
-  "story": {
-    "prologue": {
-      "title": "\n\tProlog",
-      "subtitle": "\n\n\tRAJ UTRACONY",
-      "intro": [
-        "\n\tJest rok 2050.",
-        " Megacity to miejsce opanowane przez biedę i zwaśnione gangi, gdzie największe\n\twpływy mają potężne korporacje. Przemoc na ulicach jest wyraźnym znakiem zbliżającej się wojny.\n\tRząd działający zza bezpiecznych murów ratusza próbuje z tym walczyć, ale jak na razie\n\tbezskutecznie. Krążą plotki, że sam potajemnie wspiera chaos, by na gruzach miasta stworzyć\n\tNowy Porządek.\n\n",
-        "\n\tStojąc na krawędzi najwyższej wieży...",
-        "\n\tTrzymam cię za rękę i skaczę...",
-        "\n\tSpadam i spadam jakby godzinami..."
-      ]
-    }
-  }
+    "AUTHOR_PRESENTS": "Radosław 'Doic' Michalak prezentuje grę tekstową pod tytułem",
+    "MAIN_MENU.NEW_GAME": "Nowa gra",
+    "MAIN_MENU.LOAD_GAME": "Wczytaj grę",
+    "MAIN_MENU.CHANGE_LANG": "Zmień język",
+    "MAIN_MENU.QUIT_GAME": "Wyjdź z gry",
+    "NO_SAVES_FOUND": "Nie znaleziono żadnych zapisów gry.",
+    "FEATURE_UNAVAILABLE": "Ta funkcja jest obecnie niedostępna.",
+    "BACK_TO_MENU": "Wróć do menu...",
+    "QUIT_GAME": "Jesteś pewien, że chcesz wyjść z gry?",
+    "YES": "Tak",
+    "NO": "Nie",
+    "PRESS_ANY_KEY": "Wciśnij DOWOLNY PRZYCISK, aby kontynuować...",
+    "YOU_ARE_DEAD": "NIE ŻYJESZ!",
+    "GAME_OVER": "KONIEC GRY",
+    "SEX.MALE": "Mężczyzna",
+    "SEX.FEMALE": "Kobieta",
+    "SEX.UNDEFINED": "Niezidentyfikowano",
+    "ATTITUDE.HOSTILE": "Wrogo nastawiony",
+    "ATTITUDE.ANGRY": "Zły",
+    "ATTITUDE.FRIENDLY": "Przyjacielski",
+    "ATTITUDE.NEUTRAL": "Neutralny",
+    "NAME": "Nazwa",
+    "DESCRIPTION": "Opis",
+    "STATUS": "Status",
+    "VALUE": "Wartość",
+    "QUEST_STATUS.NOT_STARTED": "Nie rozpoczęte",
+    "QUEST_STATUS.RUNNING": "W trakcie",
+    "QUEST_STATUS.SUCCESS": "Zakończono sukcesem",
+    "QUEST_STATUS.FAILED": "Zakończono porażką",
+    "QUEST_STATUS.OBSOLETE": "Nieaktualne",
+    "JOURNAL.ENTRY": "Dodano nowe zadanie do dziennika",
+    "JOURNAL.NO_QUESTS": "Nie posiadasz żadnych zadań w dzienniku.",
+    "PROLOGUE": "Prolog",
+    "PARADISE_LOST": "RAJ UTRACONY",
+    "INTRO_ZERO": "Jest rok 2050.",
+    "INTRO_ONE": "Megacity to miejsce opanowane przez biedę i zwaśnione gangi, gdzie największe\n\twpływy mają potężne korporacje. Przemoc na ulicach jest wyraźnym znakiem zbliżającej się wojny.\n\tRząd działający zza bezpiecznych murów ratusza próbuje z tym walczyć, ale jak na razie\n\tbezskutecznie. Krążą plotki, że sam potajemnie wspiera chaos, by na gruzach miasta stworzyć\n\tNowy Porządek.",
+    "INTRO_TWO": "Stojąc na krawędzi najwyższej wieży...",
+    "INTRO_THREE": "Trzymam cię za rękę i skaczę...",
+    "INTRO_FOUR": "Spadam i spadam jakby godzinami...",
+    "CHAPTER": "Rozdział",
+    "EPILOGUE": "Epilog"
 }
