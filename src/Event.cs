@@ -54,7 +54,7 @@
         {
             Display.Write($"\n\t{Globals.JsonReader!["INTRO_ZERO"]}");
             Thread.Sleep(1000);
-            Display.Write($" {Globals.JsonReader!["INTRO_ONE"]}\n\n", 20);
+            Display.Write($" {Globals.JsonReader!["INTRO_ONE"]}\n", 20);
             Game.Pause();
             Console.Clear();
             Console.WriteLine();
