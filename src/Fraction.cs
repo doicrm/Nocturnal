@@ -4,9 +4,9 @@
 
     public class Fraction
     {
-        private string Name { get; set; }
-        private int HeroReputation { get; set; }
-        private int Attitude { get; set; }
+        public string Name { get; set; }
+        public int HeroReputation { get; set; }
+        public int Attitude { get; set; }
 
         public Fraction()
         {

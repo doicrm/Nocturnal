@@ -6,7 +6,8 @@ namespace Nocturnal.src
     public static class Globals
     {
         public static Game Game = new();
-        public static JObject? JsonReader;
-        public static Dictionary<string, Location> Locations = new Dictionary<string, Location>();
+        public static Player Player = new();
+        public static dynamic? JsonReader;
+        public static Dictionary<string, Location> Locations = new();
     }
 }

@@ -12,32 +12,31 @@
 
     public class SaveManager
     {
-        private static int saveNr = 0;
+        private static int SaveNr = 0;
 
         public static void CreateSave()
         {
             if (!Directory.Exists("data\\saves"))
                 Directory.CreateDirectory("data\\saves");
 
-            string path = $"{Directory.GetCurrentDirectory()}\\data\\saves\\save_{saveNr}.dat";
+            string path = $"{Directory.GetCurrentDirectory()}\\data\\saves\\save_{SaveNr}.dat";
 
             if (!File.Exists(path))
             {
-                using (StreamWriter newSave = File.CreateText(path))
-                {
-                    saveNr++;
-                    newSave.WriteLine(Logger.GetFormattedUtcTimestamp());
-                    newSave.WriteLine($"Player::Unknown");
-                    newSave.WriteLine($"Sex::Undefined");
-                    newSave.WriteLine($"{0}::{1}");
-                }
+                using StreamWriter newSave = File.CreateText(path);
+                SaveNr++;
+                newSave.WriteLine(Logger.GetFormattedUtcTimestamp());
+                newSave.WriteLine($"Player::Unknown");
+                newSave.WriteLine($"Sex::Undefined");
+                newSave.WriteLine($"{0}::{1}");
+                newSave.Close();
             }
         }
 
         public static void LoadSave(int nr)
         {
-            SaveData save;
-            string path = $"{Directory.GetCurrentDirectory()}\\data\\saves\\save_{saveNr}.dat";
+            //SaveData save;
+            string path = $"{Directory.GetCurrentDirectory()}\\data\\saves\\save_{SaveNr}.dat";
 
             if (!File.Exists(path))
             {
@@ -45,14 +44,13 @@
                 return;
             }
 
-            using (StreamReader oldSave = File.OpenText(path))
+            using StreamReader oldSave = File.OpenText(path);
+            string s;
+            while ((s = oldSave.ReadLine()!) != null)
             {
-                string s;
-                while ((s = oldSave.ReadLine()) != null)
-                {
-                    Console.WriteLine(s);
-                }
+                Console.WriteLine(s);
             }
+            oldSave.Close();
 
             //Hero.heroes["Hero"].Name = save.player;
             //Hero.heroes["Hero"].Sex = save.gender;
@@ -65,33 +63,33 @@
 
         public static string PrintSex(int sex)
         {
-            //if (sex == Sex.Male)
-            //{
-            //    return "Male";
-            //}
-            //else if (sex == Sex.Female)
-            //{
-            //    return "Female";
-            //}
-            return "Undefined";
+            if (sex == Convert.ToInt32(Genders.Male))
+            {
+                return $"{Globals.JsonReader!["SEX.MALE"]}";
+            }
+            else if (sex == Convert.ToInt32(Genders.Female))
+            {
+                return $"{Globals.JsonReader!["SEX.FEMALE"]}";
+            }
+            return $"{Globals.JsonReader!["SEX.UNDEFINED"]}";
         }
 
         private static string GetChapterString(int chapter)
         {
             if (chapter == 0 || chapter < 0)
             {
-                return Globals.JsonReader["names"]["story"]["prologue"].ToString();
+                return $"{Globals.JsonReader!["PROLOGUE"]}";
             }
             else if (chapter == 1 || chapter == 2)
             {
-                return $"{Globals.JsonReader["names"]["story"]["chapter"].ToString()} {chapter}";
+                return $"{Globals.JsonReader!["CHAPTER"]} {chapter}";
             }
-            return Globals.JsonReader["names"]["story"]["epilogue"].ToString();
+            return $"{Globals.JsonReader!["EPILOGUE"]}";
         }
 
         private static void LoadSaveInfo(string saveToLoad)
         {
-            SaveData save;
+            //SaveData save;
 
             if (!File.Exists(saveToLoad))
             {
@@ -99,14 +97,13 @@
                 return;
             }
 
-            using (StreamReader oldSave = File.OpenText(saveToLoad))
+            using StreamReader oldSave = File.OpenText(saveToLoad);
+            string s;
+            while ((s = oldSave.ReadLine()!) != null)
             {
-                string s;
-                while ((s = oldSave.ReadLine()) != null)
-                {
-                    Console.WriteLine($"\t{s}");
-                }
+                Console.WriteLine($"\t{s}");
             }
+            oldSave.Close();
 
             //Console.WriteLine($"\t{save.Player}, {PrintSex(save.Gender)} | {GetChapterString(save.Chapter)} : {save.Stage} | {save.Date} {save.Hour}");
         }
@@ -117,7 +114,7 @@
             var files = Directory.GetFiles(path, "save_*", SearchOption.AllDirectories)
             .Where(s => s.EndsWith(".dat"));
 
-            if (files.Count() > 0)
+            if (files.Any())
             {
                 foreach (dynamic file in files)
                     LoadSaveInfo(file);
@@ -125,7 +122,7 @@
             else
             {
                 Console.ForegroundColor = ConsoleColor.Gray;
-                Console.WriteLine(Globals.JsonReader["messages"]["no_saves_found"].ToString());
+                Console.WriteLine($"{Globals.JsonReader!["NO_SAVES_FOUND"]}");
                 Console.ResetColor();
             }
         }

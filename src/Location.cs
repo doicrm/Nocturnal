@@ -2,10 +2,10 @@
 {
     public class Location
     {
-        private string Name { get; set; }
-        private Fraction Occupation { get; set; }
+        public string Name { get; set; }
+        public Fraction? Occupation { get; set; }
         public Action Events { get; set; }
-        private bool IsVisited { get; set; }
+        public bool IsVisited { get; set; }
 
         public Location (string name, Fraction occupation, Action events)
         {

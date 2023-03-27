@@ -42,7 +42,7 @@
         {
             string text;
             Display.Write("\n\t> ", 25);
-            text = Convert.ToString(Console.ReadLine());
+            text = Convert.ToString(Console.ReadLine())!;
             Console.Out.Flush();
             return text;
         }

@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Nocturnal.src
@@ -13,7 +13,7 @@ namespace Nocturnal.src
 
     public class GameSettings
     {
-        public static int lang = 0;
+        public static int Lang = 0;
 
         public bool LoadConfigFile()
         {
@@ -27,7 +27,7 @@ namespace Nocturnal.src
                 try
                 {
                     jsonString = File.ReadAllText("config.json");
-                    configFileData = JsonSerializer.Deserialize<ConfigFileData>(jsonString)!;
+                    configFileData = JsonConvert.DeserializeObject<ConfigFileData>(jsonString)!;
                 }
                 catch (Exception e)
                 {
@@ -36,26 +36,25 @@ namespace Nocturnal.src
                     return false;
                 }
 
-                lang = configFileData.Language;
+                Lang = configFileData.Language;
             }
 
-            LoadDataFromFile(lang);
+            LoadDataFromFile(Lang);
 
             return true;
         }
 
         public static void CreateConfigFile()
         {
-            lang = SelectLanguage();
+            Lang = SelectLanguage();
 
             var configFileData = new ConfigFileData
             {
                 Username = Environment.UserName,
-                Language = lang
+                Language = Lang
             };
 
-            var options = new JsonSerializerOptions { WriteIndented = true };
-            string jsonString = JsonSerializer.Serialize(configFileData, options);
+            string jsonString = JsonConvert.SerializeObject(configFileData, Formatting.Indented);
             File.WriteAllText("config.json", jsonString);
         }
 
@@ -73,6 +72,7 @@ namespace Nocturnal.src
             {
                 Console.ResetColor();
                 Console.Clear();
+                Console.WriteLine();
                 Console.WriteLine("\t[1] EN");
                 Console.WriteLine("\t[2] PL");
                 Console.Write("\t> ");
