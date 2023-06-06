@@ -1,16 +1,17 @@
-﻿namespace Nocturnal.src
-{
-    public class Program
-    {
-        static void Main()
-        {
-            Console.Title = "Nocturnal [Demo Build]";
-            GameSettings config = new();
+﻿namespace Nocturnal.src;
 
-            if (config.LoadConfigFile())
-            {
-                Globals.Game.Run();
-            }
+public class Program
+{
+    public static Game? Game { get; private set; }
+
+    static void Main()
+    {
+        Console.Title = $"{Constants.DEFAULT_GAME_NAME} {Constants.DEFAULT_DEMO_VERSION}";
+        Game = new Game();
+
+        if (GameSettings.LoadConfigFile())
+        {
+            Game.Run();
         }
     }
 }
