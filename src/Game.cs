@@ -1,199 +1,199 @@
-﻿namespace Nocturnal.src
+﻿namespace Nocturnal.src;
+
+public enum Weather { Sunny, Cloudy, Stormy, Rainy, Snowfall }
+
+public class Game
 {
-    public enum Weather { Sunny, Cloudy, Stormy, Rainy, Snowfall }
+    public static readonly Game Instance = new();
+    public bool IsPlaying { get; set; }
+    public Location? CurrentLocation { get; set; } = null;
+    public Weather Weather { get; set; }
+    public GameSettings Settings { get; set; } = new GameSettings();
 
-    public class Game
+    public static readonly string[] Logo = new string[8] {
+        "\t ****     **   *******     ******  ********** **     ** *******   ****     **     **     **\n",
+        "\t/**/**   /**  **/////**   **////**/////**/// /**    /**/**////** /**/**   /**    ****   /**\n",
+        "\t/**//**  /** **     //** **    //     /**    /**    /**/**   /** /**//**  /**   **//**  /**\n",
+        "\t/** //** /**/**      /**/**           /**    /**    /**/*******  /** //** /**  **  //** /**\n",
+        "\t/**  //**/**/**      /**/**           /**    /**    /**/**///**  /**  //**/** **********/**\n",
+        "\t/**   //****//**     ** //**    **    /**    /**    /**/**  //** /**   //****/**//////**/**\n",
+        "\t/**    //*** //*******   //******     /**    //******* /**   //**/**    //***/**     /**/********\n",
+        "\t//      ///   ///////     //////      //      ///////  //     // //      /// //      // ////////\n"
+    };
+
+    public Game()
     {
-        public static readonly Game Instance = new();
-        public bool IsPlaying { get; set; }
-        public Location? CurrentLocation { get; set; }
-        public Weather Weather { get; set; }
+        IsPlaying = true;
+        CurrentLocation = null;
+    }
 
-        public static readonly string[] Logo = new string[8] {
-            "\t ****     **   *******     ******  ********** **     ** *******   ****     **     **     **\n",
-            "\t/**/**   /**  **/////**   **////**/////**/// /**    /**/**////** /**/**   /**    ****   /**\n",
-            "\t/**//**  /** **     //** **    //     /**    /**    /**/**   /** /**//**  /**   **//**  /**\n",
-            "\t/** //** /**/**      /**/**           /**    /**    /**/*******  /** //** /**  **  //** /**\n",
-            "\t/**  //**/**/**      /**/**           /**    /**    /**/**///**  /**  //**/** **********/**\n",
-            "\t/**   //****//**     ** //**    **    /**    /**    /**/**  //** /**   //****/**//////**/**\n",
-            "\t/**    //*** //*******   //******     /**    //******* /**   //**/**    //***/**     /**/********\n",
-            "\t//      ///   ///////     //////      //      ///////  //     // //      /// //      // ////////\n"
-        };
-
-        public Game()
+    public void Run()
+    {
+        while (IsPlaying)
         {
-            IsPlaying = true;
-            CurrentLocation = null;
-        }
-
-        public void Run()
-        {
-            while (IsPlaying)
-            {
-                Welcome();
-                //WriteLogo();
-                LoadLogo();
-                MainMenu();
-                End();
-            }
-        }
-
-        public static void Pause()
-        {
-            Console.Write($"\t{Globals.JsonReader!["PRESS_ANY_KEY"]}");
-            Console.ReadKey();
-        }
-
-        public static void Welcome()
-        {
-            Console.Clear();
-            Thread.Sleep(500);
-            Display.Write($"\n\t{Globals.JsonReader!["AUTHOR_PRESENTS"]}", 40);
-            Thread.Sleep(2000);
-            Console.Clear();
-        }
-
-        public static void WriteLogo()
-        {
-            Console.ForegroundColor = ConsoleColor.Blue;
-            Console.WriteLine();
-
-            foreach (string s in Logo)
-            {
-                Display.Write(s, 1);
-            }
-
-            Console.ResetColor();
-            Console.WriteLine();
-        }
-
-        public void MainMenu()
-        {
-            Console.ResetColor();
-            Console.WriteLine();
-            Menu mainMenu = new(new Dictionary<string, Action>()
-            {
-                { $"{Globals.JsonReader!["MAIN_MENU.NEW_GAME"]}", NewGame },
-                { $"{Globals.JsonReader!["MAIN_MENU.LOAD_GAME"]}", LoadGame },
-                { $"{Globals.JsonReader!["MAIN_MENU.CHANGE_LANG"]}", ChangeLanguage },
-                { $"{Globals.JsonReader!["MAIN_MENU.QUIT_GAME"]}", EndGame }
-            });
-        }
-
-        public void NewGame()
-        {
-            InitAll();
-            SaveManager.CreateSave();
-            Console.Clear();
-
-            if (Globals.Locations.ContainsKey("DarkAlley"))
-            {
-                SetCurrentLocation(Globals.Locations["DarkAlley"]);
-            }
-        }
-
-        public void LoadGame()
-        {
-            Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write($"\n\t{Globals.JsonReader!["FEATURE_UNAVAILABLE"]}\n\n");
-            Console.ResetColor();
-            SaveManager.SearchForSaves();
-            Thread.Sleep(1000);
-            Console.ForegroundColor = ConsoleColor.Gray;
-            Console.Write($"\n\n\t{Globals.JsonReader!["BACK_TO_MENU"]}");
-            Console.ReadKey();
-            Console.ResetColor();
-            Console.Clear();
+            Welcome();
+            //WriteLogo();
             LoadLogo();
             MainMenu();
+            End();
         }
+    }
 
-        public void ChangeLanguage()
+    public static void Pause()
+    {
+        Console.Write($"\t{Globals.JsonReader!["PRESS_ANY_KEY"]}");
+        Console.ReadKey();
+    }
+
+    public static void Welcome()
+    {
+        Console.Clear();
+        Thread.Sleep(500);
+        Display.Write($"\n\t{Globals.JsonReader!["AUTHOR_PRESENTS"]}", 40);
+        Thread.Sleep(2000);
+        Console.Clear();
+    }
+
+    public static void WriteLogo()
+    {
+        Console.ForegroundColor = ConsoleColor.Blue;
+        Console.WriteLine();
+
+        foreach (string s in Logo)
         {
-            GameSettings.CreateConfigFile();
-            GameSettings.LoadDataFromFile(GameSettings.Lang);
-            LoadLogo();
+            Display.Write(s, 1);
         }
 
-        public void Credits()
+        Console.ResetColor();
+        Console.WriteLine();
+    }
+
+    public void MainMenu()
+    {
+        Console.ResetColor();
+        Console.WriteLine();
+        Menu mainMenu = new(new Dictionary<string, Action>()
         {
-            Console.Clear();
-        }
+            { $"{Globals.JsonReader!["MAIN_MENU.NEW_GAME"]}", NewGame },
+            { $"{Globals.JsonReader!["MAIN_MENU.LOAD_GAME"]}", LoadGame },
+            { $"{Globals.JsonReader!["MAIN_MENU.CHANGE_LANG"]}", ChangeLanguage },
+            { $"{Globals.JsonReader!["MAIN_MENU.QUIT_GAME"]}", EndGame }
+        });
+    }
 
-        public void LoadLogo()
+    public void NewGame()
+    {
+        InitAll();
+        SaveManager.CreateSave();
+        Console.Clear();
+
+        if (Globals.Locations.ContainsKey("DarkAlley"))
         {
-            Console.Clear();
-
-            Console.ForegroundColor = ConsoleColor.Blue;
-            Console.WriteLine();
-
-            foreach (string s in Logo)
-            {
-                Console.Write(s);
-            }
-
-            Console.WriteLine();
-            Console.ResetColor();
-            MainMenu();
+            SetCurrentLocation(Globals.Locations["DarkAlley"]);
         }
+    }
 
-        public void EndGame()
+    public void LoadGame()
+    {
+        Console.Clear();
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.Write($"\n\t{Globals.JsonReader!["FEATURE_UNAVAILABLE"]}\n\n");
+        Console.ResetColor();
+        SaveManager.SearchForSaves();
+        Thread.Sleep(1000);
+        Console.ForegroundColor = ConsoleColor.Gray;
+        Console.Write($"\n\n\t{Globals.JsonReader!["BACK_TO_MENU"]}");
+        Console.ReadKey();
+        Console.ResetColor();
+        Console.Clear();
+        LoadLogo();
+        MainMenu();
+    }
+
+    public void ChangeLanguage()
+    {
+        GameSettings.CreateConfigFile();
+        GameSettings.LoadDataFromFile(GameSettings.Lang);
+        LoadLogo();
+    }
+
+    public void Credits()
+    {
+        Console.Clear();
+    }
+
+    public void LoadLogo()
+    {
+        Console.Clear();
+
+        Console.ForegroundColor = ConsoleColor.Blue;
+        Console.WriteLine();
+
+        foreach (string s in Logo)
         {
-            Console.Clear();
-            Display.Write($"\n\t{Globals.JsonReader!["QUIT_GAME"]}", 25);
-            Menu quitMenu = new(new Dictionary<string, Action>()
-            {
-                { $"{Globals.JsonReader!["YES"]}", End },
-                { $"{Globals.JsonReader!["NO"]}", LoadLogo }
-            });
+            Console.Write(s);
         }
 
-        public void End()
+        Console.WriteLine();
+        Console.ResetColor();
+        MainMenu();
+    }
+
+    public void EndGame()
+    {
+        Console.Clear();
+        Display.Write($"\n\t{Globals.JsonReader!["QUIT_GAME"]}", 25);
+        Menu quitMenu = new(new Dictionary<string, Action>()
         {
-            IsPlaying = false;
-            Console.Clear();
-            Environment.Exit(1);
-        }
+            { $"{Globals.JsonReader!["YES"]}", End },
+            { $"{Globals.JsonReader!["NO"]}", LoadLogo }
+        });
+    }
 
-        public void SetCurrentLocation(Location location)
-        {
-            CurrentLocation = location;
-            CurrentLocation.Events.Invoke();
-        }
+    public void End()
+    {
+        IsPlaying = false;
+        Console.Clear();
+        Environment.Exit(1);
+    }
 
-        public void SetWeather(Weather weather) { Weather = weather; }
+    public void SetCurrentLocation(Location location)
+    {
+        CurrentLocation = location;
+        CurrentLocation.Events.Invoke();
+    }
 
-        public static void InitHeroIventory()
-        {
-            string path = $"{Directory.GetCurrentDirectory()}\\inventory.txt";
-            using StreamWriter output = new(path);
-            output.WriteLine($"{Globals.JsonReader!["INVENTORY.NO_ITEMS"]}");
-            output.Close();
-        }
+    public void SetWeather(Weather weather) { Weather = weather; }
 
-        public static void InitHeroJournal()
-        {
-            string path = $"{Directory.GetCurrentDirectory()}\\journal.txt";
-            using StreamWriter output = new(path);
-            output.WriteLine($"{Globals.JsonReader!["JOURNAL.NO_QUESTS"]}");
-            output.Close();
-        }
+    public static void InitHeroIventory()
+    {
+        string path = $"{Directory.GetCurrentDirectory()}\\inventory.txt";
+        using StreamWriter output = new(path);
+        output.WriteLine($"{Globals.JsonReader!["INVENTORY.NO_ITEMS"]}");
+        output.Close();
+    }
 
-        public static void InitLocations()
-        {
-            Location DarkAlley = new("Dark alley", null, Event.DarkAlley);
-            Location Street = new("Street", null, null);
+    public static void InitHeroJournal()
+    {
+        string path = $"{Directory.GetCurrentDirectory()}\\journal.txt";
+        using StreamWriter output = new(path);
+        output.WriteLine($"{Globals.JsonReader!["JOURNAL.NO_QUESTS"]}");
+        output.Close();
+    }
 
-            Globals.Locations.Add("DarkAlley", DarkAlley);
-            Globals.Locations.Add("Street", Street);
-        }
+    public static void InitLocations()
+    {
+        Location DarkAlley = new("Dark alley", null, Event.DarkAlley);
+        Location Street = new("Street", null, null);
 
-        public static void InitAll()
-        {
-            InitHeroIventory();
-            InitHeroJournal();
-            InitLocations();
-        }
+        Globals.Locations.Add("DarkAlley", DarkAlley);
+        Globals.Locations.Add("Street", Street);
+    }
+
+    public static void InitAll()
+    {
+        InitHeroIventory();
+        InitHeroJournal();
+        InitLocations();
     }
 }
