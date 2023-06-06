@@ -2,8 +2,10 @@
 
 public static class Constants
 {
-    public const string DEFAULT_GAME_NAME       = "Nocturnal";
-    public const string DEFAULT_DEMO_VERSION    = "[Demo Build]";
+    // Default game's name and version indentification
+    public const string DEFAULT_GAME_NAME       = "NOCTURNAL";
+    public const string DEFAULT_GAME_VERSION    = "[Demo Build]";
 
+    // Default starting values
     public const int    DEFAULT_ATTRIBUTE       = 10;
 }
