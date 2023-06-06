@@ -13,7 +13,7 @@ public struct ConfigFileData
 
 public class GameSettings
 {
-    private static int Lang = 0;
+    public static int Lang { get; private set; } = 0;
 
     public static bool LoadConfigFile()
     {

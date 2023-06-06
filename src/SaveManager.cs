@@ -36,7 +36,7 @@ public class SaveManager
     public static void LoadSave(int nr)
     {
         //SaveData save;
-        string path = $"{Directory.GetCurrentDirectory()}\\data\\saves\\save_{SaveNr}.dat";
+        string path = $"{Directory.GetCurrentDirectory()}\\data\\saves\\save_{nr}.dat";
 
         if (!File.Exists(path))
         {
@@ -56,10 +56,10 @@ public class SaveManager
         //Hero.heroes["Hero"].Sex = save.gender;
     }
 
-    public static void UpdateSave(int saveNr, string player, int sex, int chapter, int stage)
-    {
+    //public static void UpdateSave(int saveNr, string player, int sex, int chapter, int stage)
+    //{
 
-    }
+    //}
 
     public static string PrintSex(int sex)
     {

@@ -4,7 +4,7 @@ public class Menu
 {
     private int OptionNr = 1;
     private int Choice = 0;
-    private readonly Dictionary<int, KeyValuePair<string, Action>> Options = new Dictionary<int, KeyValuePair<string, Action>>();
+    private readonly Dictionary<int, KeyValuePair<string, Action>> Options = new();
 
     public Menu(Dictionary<string, Action> options)
     {

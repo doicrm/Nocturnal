@@ -2,7 +2,7 @@
 
 public static class Globals
 {
-    public static Player Player = new();
-    public static dynamic? JsonReader;
-    public static Dictionary<string, Location> Locations = new();
+    public static Player Player { get; set; } = new();
+    public static dynamic? JsonReader { get; set; }
+    public static Dictionary<string, Location> Locations { get; set; } = new();
 }
