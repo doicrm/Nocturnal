@@ -1,72 +1,72 @@
-﻿namespace Nocturnal.src
+﻿namespace Nocturnal.src;
+
+public enum QuestStatus { NotStarted, Running, Success, Failed, Obsolete }
+
+public class Quest
 {
-    public enum QuestStatus { NotStarted, Running, Success, Failed, Obsolete }
-    public class Quest
+    public string Name { get; set; } = "None";
+    public string Description { get; set; } = "None";
+    public QuestStatus Status { get; set; } = QuestStatus.NotStarted;
+    public bool IsRunning { get; set; } = false;
+    public bool IsCompleted { get; set; } = false;
+
+    public Quest(string name, string description)
     {
-        public string Name { get; set; } = "None";
-        public string Description { get; set; } = "None";
-        public QuestStatus Status { get; set; } = QuestStatus.NotStarted;
-        public bool IsRunning { get; set; } = false;
-        public bool IsCompleted { get; set; } = false;
+        Name = name;
+        Description = description;
+    }
 
-        public Quest(string name, string description)
+    public Quest(string name, string description, QuestStatus status, bool isRunning, bool isCompleted)
+    {
+        Name = name;
+        Description = description;
+        Status = status;
+        IsRunning = isRunning;
+        IsCompleted = isCompleted;
+    }
+
+    public void Start()
+    {
+        IsCompleted = false;
+        IsRunning = true;
+        Status = QuestStatus.Running;
+
+        Console.ResetColor();
+        Display.Write($"{Globals.JsonReader!["JOURNAL.ENTRY"]}: {Name}");
+    }
+
+    public void End(QuestStatus status)
+    {
+        IsCompleted = true;
+        IsRunning = false;
+        Status = status;
+    }
+
+    public string PrintStatus()
+    {
+        if (Status == QuestStatus.Running)
         {
-            Name = name;
-            Description = description;
+            return $"{Globals.JsonReader!["QUEST_STATUS.RUNNING"]!.ToString().ToLower()}";
         }
-
-        public Quest(string name, string description, QuestStatus status, bool isRunning, bool isCompleted)
+        else if (Status == QuestStatus.Success)
         {
-            Name = name;
-            Description = description;
-            Status = status;
-            IsRunning = isRunning;
-            IsCompleted = isCompleted;
+            return $"{Globals.JsonReader!["QUEST_STATUS.SUCCESS"]!.ToString().ToLower()}";
         }
-
-        public void Start()
+        else if (Status == QuestStatus.Failed)
         {
-            IsCompleted = false;
-            IsRunning = true;
-            Status = QuestStatus.Running;
-
-            Console.ResetColor();
-            Display.Write($"{Globals.JsonReader!["JOURNAL.ENTRY"]}: {Name}");
+            return $"{Globals.JsonReader!["QUEST_STATUS.FAILED"]!.ToString().ToLower()}";
         }
-
-        public void End(QuestStatus status)
+        else if (Status == QuestStatus.Obsolete)
         {
-            IsCompleted = true;
-            IsRunning = false;
-            Status = status;
+            return $"{Globals.JsonReader!["QUEST_STATUS.OBSOLETE"]!.ToString().ToLower()}";
         }
+        return $"{Globals.JsonReader!["QUEST_STATUS.NOT_STARTED"]!.ToString().ToLower()}";
+    }
 
-        public string PrintStatus()
-        {
-            if (Status == QuestStatus.Running)
-            {
-                return $"{Globals.JsonReader!["QUEST_STATUS.RUNNING"]!.ToString().ToLower()}";
-            }
-            else if (Status == QuestStatus.Success)
-            {
-                return $"{Globals.JsonReader!["QUEST_STATUS.SUCCESS"]!.ToString().ToLower()}";
-            }
-            else if (Status == QuestStatus.Failed)
-            {
-                return $"{Globals.JsonReader!["QUEST_STATUS.FAILED"]!.ToString().ToLower()}";
-            }
-            else if (Status == QuestStatus.Obsolete)
-            {
-                return $"{Globals.JsonReader!["QUEST_STATUS.OBSOLETE"]!.ToString().ToLower()}";
-            }
-            return $"{Globals.JsonReader!["QUEST_STATUS.NOT_STARTED"]!.ToString().ToLower()}";
-        }
-
-        public string PrintInfo()
-        {
-            return ($"{Globals.JsonReader!["NAME"]}: {Name}\n" +
-                $"{Globals.JsonReader!["DESCRIPTION"]}: {Description}\n" +
-                $"{Globals.JsonReader!["STATUS"]}: {PrintStatus}");
-        }
+    public string PrintInfo()
+    {
+        return ($"{Globals.JsonReader!["NAME"]}: {Name}\n" +
+            $"{Globals.JsonReader!["DESCRIPTION"]}: {Description}\n" +
+            $"{Globals.JsonReader!["STATUS"]}: {PrintStatus()}");
     }
 }

@@ -1,57 +1,56 @@
-﻿namespace Nocturnal.src
+﻿namespace Nocturnal.src;
+
+public class Journal
 {
-    public class Journal
+    private List<Quest> Quests = new();
+
+    public void AddQuest(Quest quest)
     {
-        private List<Quest> Quests = new();
+        Quests.Add(quest);
 
-        public void AddQuest(Quest quest)
+        foreach (Quest q in Quests)
         {
-            Quests.Add(quest);
+            if (q == quest) Console.WriteLine($"\n\t{quest.Name} added to journal.\n");
+        }
 
-            //foreach (Quest q in Quests)
-            //{
-            //    if (q == quest) Console.WriteLine($"\n\t{quest.Name} added to journal.\n");
-            //}
+        quest.Start();
+        UpdatedJournalFile();
+    }
 
-            quest.Start();
+    public void EndQuest(Quest quest, QuestStatus status)
+    {
+        if (!quest.IsCompleted)
+        {
+            quest.End(status);
             UpdatedJournalFile();
         }
+    }
 
-        public void EndQuest(Quest quest, QuestStatus status)
+    public void UpdatedJournalFile()
+    {
+        string path = $"{Directory.GetCurrentDirectory()}\\journal.txt";
+
+        using StreamWriter output = new(path);
+
+        if (Quests.Any())
         {
-            if (!quest.IsCompleted)
-            {
-                quest.End(status);
-                UpdatedJournalFile();
-            }
+            output.WriteLine($"{Globals.JsonReader!["JOURNAL.NO_QUESTS"]}");
+            return;
         }
 
-        public void UpdatedJournalFile()
+        foreach (Quest quest in Quests)
         {
-            string path = $"{Directory.GetCurrentDirectory()}\\journal.txt";
-
-            using StreamWriter output = new(path);
-
-            if (Quests.Any())
-            {
-                output.WriteLine($"{Globals.JsonReader!["JOURNAL.NO_QUESTS"]}");
-                return;
-            }
-
-            foreach (Quest quest in Quests)
-            {
-                output.WriteLine(quest.PrintInfo());
-                output.WriteLine("..............................................................................");
-            }
+            output.WriteLine(quest.PrintInfo());
+            output.WriteLine("..............................................................................");
         }
+    }
 
-        public void ClearJournal()
+    public void ClearJournal()
+    {
+        if (Quests.Any())
         {
-            if (Quests.Any())
-            {
-                Quests.Clear();
-                UpdatedJournalFile();
-            }
+            Quests.Clear();
+            UpdatedJournalFile();
         }
     }
 }

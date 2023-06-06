@@ -1,44 +1,43 @@
-﻿namespace Nocturnal.src
+﻿namespace Nocturnal.src;
+
+public class Inventory
 {
-    public class Inventory
+    public List<Item> Items = new();
+
+    public void AddItem(Item item)
     {
-        public List<Item> Items = new();
+        Items.Add(item);
+    }
 
-        public void AddItem(Item item)
+    public void RemoveItem(Item item)
+    {
+        Items.Remove(item);
+    }
+
+    public void Show()
+    {
+        if (!Items.Any()) return;
+
+        for (int i = 0; i < Items.Count; i++)
         {
-            Items.Add(item);
+            Console.WriteLine($"\t{i+1}. {Items[i].Name}");
         }
+    }
 
-        public void RemoveItem(Item item)
+    public void Clear()
+    {
+        if (Items.Any())
         {
-            Items.Remove(item);
+            Items.Clear();
         }
+    }
 
-        public void Show()
+    public bool HasItem(Item item)
+    {
+        foreach (Item Item in Items)
         {
-            if (!Items.Any()) return;
-
-            for (int i = 0; i < Items.Count; i++)
-            {
-                Console.WriteLine($"\t{i+1}. {Items[i].Name}");
-            }
+            if (Item == item) return true;
         }
-
-        public void Clear()
-        {
-            if (Items.Any())
-            {
-                Items.Clear();
-            }
-        }
-
-        public bool HasItem(Item item)
-        {
-            foreach (Item Item in Items)
-            {
-                if (Item == item) return true;
-            }
-            return false;
-        }
+        return false;
     }
 }

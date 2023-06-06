@@ -1,96 +1,93 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Nocturnal.src
-{
-    public enum GameLanguages { EN = 1, PL = 2 }
+namespace Nocturnal.src;
 
-    public struct ConfigFileData
+public enum GameLanguages { EN = 1, PL = 2 }
+
+public struct ConfigFileData
+{
+    public string? Username { get; set; }
+    public int Language { get; set; }
+}
+
+public class GameSettings
+{
+    private static int Lang = 0;
+
+    public static bool LoadConfigFile()
     {
-        public string? Username { get; set; }
-        public int Language { get; set; }
+        if (!File.Exists("config.json"))
+            CreateConfigFile();
+        else
+        {
+            string jsonString;
+            ConfigFileData configFileData;
+
+            try
+            {
+                jsonString = File.ReadAllText("config.json");
+                configFileData = JsonConvert.DeserializeObject<ConfigFileData>(jsonString)!;
+            }
+            catch (Exception e)
+            {
+                Console.Clear();
+                Console.WriteLine(e.Message);
+                return false;
+            }
+
+            Lang = configFileData.Language;
+        }
+
+        LoadDataFromFile(Lang);
+
+        return true;
     }
 
-    public class GameSettings
+    public static void CreateConfigFile()
     {
-        public static int Lang = 0;
+        Lang = SelectLanguage();
 
-        public bool LoadConfigFile()
+        var configFileData = new ConfigFileData
         {
-            if (!File.Exists("config.json"))
-                CreateConfigFile();
-            else
-            {
-                string jsonString;
-                ConfigFileData configFileData;
+            Username = Environment.UserName,
+            Language = Lang
+        };
 
-                try
-                {
-                    jsonString = File.ReadAllText("config.json");
-                    configFileData = JsonConvert.DeserializeObject<ConfigFileData>(jsonString)!;
-                }
-                catch (Exception e)
-                {
-                    Console.Clear();
-                    Console.WriteLine(e.Message);
-                    return false;
-                }
+        string jsonString = JsonConvert.SerializeObject(configFileData, Formatting.Indented);
+        File.WriteAllText("config.json", jsonString);
+    }
 
-                Lang = configFileData.Language;
-            }
+    public static void LoadDataFromFile(int lang)
+    {
+        string path = Directory.GetCurrentDirectory() + "\\data\\lang\\" + GetFileName(lang) + ".json";
+        string jsonString = File.ReadAllText(path);
+        Globals.JsonReader = JObject.Parse(jsonString);
+    }
 
-            LoadDataFromFile(Lang);
-
-            return true;
-        }
-
-        public static void CreateConfigFile()
+    public static int SelectLanguage()
+    {
+        int choice;
+        while (true)
         {
-            Lang = SelectLanguage();
+            Console.ResetColor();
+            Console.Clear();
+            Console.WriteLine();
+            Console.WriteLine("\t[1] EN");
+            Console.WriteLine("\t[2] PL");
+            Console.Write("\t> ");
+            choice = Convert.ToInt32(Console.ReadLine());
 
-            var configFileData = new ConfigFileData
-            {
-                Username = Environment.UserName,
-                Language = Lang
-            };
-
-            string jsonString = JsonConvert.SerializeObject(configFileData, Formatting.Indented);
-            File.WriteAllText("config.json", jsonString);
+            if (choice is (int)GameLanguages.EN
+                or (int)GameLanguages.PL)
+                break;
+            else continue;
         }
+        return choice;
+    }
 
-        public static void LoadDataFromFile(int lang)
-        {
-            string path = Directory.GetCurrentDirectory() + "\\data\\lang\\" + GetFileName(lang) + ".json";
-            string jsonString = File.ReadAllText(path);
-            Globals.JsonReader = JObject.Parse(jsonString);
-        }
-
-        public static int SelectLanguage()
-        {
-            int choice;
-            while (true)
-            {
-                Console.ResetColor();
-                Console.Clear();
-                Console.WriteLine();
-                Console.WriteLine("\t[1] EN");
-                Console.WriteLine("\t[2] PL");
-                Console.Write("\t> ");
-                choice = Convert.ToInt32(Console.ReadLine());
-
-                if (choice is (int)GameLanguages.EN
-                    or (int)GameLanguages.PL)
-                    break;
-                else continue;
-            }
-            return choice;
-        }
-
-        private static string GetFileName(int lang)
-        {
-            if (lang is (int)GameLanguages.EN)
-                return "en";
-            return "pl";
-        }
+    private static string GetFileName(int lang)
+    {
+        return lang is (int)GameLanguages.EN ? "en" : "pl";
     }
 }
