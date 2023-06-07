@@ -47,19 +47,19 @@ public class Quest
 
     public string PrintStatus()
     {
-        if (Status == QuestStatus.Running)
+        if (Status is QuestStatus.Running)
         {
             return $"{Globals.JsonReader!["QUEST_STATUS.RUNNING"]!.ToString().ToLower()}";
         }
-        else if (Status == QuestStatus.Success)
+        else if (Status is QuestStatus.Success)
         {
             return $"{Globals.JsonReader!["QUEST_STATUS.SUCCESS"]!.ToString().ToLower()}";
         }
-        else if (Status == QuestStatus.Failed)
+        else if (Status is QuestStatus.Failed)
         {
             return $"{Globals.JsonReader!["QUEST_STATUS.FAILED"]!.ToString().ToLower()}";
         }
-        else if (Status == QuestStatus.Obsolete)
+        else if (Status is QuestStatus.Obsolete)
         {
             return $"{Globals.JsonReader!["QUEST_STATUS.OBSOLETE"]!.ToString().ToLower()}";
         }

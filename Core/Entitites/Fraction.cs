@@ -1,38 +1,40 @@
-﻿namespace Nocturnal.Core.Entitites;
+﻿using Nocturnal.Core.System;
+
+namespace Nocturnal.Core.Entitites;
 
 public enum Attitudes { Neutral, Angry, Hostile, Friendly }
 
 public class Fraction
 {
     public string Name { get; set; }
-    public int HeroReputation { get; set; }
-    public int Attitude { get; set; }
+    public uint HeroReputation { get; set; }
+    public Attitudes Attitude { get; set; }
 
     public Fraction()
     {
         Name = "None";
         HeroReputation = 0;
-        Attitude = (int)Attitudes.Neutral;
+        Attitude = Attitudes.Neutral;
     }
 
-    public Fraction(string name, int heroReputation, int attitude)
+    public Fraction(string name, uint heroReputation, Attitudes attitude)
     {
         Name = name;
         HeroReputation = heroReputation;
         Attitude = attitude;
     }
 
-    public void AddRep(int heroReputation) { HeroReputation += heroReputation; }
-    public void RemoveRep(int heroReputation) { HeroReputation -= heroReputation; }
-    public void SetAttitude(int attitude) { Attitude = attitude; }
+    public void AddRep(uint heroReputation) { HeroReputation += heroReputation; }
+    public void RemoveRep(uint heroReputation) { HeroReputation -= heroReputation; }
+    public void SetAttitude(Attitudes attitude) { Attitude = attitude; }
     public string PrintAttitude()
     {
-        if (Attitude == (int)Attitudes.Angry)
-            return "Angry";
-        else if (Attitude == (int)Attitudes.Hostile)
-            return "Hostile";
-        else if (Attitude == (int)Attitudes.Friendly)
-            return "Friendly";
-        return "Neutral";
+        if (Attitude is Attitudes.Angry)
+            return $"{Globals.JsonReader!["ATTITUDE.ANGRY"]!.ToString().ToLower()}";
+        else if (Attitude is Attitudes.Hostile)
+            return $"{Globals.JsonReader!["ATTITUDE.HOSTILE"]!.ToString().ToLower()}";
+        else if (Attitude is Attitudes.Friendly)
+            return $"{Globals.JsonReader!["ATTITUDE.FRIENDLY"]!.ToString().ToLower()}";
+        return $"{Globals.JsonReader!["ATTITUDE.NEUTRAL"]!.ToString().ToLower()}";
     }
 }

@@ -1,15 +1,15 @@
 ﻿using Nocturnal.Core.Entitites.Items;
 
-namespace Nocturnal.Core.Entitites;
+namespace Nocturnal.Core.Entitites.Living;
 
 public class Player : Npc
 {
-    private int HP;
-    public float Money;
-    //public Weapon Weapon;
-    //public Clothes Clothes;
-    public Inventory Inventory;
-    public Journal Journal;
+    private int HP { get; set; }
+    public float Money { get; set; }
+    public Weapon? Weapon { get; set; }
+    //public Clothes Clothes { get; set; }
+    public Inventory? Inventory = new();
+    public Journal? Journal = new();
 
     public Player()
     {
@@ -17,11 +17,11 @@ public class Player : Npc
         Money = 0;
     }
 
-    public Player(int hP, float money, /*Weapon weapon, Clothes clothes,*/ Inventory inventory, Journal journal)
+    public Player(int hp, float money, Weapon weapon, /*Clothes clothes,*/ Inventory inventory, Journal journal)
     {
-        HP = hP;
+        HP = hp;
         Money = money;
-        //Weapon = weapon;
+        Weapon = weapon;
         //Clothes = clothes;
         Inventory = inventory;
         Journal = journal;
@@ -50,36 +50,36 @@ public class Player : Npc
 
     public void AddItem(Item item)
     {
-        Inventory.AddItem(item);
+        Inventory!.AddItem(item);
     }
 
     public void RemoveItem(Item item)
     {
-        Inventory.RemoveItem(item);
+        Inventory!.RemoveItem(item);
     }
 
     public void AddQuest(Quest quest)
     {
-        Journal.AddQuest(quest);
+        Journal!.AddQuest(quest);
     }
 
     public void EndQuest(Quest quest, QuestStatus status)
     {
-        Journal.EndQuest(quest, status);
+        Journal!.EndQuest(quest, status);
     }
 
     public void ShowInventory()
     {
-        Inventory.Show();
+        Inventory!.Show();
     }
 
     public void ClearInventory()
     {
-        Inventory.Clear();
+        Inventory!.Clear();
     }
 
     public bool HasItem(Item item)
     {
-        return Inventory.HasItem(item);
+        return Inventory!.HasItem(item);
     }
 }

@@ -1,4 +1,4 @@
-﻿using Nocturnal.Core.Entitites;
+﻿using Nocturnal.Core.Entitites.Living;
 using Nocturnal.Core.System.Utilities;
 
 namespace Nocturnal.Core.System;
@@ -15,7 +15,7 @@ public struct SaveData
 
 public class SaveManager
 {
-    private static int SaveNr = 0;
+    private static uint SaveNr = 0;
 
     public static void CreateSave()
     {
@@ -36,7 +36,7 @@ public class SaveManager
         }
     }
 
-    public static void LoadSave(int nr)
+    public static void LoadSave(uint nr)
     {
         //SaveData save;
         string path = $"{Directory.GetCurrentDirectory()}\\data\\saves\\save_{nr}.dat";
@@ -64,7 +64,7 @@ public class SaveManager
 
     //}
 
-    public static string PrintSex(int sex)
+    public static string PrintSex(uint sex)
     {
         if (sex == Convert.ToInt32(Genders.Male))
         {
@@ -77,7 +77,7 @@ public class SaveManager
         return $"{Globals.JsonReader!["SEX.UNDEFINED"]}";
     }
 
-    private static string GetChapterString(int chapter)
+    private static string GetChapterString(uint chapter)
     {
         if (chapter == 0 || chapter < 0)
         {

@@ -1,7 +1,7 @@
 ﻿using Nocturnal.Core.System;
 using Nocturnal.Core.System.Utilities;
 
-namespace Nocturnal.Core.Entitites;
+namespace Nocturnal.Core.Entitites.Living;
 
 public enum Genders { Male, Female, Undefined }
 
@@ -57,17 +57,17 @@ public class Npc
     {
         string attitude;
 
-        if (Attitude == Attitudes.Angry)
+        if (Attitude is Attitudes.Angry)
         {
             attitude = $"{Globals.JsonReader!["ATTITUDE.ANGRY"]!.ToString().ToLower()}";
             Console.ForegroundColor = ConsoleColor.Yellow;
         }
-        else if (Attitude == Attitudes.Hostile)
+        else if (Attitude is Attitudes.Hostile)
         {
             attitude = $"{Globals.JsonReader!["ATTITUDE.HOSTILE"]!.ToString().ToLower()}";
             Console.ForegroundColor = ConsoleColor.Red;
         }
-        else if (Attitude == Attitudes.Friendly)
+        else if (Attitude is Attitudes.Friendly)
         {
             attitude = $"{Globals.JsonReader!["ATTITUDE.FRIENDLY"]!.ToString().ToLower()}";
             Console.ForegroundColor = ConsoleColor.Green;
