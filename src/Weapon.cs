@@ -22,4 +22,3 @@ public class Weapon : Item
             $"{Globals.JsonReader!["VALUE"]}: {Value}");
     }
 }
-
