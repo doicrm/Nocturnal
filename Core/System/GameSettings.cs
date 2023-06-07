@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Nocturnal.src;
+namespace Nocturnal.Core.System;
 
 public enum GameLanguages { EN = 1, PL = 2 }
 

@@ -1,6 +1,7 @@
-﻿using Nocturnal.src.Utilities;
+﻿using Nocturnal.Core.Entitites;
+using Nocturnal.Core.System.Utilities;
 
-namespace Nocturnal.src;
+namespace Nocturnal.Core.System;
 
 public enum Weather { Sunny, Cloudy, Stormy, Rainy, Snowfall }
 
@@ -11,17 +12,6 @@ public class Game
     public Location? CurrentLocation { get; set; } = null;
     public Weather Weather { get; set; }
     public GameSettings Settings { get; set; } = new GameSettings();
-
-    public static readonly string[] Logo = new string[8] {
-        "\t ****     **   *******     ******  ********** **     ** *******   ****     **     **     **\n",
-        "\t/**/**   /**  **/////**   **////**/////**/// /**    /**/**////** /**/**   /**    ****   /**\n",
-        "\t/**//**  /** **     //** **    //     /**    /**    /**/**   /** /**//**  /**   **//**  /**\n",
-        "\t/** //** /**/**      /**/**           /**    /**    /**/*******  /** //** /**  **  //** /**\n",
-        "\t/**  //**/**/**      /**/**           /**    /**    /**/**///**  /**  //**/** **********/**\n",
-        "\t/**   //****//**     ** //**    **    /**    /**    /**/**  //** /**   //****/**//////**/**\n",
-        "\t/**    //*** //*******   //******     /**    //******* /**   //**/**    //***/**     /**/********\n",
-        "\t//      ///   ///////     //////      //      ///////  //     // //      /// //      // ////////\n"
-    };
 
     public Game()
     {
@@ -66,12 +56,7 @@ public class Game
     {
         Console.ForegroundColor = ConsoleColor.Blue;
         Console.WriteLine();
-
-        foreach (string s in Logo)
-        {
-            Display.Write(s, 1);
-        }
-
+        foreach (var s in Constants.GAME_LOGO) Display.Write(s, 1);
         Console.ResetColor();
         Console.WriteLine();
     }
@@ -128,12 +113,9 @@ public class Game
     public void LoadLogo()
     {
         Console.Clear();
-
         Console.ForegroundColor = ConsoleColor.Blue;
         Console.WriteLine();
-
-        foreach (string s in Logo) Console.Write(s);
-
+        foreach (var s in Constants.GAME_LOGO) Console.Write(s);
         Console.WriteLine();
         Console.ResetColor();
         MainMenu();

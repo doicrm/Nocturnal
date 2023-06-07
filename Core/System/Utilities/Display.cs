@@ -1,4 +1,4 @@
-﻿namespace Nocturnal.src.Utilities;
+﻿namespace Nocturnal.Core.System.Utilities;
 
 public class Display
 {

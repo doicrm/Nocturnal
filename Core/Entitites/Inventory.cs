@@ -1,4 +1,4 @@
-﻿namespace Nocturnal.src;
+﻿namespace Nocturnal.Core.Entitites;
 
 public class Inventory
 {
@@ -20,7 +20,7 @@ public class Inventory
 
         for (int i = 0; i < Items.Count; i++)
         {
-            Console.WriteLine($"\t{i+1}. {Items[i].Name}");
+            Console.WriteLine($"\t{i + 1}. {Items[i].Name}");
         }
     }
 

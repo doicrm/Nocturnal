@@ -1,4 +1,6 @@
-﻿namespace Nocturnal.src;
+﻿using Nocturnal.Core.Entitites;
+
+namespace Nocturnal.Core.System;
 
 public static class Globals
 {

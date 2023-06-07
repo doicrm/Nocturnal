@@ -1,4 +1,6 @@
-﻿namespace Nocturnal.src;
+﻿using Nocturnal.Core.System;
+
+namespace Nocturnal.Core.Entitites;
 
 public class Weapon : Item
 {
@@ -14,11 +16,11 @@ public class Weapon : Item
 
     public override string PrintInfo()
     {
-        return ($"{Globals.JsonReader!["NAME"]}: {Name}\n" +
+        return $"{Globals.JsonReader!["NAME"]}: {Name}\n" +
             $"{Globals.JsonReader!["DESCRIPTION"]}: {Description}\n" +
             $"{Globals.JsonReader!["DAMAGE_MIN"]}: {DamageMin}\n" +
             $"{Globals.JsonReader!["DAMAGE_MAX"]}: {DamageMin}\n" +
             $"{Globals.JsonReader!["TYPE"]}: {Type}\n" +
-            $"{Globals.JsonReader!["VALUE"]}: {Value}");
+            $"{Globals.JsonReader!["VALUE"]}: {Value}";
     }
 }

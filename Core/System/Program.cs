@@ -1,4 +1,4 @@
-﻿namespace Nocturnal.src;
+﻿namespace Nocturnal.Core.System;
 
 public class Program
 {

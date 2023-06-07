@@ -1,4 +1,4 @@
-﻿namespace Nocturnal.src;
+﻿namespace Nocturnal.Core.Entitites;
 
 public class Location
 {
@@ -7,7 +7,7 @@ public class Location
     public Action Events { get; set; }
     public bool IsVisited { get; set; }
 
-    public Location (string name, Fraction occupation, Action events)
+    public Location(string name, Fraction occupation, Action events)
     {
         Name = name;
         Occupation = occupation;

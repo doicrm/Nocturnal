@@ -1,4 +1,6 @@
-﻿namespace Nocturnal.src;
+﻿using Nocturnal.Core.System;
+
+namespace Nocturnal.Core.Entitites;
 
 public enum ItemType { None, Weapon, Clothes, Food, Quest, Written, Misc }
 
@@ -11,9 +13,9 @@ public abstract class Item
 
     virtual public string PrintInfo()
     {
-        return ($"{Globals.JsonReader!["NAME"]}: {Name}\n" +
+        return $"{Globals.JsonReader!["NAME"]}: {Name}\n" +
             $"{Globals.JsonReader!["DESCRIPTION"]}: {Description}\n" +
             $"{Globals.JsonReader!["TYPE"]}: {Type}\n" +
-            $"{Globals.JsonReader!["VALUE"]}: {Value}");
+            $"{Globals.JsonReader!["VALUE"]}: {Value}";
     }
 }

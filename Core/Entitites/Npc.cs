@@ -1,6 +1,7 @@
-﻿using Nocturnal.src.Utilities;
+﻿using Nocturnal.Core.System;
+using Nocturnal.Core.System.Utilities;
 
-namespace Nocturnal.src;
+namespace Nocturnal.Core.Entitites;
 
 public enum Genders { Male, Female, Undefined }
 
@@ -35,7 +36,7 @@ public class Npc
         IsKnowHero = false;
     }
 
-    public Npc (string name, Genders sex, Fraction fraction, Attitudes attitude, NpcStatus status, bool isKnowHero)
+    public Npc(string name, Genders sex, Fraction fraction, Attitudes attitude, NpcStatus status, bool isKnowHero)
     {
         Name = name;
         Sex = sex;

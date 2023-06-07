@@ -1,4 +1,6 @@
-﻿namespace Nocturnal.src;
+﻿using Nocturnal.Core.System;
+
+namespace Nocturnal.Core.Entitites;
 
 public class Journal
 {

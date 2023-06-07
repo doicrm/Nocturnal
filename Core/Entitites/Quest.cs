@@ -1,6 +1,7 @@
-﻿using Nocturnal.src.Utilities;
+﻿using Nocturnal.Core.System;
+using Nocturnal.Core.System.Utilities;
 
-namespace Nocturnal.src;
+namespace Nocturnal.Core.Entitites;
 
 public enum QuestStatus { NotStarted, Running, Success, Failed, Obsolete }
 
@@ -67,8 +68,8 @@ public class Quest
 
     public string PrintInfo()
     {
-        return ($"{Globals.JsonReader!["NAME"]}: {Name}\n" +
+        return $"{Globals.JsonReader!["NAME"]}: {Name}\n" +
             $"{Globals.JsonReader!["DESCRIPTION"]}: {Description}\n" +
-            $"{Globals.JsonReader!["STATUS"]}: {PrintStatus()}");
+            $"{Globals.JsonReader!["STATUS"]}: {PrintStatus()}";
     }
 }

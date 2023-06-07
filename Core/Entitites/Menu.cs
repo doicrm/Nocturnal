@@ -1,6 +1,6 @@
-﻿using Nocturnal.src.Utilities;
+﻿using Nocturnal.Core.System.Utilities;
 
-namespace Nocturnal.src;
+namespace Nocturnal.Core.Entitites;
 
 public class Menu
 {
