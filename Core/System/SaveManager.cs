@@ -19,10 +19,10 @@ public class SaveManager
 
     public static void CreateSave()
     {
-        if (!Directory.Exists("data\\saves"))
-            Directory.CreateDirectory("data\\saves");
+        if (!Directory.Exists("Data\\Saves"))
+            Directory.CreateDirectory("Data\\Saves");
 
-        string path = $"{Directory.GetCurrentDirectory()}\\data\\saves\\save_{SaveNr}.dat";
+        string path = $"{Directory.GetCurrentDirectory()}\\Data\\Saves\\Save_{SaveNr}.dat";
 
         if (!File.Exists(path))
         {
@@ -39,7 +39,7 @@ public class SaveManager
     public static void LoadSave(uint nr)
     {
         //SaveData save;
-        string path = $"{Directory.GetCurrentDirectory()}\\data\\saves\\save_{nr}.dat";
+        string path = $"{Directory.GetCurrentDirectory()}\\Data\\Saves\\Save_{nr}.dat";
 
         if (!File.Exists(path))
         {
@@ -113,8 +113,8 @@ public class SaveManager
 
     public static void SearchForSaves()
     {
-        string path = $"{Directory.GetCurrentDirectory()}\\data\\saves";
-        var files = Directory.GetFiles(path, "save_*", SearchOption.AllDirectories)
+        string path = $"{Directory.GetCurrentDirectory()}\\Data\\Saves";
+        var files = Directory.GetFiles(path, "Save_*", SearchOption.AllDirectories)
         .Where(s => s.EndsWith(".dat"));
 
         if (files.Any())
