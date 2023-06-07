@@ -1,6 +1,6 @@
 ﻿namespace Nocturnal.src;
 
-public enum Attitudes { Neutral, Angry, Hostile, Friendly };
+public enum Attitudes { Neutral, Angry, Hostile, Friendly }
 
 public class Fraction
 {

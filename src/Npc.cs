@@ -1,4 +1,6 @@
-﻿namespace Nocturnal.src;
+﻿using Nocturnal.src.Utilities;
+
+namespace Nocturnal.src;
 
 public enum Genders { Male, Female, Undefined }
 
