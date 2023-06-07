@@ -1,4 +1,5 @@
-﻿using Nocturnal.Core.Entitites.Items;
+﻿using Nocturnal.Core.Entitites.Properties;
+using Nocturnal.Core.Entitites.Items;
 
 namespace Nocturnal.Core.Entitites.Living;
 
@@ -11,13 +12,19 @@ public class Player : Npc
     public Inventory? Inventory = new();
     public Journal? Journal = new();
 
-    public Player()
+    public Player() : base()
     {
-        HP = 60;
+        Name = "None";
+        Sex = Genders.Undefined;
+        Fraction = null;
+        Attributes = Attributes.Default();
+        Attitude = Attitudes.Neutral;
+        Status = NpcStatus.Normal;
+        IsKnowHero = false;
         Money = 0;
     }
 
-    public Player(int hp, float money, Weapon weapon, /*Clothes clothes,*/ Inventory inventory, Journal journal)
+    public Player(int hp, float money, Weapon weapon, /*Clothes clothes,*/ Inventory inventory, Journal journal) : base()
     {
         HP = hp;
         Money = money;
@@ -25,14 +32,6 @@ public class Player : Npc
         //Clothes = clothes;
         Inventory = inventory;
         Journal = journal;
-    }
-
-    public void AddHP(int hp) => HP = hp;
-
-    public void RemoveHP(int hp)
-    {
-        HP -= hp;
-        if (HP < 0) Kill();
     }
 
     public static void Kill() => Event.HeroDeath();

@@ -7,7 +7,7 @@ public class Weapon : Item
     public int DamageMin { get; set; }
     public int DamageMax { get; set; }
 
-    public Weapon(int damageMin, int damageMax)
+    public Weapon(int damageMin, int damageMax) : base()
     {
         Type = ItemType.Weapon;
         DamageMin = damageMin;
