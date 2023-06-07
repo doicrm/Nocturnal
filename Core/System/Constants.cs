@@ -3,8 +3,8 @@
 public static class Constants
 {
     // Default game's name and version indentification
-    public const string DEFAULT_GAME_NAME = "NOCTURNAL";
-    public const string DEFAULT_GAME_VERSION = "[Demo Build]";
+    public const string GAME_NAME = "NOCTURNAL";
+    public const string GAME_VERSION = "[Demo Build]";
 
     // Game logo
     public static readonly string[] GAME_LOGO = new string[] {
