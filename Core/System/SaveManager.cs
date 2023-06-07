@@ -1,4 +1,4 @@
-﻿using Nocturnal.Core.Entitites.Living;
+﻿using Nocturnal.Core.Entitites.Characters;
 using Nocturnal.Core.System.Utilities;
 
 namespace Nocturnal.Core.System;

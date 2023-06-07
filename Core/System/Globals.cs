@@ -1,5 +1,5 @@
 ﻿using Nocturnal.Core.Entitites;
-using Nocturnal.Core.Entitites.Living;
+using Nocturnal.Core.Entitites.Characters;
 
 namespace Nocturnal.Core.System;
 

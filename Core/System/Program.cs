@@ -1,6 +1,4 @@
-﻿using Nocturnal.Core.Entitites.Living;
-
-namespace Nocturnal.Core.System;
+﻿namespace Nocturnal.Core.System;
 
 public class Program
 {

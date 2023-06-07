@@ -1,9 +1,10 @@
-﻿using Nocturnal.Core.Entitites.Properties;
+﻿using Nocturnal.Core.Entitites.Items;
+using Nocturnal.Core.Entitites.Properties;
 using Nocturnal.Core.System;
 using Nocturnal.Core.System.Utilities;
 using System.Reflection;
 
-namespace Nocturnal.Core.Entitites.Living;
+namespace Nocturnal.Core.Entitites.Characters;
 
 public enum Genders { Male, Female, Undefined }
 
@@ -17,12 +18,14 @@ public class Npc
     public Fraction? Fraction { get; set; }
     public Attitudes Attitude { get; set; }
     public NpcStatus Status { get; set; }
+    public Inventory? Inventory = new();
     public bool IsKnowHero { get; set; }
 
     public Npc()
     {
         Name = "None";
         Sex = Genders.Undefined;
+        Attributes = Attributes.Default();
         Fraction = null;
         Attitude = Attitudes.Neutral;
         Status = NpcStatus.Normal;
@@ -33,6 +36,7 @@ public class Npc
     {
         Name = name;
         Sex = sex;
+        Attributes = Attributes.Default();
         Fraction = fraction;
         Attitude = Attitudes.Neutral;
         Status = NpcStatus.Normal;
@@ -43,6 +47,7 @@ public class Npc
     {
         Name = name;
         Sex = sex;
+        Attributes = Attributes.Default();
         Fraction = fraction;
         Attitude = attitude;
         Status = status;
@@ -122,4 +127,10 @@ public class Npc
     }
 
     public bool IsDead() { return Status == NpcStatus.Dead; }
+
+    public void AddItem(Item item) => Inventory!.AddItem(item);
+    public void RemoveItem(Item item) => Inventory!.RemoveItem(item);
+    public void ShowInventory() => Inventory!.Show();
+    public void ClearInventory() => Inventory!.Clear();
+    public bool HasItem(Item item) { return Inventory!.HasItem(item); }
 }
