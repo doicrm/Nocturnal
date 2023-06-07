@@ -82,8 +82,5 @@ public class Npc
         Console.ResetColor();
     }
 
-    public bool IsDead()
-    {
-        return Status == NpcStatus.Dead;
-    }
+    public bool IsDead() { return Status == NpcStatus.Dead; }
 }

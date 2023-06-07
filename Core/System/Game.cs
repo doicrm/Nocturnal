@@ -32,9 +32,7 @@ public class Game
     }
 
     public static void ChangeConsoleName()
-    {
-        Console.Title = $"{Constants.DEFAULT_GAME_NAME} {Constants.DEFAULT_GAME_VERSION}";
-    }
+        => Console.Title = $"{Constants.DEFAULT_GAME_NAME} {Constants.DEFAULT_GAME_VERSION}"; 
 
     public static void Pause()
     {

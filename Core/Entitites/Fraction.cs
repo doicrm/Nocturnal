@@ -24,9 +24,9 @@ public class Fraction
         Attitude = attitude;
     }
 
-    public void AddRep(uint heroReputation) { HeroReputation += heroReputation; }
-    public void RemoveRep(uint heroReputation) { HeroReputation -= heroReputation; }
-    public void SetAttitude(Attitudes attitude) { Attitude = attitude; }
+    public void AddRep(uint heroReputation) => HeroReputation += heroReputation;
+    public void RemoveRep(uint heroReputation) => HeroReputation -= heroReputation;
+    public void SetAttitude(Attitudes attitude) => Attitude = attitude;
     public string PrintAttitude()
     {
         if (Attitude is Attitudes.Angry)

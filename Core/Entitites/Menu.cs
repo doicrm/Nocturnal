@@ -17,9 +17,7 @@ public class Menu
     }
 
     public static void ActionOption(int nr, string text)
-    {
-        Display.Write($"\n\t[{Convert.ToString(nr)}] {text}", 25);
-    }
+        => Display.Write($"\n\t[{Convert.ToString(nr)}] {text}", 25);
 
     public void ShowHeroChoice()
     {

@@ -27,10 +27,7 @@ public class Player : Npc
         Journal = journal;
     }
 
-    public void AddHP(int hp)
-    {
-        HP = hp;
-    }
+    public void AddHP(int hp) => HP = hp;
 
     public void RemoveHP(int hp)
     {
@@ -38,48 +35,21 @@ public class Player : Npc
         if (HP < 0) Kill();
     }
 
-    public static void Kill()
-    {
-        Event.HeroDeath();
-    }
+    public static void Kill() => Event.HeroDeath();
 
-    public new bool IsDead()
-    {
-        return HP < 0;
-    }
+    public new bool IsDead() { return HP < 0; }
 
-    public void AddItem(Item item)
-    {
-        Inventory!.AddItem(item);
-    }
+    public void AddItem(Item item) => Inventory!.AddItem(item);
 
-    public void RemoveItem(Item item)
-    {
-        Inventory!.RemoveItem(item);
-    }
+    public void RemoveItem(Item item) => Inventory!.RemoveItem(item);
 
-    public void AddQuest(Quest quest)
-    {
-        Journal!.AddQuest(quest);
-    }
+    public void AddQuest(Quest quest) => Journal!.AddQuest(quest);
 
-    public void EndQuest(Quest quest, QuestStatus status)
-    {
-        Journal!.EndQuest(quest, status);
-    }
+    public void EndQuest(Quest quest, QuestStatus status) => Journal!.EndQuest(quest, status);
 
-    public void ShowInventory()
-    {
-        Inventory!.Show();
-    }
+    public void ShowInventory() => Inventory!.Show();
 
-    public void ClearInventory()
-    {
-        Inventory!.Clear();
-    }
+    public void ClearInventory() => Inventory!.Clear();
 
-    public bool HasItem(Item item)
-    {
-        return Inventory!.HasItem(item);
-    }
+    public bool HasItem(Item item) { return Inventory!.HasItem(item); }
 }

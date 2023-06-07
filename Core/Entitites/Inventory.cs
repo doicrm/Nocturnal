@@ -6,15 +6,9 @@ public class Inventory
 {
     public List<Item> Items = new();
 
-    public void AddItem(Item item)
-    {
-        Items.Add(item);
-    }
+    public void AddItem(Item item) => Items.Add(item);
 
-    public void RemoveItem(Item item)
-    {
-        Items.Remove(item);
-    }
+    public void RemoveItem(Item item) => Items.Remove(item);
 
     public void Show()
     {
@@ -29,9 +23,7 @@ public class Inventory
     public void Clear()
     {
         if (Items.Any())
-        {
             Items.Clear();
-        }
     }
 
     public bool HasItem(Item item)
