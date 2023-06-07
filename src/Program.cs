@@ -6,7 +6,6 @@ public class Program
 
     static void Main()
     {
-        Console.Title = $"{Constants.DEFAULT_GAME_NAME} {Constants.DEFAULT_GAME_VERSION}";
         Game = new Game();
 
         if (GameSettings.LoadConfigFile())

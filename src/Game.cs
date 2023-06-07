@@ -1,4 +1,6 @@
-﻿namespace Nocturnal.src;
+﻿using Nocturnal.src.Utilities;
+
+namespace Nocturnal.src;
 
 public enum Weather { Sunny, Cloudy, Stormy, Rainy, Snowfall }
 
@@ -25,6 +27,7 @@ public class Game
     {
         IsPlaying = true;
         CurrentLocation = null;
+        ChangeConsoleName();
     }
 
     public void Run()
@@ -32,11 +35,16 @@ public class Game
         while (IsPlaying)
         {
             Welcome();
-            //WriteLogo();
+            //WriteLogo(); // Disable for testing use
             LoadLogo();
             MainMenu();
             End();
         }
+    }
+
+    public static void ChangeConsoleName()
+    {
+        Console.Title = $"{Constants.DEFAULT_GAME_NAME} {Constants.DEFAULT_GAME_VERSION}";
     }
 
     public static void Pause()
