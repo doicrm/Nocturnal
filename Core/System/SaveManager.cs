@@ -1,7 +1,7 @@
-﻿using Nocturnal.Core.System;
+﻿using Nocturnal.Core.Entitites;
 using Nocturnal.Core.System.Utilities;
 
-namespace Nocturnal.Core.Entitites;
+namespace Nocturnal.Core.System;
 
 public struct SaveData
 {

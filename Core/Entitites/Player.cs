@@ -1,4 +1,6 @@
-﻿namespace Nocturnal.Core.Entitites;
+﻿using Nocturnal.Core.Entitites.Items;
+
+namespace Nocturnal.Core.Entitites;
 
 public class Player : Npc
 {

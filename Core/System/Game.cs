@@ -16,7 +16,6 @@ public class Game
     public Game()
     {
         IsPlaying = true;
-        CurrentLocation = null;
         ChangeConsoleName();
     }
 

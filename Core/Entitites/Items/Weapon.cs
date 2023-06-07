@@ -1,6 +1,6 @@
 ﻿using Nocturnal.Core.System;
 
-namespace Nocturnal.Core.Entitites;
+namespace Nocturnal.Core.Entitites.Items;
 
 public class Weapon : Item
 {
