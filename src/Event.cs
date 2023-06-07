@@ -28,10 +28,10 @@ public static class Event
         Console.ForegroundColor = ConsoleColor.Blue;
         Console.WriteLine();
         Display.Write($"{Globals.JsonReader!["GAME_OVER"]}", 25);
-        Thread.Sleep(1000);
-        Console.WriteLine("\n");
+        Thread.Sleep(2000);
         Console.ResetColor();
-        Program.Game!.Credits();
+        Console.Clear();
+        Program.Game!.LoadLogo();
     }
 
     public static void ClearInstances()

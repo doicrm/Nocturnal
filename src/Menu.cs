@@ -67,7 +67,6 @@ public class Menu
             {
                 CallFunction();
                 break;
-                return;
             }
 
             continue;

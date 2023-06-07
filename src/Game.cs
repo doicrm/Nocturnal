@@ -125,11 +125,6 @@ public class Game
         LoadLogo();
     }
 
-    public void Credits()
-    {
-        Console.Clear();
-    }
-
     public void LoadLogo()
     {
         Console.Clear();
@@ -137,10 +132,7 @@ public class Game
         Console.ForegroundColor = ConsoleColor.Blue;
         Console.WriteLine();
 
-        foreach (string s in Logo)
-        {
-            Console.Write(s);
-        }
+        foreach (string s in Logo) Console.Write(s);
 
         Console.WriteLine();
         Console.ResetColor();
@@ -191,8 +183,8 @@ public class Game
 
     public static void InitLocations()
     {
-        Location DarkAlley = new("Dark alley", null, Event.DarkAlley);
-        Location Street = new("Street", null, null);
+        Location DarkAlley = new("Dark alley", null!, Event.DarkAlley);
+        Location Street = new("Street", null!, null!);
 
         Globals.Locations.Add("DarkAlley", DarkAlley);
         Globals.Locations.Add("Street", Street);
