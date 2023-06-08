@@ -60,7 +60,7 @@ public class GameSettings
 
     public static void LoadDataFromFile(int lang)
     {
-        string path = Directory.GetCurrentDirectory() + "\\data\\lang\\" + GetFileName(lang) + ".json";
+        string path = Directory.GetCurrentDirectory() + "\\Data\\Lang\\" + GetFileName(lang) + ".json";
         string jsonString = File.ReadAllText(path);
         Globals.JsonReader = JObject.Parse(jsonString);
     }

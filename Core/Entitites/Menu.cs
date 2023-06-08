@@ -22,7 +22,7 @@ public class Menu
     public void ShowHeroChoice()
     {
         Console.ResetColor();
-        Console.WriteLine($"\n\t> {Options[Choice].Key}");
+        Console.WriteLine($"\n\t> {Options[Choice].Key}\n\n");
     }
 
     public void ClearOptions()

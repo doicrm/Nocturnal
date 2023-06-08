@@ -1,5 +1,6 @@
 ﻿using Nocturnal.Core.Entitites.Properties;
 using Nocturnal.Core.Entitites.Items;
+using Nocturnal.Core.Events;
 
 namespace Nocturnal.Core.Entitites.Characters;
 

@@ -1,4 +1,5 @@
 ﻿using Nocturnal.Core.Entitites;
+using Nocturnal.Core.Events.Prologue;
 using Nocturnal.Core.System.Utilities;
 
 namespace Nocturnal.Core.System;
@@ -162,8 +163,8 @@ public class Game
 
     public static void InitLocations()
     {
-        Location DarkAlley = new("Dark alley", null!, Event.DarkAlley);
-        Location Street = new("Street", null!, null!);
+        Location DarkAlley = new("Dark alley", null!, PrologueEvents.DarkAlley);
+        Location Street = new("Street", null!, PrologueEvents.Street);
 
         Globals.Locations.Add("DarkAlley", DarkAlley);
         Globals.Locations.Add("Street", Street);
