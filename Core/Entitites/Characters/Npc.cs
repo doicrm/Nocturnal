@@ -133,4 +133,25 @@ public class Npc
     public void ShowInventory() => Inventory!.Show();
     public void ClearInventory() => Inventory!.Clear();
     public bool HasItem(Item item) { return Inventory!.HasItem(item); }
+
+    public static void InitNpcs()
+    {
+        Npc Bob = new("Bob", Genders.Male, null!);
+        Npc Caden = new("Caden", Genders.Male, null!);
+        Npc CadensPartner = new($"{Globals.JsonReader!["NPC.POLICEMAN"]}", Genders.Male, null!);
+        Npc Zed = new("Zed", Genders.Male, null!);
+        Npc Luna = new("Luna", Genders.Female, null!);
+        Npc Jet = new("Jet", Genders.Male, null!);
+        Npc Hex = new("Hex Folstam", Genders.Male, null!);
+        Npc Enigma = new("Enigma", Genders.Male, null!);
+
+        Globals.Npcs.Add("Bob", Bob);
+        Globals.Npcs.Add("Caden", Caden);
+        Globals.Npcs.Add("CadensPartner", CadensPartner);
+        Globals.Npcs.Add("Zed", Zed);
+        Globals.Npcs.Add("Luna", Luna);
+        Globals.Npcs.Add("Jet", Jet);
+        Globals.Npcs.Add("Hex", Hex);
+        Globals.Npcs.Add("Enigma", Enigma);
+    }
 }

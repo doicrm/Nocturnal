@@ -1,4 +1,5 @@
 ﻿using Nocturnal.Core.Entitites;
+using Nocturnal.Core.Entitites.Characters;
 using Nocturnal.Core.Events.Prologue;
 using Nocturnal.Core.System.Utilities;
 
@@ -174,6 +175,7 @@ public class Game
     {
         InitHeroIventory();
         InitHeroJournal();
+        Npc.InitNpcs();
         InitLocations();
     }
 }
