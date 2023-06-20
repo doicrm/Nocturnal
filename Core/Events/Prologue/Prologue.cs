@@ -21,13 +21,11 @@ public static class PrologueEvents
     public static void Street()
     {
         SaveManager.UpdateSave();
-        if (Game.Instance.Weather != Weather.Rainy)
+        if (Program.Game!.Weather != Weather.Rainy)
         {
-            Random rnd = new();
-            int rand = rnd.Next(0, 10);
-
+            Random rnd = new(); int rand = rnd.Next(0, 10);
             if (rand > 5 && rand <= 10)
-                StreetEvents.DownpourStart();
+                RandomEvents.StartRaining();
         }
 
         if (!Globals.Locations["Street"].IsVisited)

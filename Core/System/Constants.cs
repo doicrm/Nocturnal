@@ -18,7 +18,7 @@ public static class Constants
         "\t//      ///   ///////     //////      //      ///////  //     // //      /// //      // ////////\n"
     };
 
-    public const int MAX_SAVES          = 10;
+    public const int MAX_SAVES          = 100;
 
     // Default starting values
     public const int DEFAULT_ATTRIBUTE  = 10;

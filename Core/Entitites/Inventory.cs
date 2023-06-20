@@ -16,6 +16,7 @@ public class Inventory
     {
         Items.Add(item);
         UpdateFile();
+        SaveManager.UpdateSave();
     }
 
     public void RemoveItem(Item item)
@@ -24,6 +25,7 @@ public class Inventory
 
         Items.Remove(item);
         UpdateFile();
+        SaveManager.UpdateSave();
     }
 
     public void Show()

@@ -11,11 +11,6 @@ public static class StreetEvents
         Console.Write("DEBUG: LookAtEden");
     }
 
-    public static void DownpourStart()
-    {
-        Console.Write("DEBUG: DownpourStart");
-    }
-
     public static void StreetCrossroads()
     {
         Console.Write("DEBUG: StreetCrossroads");

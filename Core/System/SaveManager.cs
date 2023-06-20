@@ -95,13 +95,16 @@ public class SaveManager
         Program.Game!.Weather = saveInfo.Weather;
         StoryGlobals storyGlobals = saveInfo.StoryGlobals.ToObject<StoryGlobals>();
         Program.Game!.StoryGlobals = storyGlobals;
-        
-        Item.InsertInstances();
-        Console.Clear();
 
         if (!Globals.Locations.ContainsKey(currentLocation.ID))
             Globals.Locations.Add(currentLocation.ID, currentLocation);
-        Globals.Locations[currentLocation.ID].SetEvent();
+
+        foreach (Location location in Globals.Locations.Values)
+            location.SetEvent();
+
+        Item.InsertInstances();
+        Console.Clear();
+
         Program.Game!.SetCurrentLocation(Globals.Locations[currentLocation.ID]);
     }
 
@@ -197,7 +200,7 @@ public class SaveManager
         var saveInfo = JsonConvert.DeserializeObject<SaveData>(content!);
         string currentLocationName = saveInfo.CurrentLocation.Name;
 
-         return $"{PrintName(saveInfo.Player.Name)}, {PrintSex((uint)saveInfo.Player.Sex).ToLower()} | {GetChapterToString(saveInfo.Chapter)}{GetLocationToString(currentLocationName)} | {saveInfo.Timestamp}";
+        return $"{PrintName(saveInfo.Player.Name)}, {PrintSex((uint)saveInfo.Player.Sex).ToLower()} | {GetChapterToString(saveInfo.Chapter)}{GetLocationToString(currentLocationName)} | {saveInfo.Timestamp}";
     }
 
     public static void SearchForSaves()
@@ -218,8 +221,8 @@ public class SaveManager
 
                 foreach (dynamic file in files)
                 {
-                    Action action = () => LoadSave(i);
-                    options.Add(LoadSaveInfo(file), action);
+                    void action() => LoadSave(i);
+                    options.Add(LoadSaveInfo(file), (Action)action);
                     i++;
                 }
 

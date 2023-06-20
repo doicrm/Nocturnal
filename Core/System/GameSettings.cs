@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Nocturnal.Core.System.Utilities;
 
 namespace Nocturnal.Core.System;
 
@@ -41,9 +42,7 @@ public class GameSettings
             Lang = configFileData.Language;
         }
 
-        LoadDataFromFile(Lang);
-
-        return true;
+        return LoadDataFromFile(Lang);
     }
 
     public static void CreateConfigFile()
@@ -60,11 +59,21 @@ public class GameSettings
         File.WriteAllText("config.json", jsonString);
     }
 
-    public static void LoadDataFromFile(int lang)
+    public static bool LoadDataFromFile(int lang)
     {
-        string path = Directory.GetCurrentDirectory() + "\\Data\\Lang\\" + GetFileName(lang) + ".json";
-        string jsonString = File.ReadAllText(path);
-        Globals.JsonReader = JObject.Parse(jsonString);
+        try
+        {
+            string path = Directory.GetCurrentDirectory() + "\\Data\\Lang\\" + GetFileName(lang) + ".json";
+            string jsonString = File.ReadAllText(path);
+            Globals.JsonReader = JObject.Parse(jsonString);
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.Clear();
+            Console.WriteLine(e.Message);
+            return false;
+        }
     }
 
     public static int SelectLanguage()
@@ -77,8 +86,7 @@ public class GameSettings
             Console.WriteLine();
             Console.WriteLine("\t[1] EN");
             Console.WriteLine("\t[2] PL");
-            Console.Write("\t> ");
-            choice = Convert.ToInt32(Console.ReadLine());
+            choice = Input.GetChoice();
 
             if (choice is (int)GameLanguages.EN
                 or (int)GameLanguages.PL)
