@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Nocturnal.Core.System.Utilities;
+﻿namespace Nocturnal.Core.System.Utilities;
 
 public class Input
 {
