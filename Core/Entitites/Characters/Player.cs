@@ -13,11 +13,13 @@ public class Player : Npc
 
     public Player() : base()
     {
+        ID = "Player";
         Money = 0.0f;
     }
 
     public Player(float money, Weapon weapon, /*Clothes clothes,*/ Inventory inventory, Journal journal) : base()
     {
+        ID = "Player";
         Money = money;
         Weapon = weapon;
         //Clothes = clothes;

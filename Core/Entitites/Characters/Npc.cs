@@ -7,50 +7,56 @@ using System.Reflection;
 namespace Nocturnal.Core.Entitites.Characters;
 
 public enum Genders { Male, Female, Undefined }
-
 public enum NpcStatus { Normal, Unconscious, Dead }
 
 public class Npc
 {
+    public string ID { get; set; }
     public string Name { get; set; }
     public Genders Sex { get; set; }
     public Attributes Attributes { get; set; }
     public Fraction? Fraction { get; set; }
     public Attitudes Attitude { get; set; }
     public NpcStatus Status { get; set; }
-    public Inventory? Inventory = new();
+    public Inventory? Inventory { get; set; }
     public bool IsKnowHero { get; set; }
 
     public Npc()
     {
-        Name = "None";
+        ID = "";
+        Name = "";
         Sex = Genders.Undefined;
         Attributes = Attributes.Default();
         Fraction = null;
         Attitude = Attitudes.Neutral;
         Status = NpcStatus.Normal;
+        Inventory = new();
         IsKnowHero = false;
     }
 
-    public Npc(string name, Genders sex, Fraction fraction)
+    public Npc(string id, string name, Genders sex, Fraction fraction)
     {
+        ID = id;
         Name = name;
         Sex = sex;
         Attributes = Attributes.Default();
         Fraction = fraction;
         Attitude = Attitudes.Neutral;
         Status = NpcStatus.Normal;
+        Inventory = new();
         IsKnowHero = false;
     }
 
-    public Npc(string name, Genders sex, Fraction fraction, Attitudes attitude, NpcStatus status, bool isKnowHero)
+    public Npc(string id, string name, Genders sex, Fraction fraction, Attitudes attitude, NpcStatus status, bool isKnowHero)
     {
+        ID = id;
         Name = name;
         Sex = sex;
         Attributes = Attributes.Default();
         Fraction = fraction;
         Attitude = attitude;
         Status = status;
+        Inventory = new();
         IsKnowHero = isKnowHero;
     }
 
@@ -83,10 +89,6 @@ public class Npc
                 int newValue = attributeValue.Value - value;
                 property.SetValue(Attributes, newValue);
             }
-        }
-        else
-        {
-            Console.WriteLine("Invalid attribute name.");
         }
     }
 
@@ -134,24 +136,24 @@ public class Npc
     public void ClearInventory() => Inventory!.Clear();
     public bool HasItem(Item item) { return Inventory!.HasItem(item); }
 
-    public static void InitNpcs()
+    public static void InsertInstances()
     {
-        Npc Bob = new("Bob", Genders.Male, null!);
-        Npc Caden = new("Caden", Genders.Male, null!);
-        Npc CadensPartner = new($"{Globals.JsonReader!["NPC.POLICEMAN"]}", Genders.Male, null!);
-        Npc Zed = new("Zed", Genders.Male, null!);
-        Npc Luna = new("Luna", Genders.Female, null!);
-        Npc Jet = new("Jet", Genders.Male, null!);
-        Npc Hex = new("Hex Folstam", Genders.Male, null!);
-        Npc Enigma = new("Enigma", Genders.Male, null!);
+        Npc Bob = new("Bob", "Bob", Genders.Male, null!);
+        Npc Caden = new("Caden", "Caden", Genders.Male, null!);
+        Npc CadensPartner = new("CadensPartner", $"{Globals.JsonReader!["NPC.POLICEMAN"]}", Genders.Male, null!);
+        Npc Zed = new("Zed", "Zed", Genders.Male, null!);
+        Npc Luna = new("Luna", "Luna", Genders.Female, null!);
+        Npc Jet = new("Jet", "Jet", Genders.Male, null!);
+        Npc HexFolstam = new("HexFolstam", "Hex Folstam", Genders.Male, null!);
+        Npc Enigma = new("Enigma", "Enigma", Genders.Male, null!);
 
-        Globals.Npcs.Add("Bob", Bob);
-        Globals.Npcs.Add("Caden", Caden);
-        Globals.Npcs.Add("CadensPartner", CadensPartner);
-        Globals.Npcs.Add("Zed", Zed);
-        Globals.Npcs.Add("Luna", Luna);
-        Globals.Npcs.Add("Jet", Jet);
-        Globals.Npcs.Add("Hex", Hex);
-        Globals.Npcs.Add("Enigma", Enigma);
+        Globals.Npcs.Add(Bob.ID, Bob);
+        Globals.Npcs.Add(Caden.ID, Caden);
+        Globals.Npcs.Add(CadensPartner.ID, CadensPartner);
+        Globals.Npcs.Add(Zed.ID, Zed);
+        Globals.Npcs.Add(Luna.ID, Luna);
+        Globals.Npcs.Add(Jet.ID, Jet);
+        Globals.Npcs.Add(HexFolstam.ID, HexFolstam);
+        Globals.Npcs.Add(Enigma.ID, Enigma);
     }
 }
