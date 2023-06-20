@@ -18,7 +18,7 @@ public static class Event
         Display.Write($"{Globals.JsonReader!["BACK_TO_MENU"]}", 25);
         Console.ReadKey();
         Console.Clear();
-        Program.Game!.LoadLogo();
+        Game.Instance.LoadLogo();
     }
 
     public static void GameOver()
@@ -32,7 +32,7 @@ public static class Event
         Thread.Sleep(2000);
         Console.ResetColor();
         Console.Clear();
-        Program.Game!.LoadLogo();
+        Game.Instance.LoadLogo();
     }
 
     public static void ClearInstances()

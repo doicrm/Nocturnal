@@ -58,18 +58,19 @@ public static class DarkAlleyEvents
         Thread.Sleep(1000);
         Display.WriteNarration($" {Globals.JsonReader!["DARK_ALLEY.WAKE_UP_08"]}");
         Thread.Sleep(2500);
-        Display.WriteNarration($"\n\t{Globals.JsonReader!["DARK_ALLEY.WAKE_UP_09"]}\n\n");
+        Display.WriteNarration($"\n\t{Globals.JsonReader!["DARK_ALLEY.WAKE_UP_09"]}\n");
 
         Menu wakeUpMenu = new(new Dictionary<string, Action>()
         {
-            { $"{Globals.JsonReader!["DARK_ALLEY.WAKE_UP_MENU.LOOK_OUT"]}", SearchRubbish },
+            { $"{Globals.JsonReader!["DARK_ALLEY.WAKE_UP_MENU.LOOK_OUT"]}", SearchGarbage },
             { $"{Globals.JsonReader!["DARK_ALLEY.WAKE_UP_MENU.FIND_EXIT"]}", OutOfAlley }
         });
     }
 
-    public static void SearchRubbish()
+    public static void SearchGarbage()
     {
-        Console.Write("DEBUG: SearchRubbish");
+        AcceleratorFinding();
+        OutOfAlley();
     }
 
     public static void OutOfAlley()
@@ -79,7 +80,26 @@ public static class DarkAlleyEvents
 
     public static void AcceleratorFinding()
     {
-        Console.Write("DEBUG: AcceleratorFinding");
+        Display.WriteNarration($"\t{Globals.JsonReader!["DARK_ALLEY.FINDING_ACCELERATOR01"]}");
+        Thread.Sleep(1500);
+        Display.WriteNarration($" {Globals.JsonReader!["DARK_ALLEY.FINDING_ACCELERATOR02"]}");
+        Thread.Sleep(2000);
+        Globals.Player.AddItem(Globals.Items["AD13"]);
+
+        Display.Write($"\n\n\t{Globals.JsonReader!["ITEM_FOUND"]}");
+        Console.ForegroundColor = ConsoleColor.Blue;
+        Display.Write(Globals.Items["AD13"].Name!);
+        Console.ResetColor();
+        Display.Write($"{Globals.JsonReader!["AND"]}");
+        Console.ForegroundColor = ConsoleColor.Green;
+        Display.Write("5$");
+        Console.ResetColor();
+        SaveManager.UpdateSave();
+
+        Display.Write($"\n\t{Globals.JsonReader!["INVENTORY.TIP"]}", 15);
+        Thread.Sleep(4000);
+        Display.WriteNarration($"\n\t{Globals.JsonReader!["DARK_ALLEY.FINDING_ACCELERATOR03"]}");
+        Thread.Sleep(1000);
     }
 
     public static void DarkAlleyCrossroads()
@@ -93,12 +113,12 @@ public static class DarkAlleyEvents
         Display.WriteNarration($"{Globals.JsonReader!["DARK_ALLEY.CROSSROADS_04"]}");
         Thread.Sleep(1500);
         Console.Clear();
-        Program.Game!.SetCurrentLocation(Globals.Locations["Street"]);
+        Game.Instance.SetCurrentLocation(Globals.Locations["Street"]);
     }
 
     public static void DarkAlleyCrossroads_2()
     {
         Console.Clear();
-        Program.Game!.SetCurrentLocation(Globals.Locations["Street"]);
+        Game.Instance.SetCurrentLocation(Globals.Locations["Street"]);
     }
 }

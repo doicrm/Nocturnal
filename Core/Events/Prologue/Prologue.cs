@@ -6,9 +6,12 @@ public static class PrologueEvents
 {
     public static void DarkAlley()
     {
+        Globals.Chapter = 0;
+
         if (!Globals.Locations["DarkAlley"].IsVisited)
         {
             Globals.Locations["DarkAlley"].IsVisited = true;
+            SaveManager.UpdateSave();
             DarkAlleyEvents.Prologue();
             return;
         }
@@ -17,7 +20,8 @@ public static class PrologueEvents
 
     public static void Street()
     {
-        if (Program.Game!.Weather != Weather.Rainy)
+        SaveManager.UpdateSave();
+        if (Game.Instance.Weather != Weather.Rainy)
         {
             Random rnd = new();
             int rand = rnd.Next(0, 10);
