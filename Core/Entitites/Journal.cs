@@ -4,7 +4,12 @@ namespace Nocturnal.Core.Entitites;
 
 public class Journal
 {
-    private readonly List<Quest> Quests = new();
+    public IList<Quest> Quests { get; set; }
+
+    public Journal()
+    {
+        Quests = new List<Quest>();
+    }
 
     public void AddQuest(Quest quest)
     {

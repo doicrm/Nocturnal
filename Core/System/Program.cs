@@ -6,7 +6,7 @@ public class Program
 
     static void Main()
     {
-        Game = new Game();
+        Game = Game.Instance;
 
         if (GameSettings.LoadConfigFile())
         {

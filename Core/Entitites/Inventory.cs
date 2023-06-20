@@ -1,14 +1,30 @@
 ﻿using Nocturnal.Core.Entitites.Items;
+using Nocturnal.Core.System;
 
 namespace Nocturnal.Core.Entitites;
 
 public class Inventory
 {
-    public List<Item> Items = new();
+    public IList<Item> Items { get; set; }
 
-    public void AddItem(Item item) => Items.Add(item);
+    public Inventory()
+    {
+        Items = new List<Item>();
+    }
 
-    public void RemoveItem(Item item) => Items.Remove(item);
+    public void AddItem(Item item)
+    {
+        Items.Add(item);
+        UpdateFile();
+    }
+
+    public void RemoveItem(Item item)
+    {
+        if (!HasItem(item)) return;
+
+        Items.Remove(item);
+        UpdateFile();
+    }
 
     public void Show()
     {
@@ -29,9 +45,32 @@ public class Inventory
     public bool HasItem(Item item)
     {
         foreach (Item Item in Items)
-        {
-            if (Item == item) return true;
-        }
+            if (Item == item)
+                return true;
         return false;
+    }
+
+    public void UpdateFile()
+    {
+        string path = $"{Directory.GetCurrentDirectory()}\\Inventory.txt";
+        using StreamWriter output = new(path);
+
+        if (Items.Count <= 0)
+        {
+            output.WriteLine($"{Globals.JsonReader!["INVENTORY.NO_ITEMS"]}");
+            output.Close();
+            return;
+        }
+
+        foreach (Item Item in Items)
+        {
+            output.WriteLine($"{Globals.JsonReader!["NAME"]}: {Item.Name}");
+            output.WriteLine($"{Globals.JsonReader!["TYPE"]}: {Item.Type}");
+            output.WriteLine($"{Globals.JsonReader!["DESCRIPTION"]}: {Item.Description}");
+            output.WriteLine($"{Globals.JsonReader!["VALUE"]}: {Item.Value}$");
+            output.WriteLine("...........................................................................");
+        }
+
+        output.Close();
     }
 }

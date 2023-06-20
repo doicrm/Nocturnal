@@ -1,5 +1,6 @@
 ﻿using Nocturnal.Core.Entitites;
 using Nocturnal.Core.Entitites.Characters;
+using Nocturnal.Core.Entitites.Items;
 using Nocturnal.Core.Events.Prologue;
 using Nocturnal.Core.System.Utilities;
 
@@ -7,18 +8,32 @@ namespace Nocturnal.Core.System;
 
 public enum Weather { Sunny, Cloudy, Stormy, Rainy, Snowfall }
 
-public class Game
+public sealed class Game
 {
-    public static readonly Game Instance = new();
     public bool IsPlaying { get; set; }
-    public Location? CurrentLocation { get; set; } = null;
+    public Location? CurrentLocation { get; set; }
     public Weather Weather { get; set; }
-    public GameSettings Settings { get; set; } = new GameSettings();
+    public GameSettings Settings { get; set; }
+    public StoryGlobals StoryGlobals { get; set; }
 
-    public Game()
+    private static Game? instance = null;
+
+    public static Game Instance
+    {
+        get
+        {
+            instance ??= new Game();
+            return instance;
+        }
+    }
+
+    private Game()
     {
         IsPlaying = true;
+        CurrentLocation = null;
         ChangeConsoleName();
+        Settings = new();
+        StoryGlobals = StoryGlobals.Instance;
     }
 
     public void Run()
@@ -85,21 +100,12 @@ public class Game
         }
     }
 
-    public void LoadGame()
+    public static void LoadGame()
     {
         Console.Clear();
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.Write($"\n\t{Globals.JsonReader!["FEATURE_UNAVAILABLE"]}\n\n");
+        Console.Write($"\n\t{Globals.JsonReader!["MAIN_MENU.LOAD_GAME"]!.ToString().ToUpper()}\n\n");
         Console.ResetColor();
         SaveManager.SearchForSaves();
-        Thread.Sleep(1000);
-        Console.ForegroundColor = ConsoleColor.Gray;
-        Console.Write($"\n\n\t{Globals.JsonReader!["BACK_TO_MENU"]}");
-        Console.ReadKey();
-        Console.ResetColor();
-        Console.Clear();
-        LoadLogo();
-        MainMenu();
     }
 
     public void ChangeLanguage()
@@ -141,14 +147,14 @@ public class Game
     public void SetCurrentLocation(Location location)
     {
         CurrentLocation = location;
-        CurrentLocation.Events.Invoke();
+        CurrentLocation!.Events!.Invoke();
     }
 
-    public void SetWeather(Weather weather) { Weather = weather; }
+    public void SetWeather(Weather weather) => Weather = weather;
 
     public static void InitHeroIventory()
     {
-        string path = $"{Directory.GetCurrentDirectory()}\\inventory.txt";
+        string path = $"{Directory.GetCurrentDirectory()}\\Inventory.txt";
         using StreamWriter output = new(path);
         output.WriteLine($"{Globals.JsonReader!["INVENTORY.NO_ITEMS"]}");
         output.Close();
@@ -156,7 +162,7 @@ public class Game
 
     public static void InitHeroJournal()
     {
-        string path = $"{Directory.GetCurrentDirectory()}\\journal.txt";
+        string path = $"{Directory.GetCurrentDirectory()}\\Journal.txt";
         using StreamWriter output = new(path);
         output.WriteLine($"{Globals.JsonReader!["JOURNAL.NO_QUESTS"]}");
         output.Close();
@@ -164,18 +170,21 @@ public class Game
 
     public static void InitLocations()
     {
-        Location DarkAlley = new("Dark alley", null!, PrologueEvents.DarkAlley);
-        Location Street = new("Street", null!, PrologueEvents.Street);
+        Location DarkAlley = new("DarkAlley", "Dark alley", null!, PrologueEvents.DarkAlley);
+        Location Street = new("Street", "Street", Globals.Fractions["Police"], PrologueEvents.Street);
 
-        Globals.Locations.Add("DarkAlley", DarkAlley);
-        Globals.Locations.Add("Street", Street);
+        Globals.Locations.Add(DarkAlley.ID, DarkAlley);
+        Globals.Locations.Add(Street.ID, Street);
     }
 
     public static void InitAll()
     {
         InitHeroIventory();
         InitHeroJournal();
-        Npc.InitNpcs();
+        Npc.InsertInstances();
+        Item.InsertInstances();
+        Fraction.InsertInstances();
+        Quest.InsertInstances();
         InitLocations();
     }
 }

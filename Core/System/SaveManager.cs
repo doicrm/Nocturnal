@@ -1,45 +1,67 @@
-﻿using Nocturnal.Core.Entitites.Characters;
+﻿using Newtonsoft.Json;
+using Nocturnal.Core.Entitites;
+using Nocturnal.Core.Entitites.Characters;
+using Nocturnal.Core.Entitites.Items;
 using Nocturnal.Core.System.Utilities;
 
 namespace Nocturnal.Core.System;
 
 public struct SaveData
 {
-    public string Date;
-    public string Hour;
-    public string Player;
-    public int Chapter;
-    public int Gender;
-    public int Stage;
+    public string Timestamp;
+    public Player Player;
+    public dynamic Npcs;
+    public dynamic Locations;
+    public dynamic Fractions;
+    public dynamic Quests;
+    public uint Chapter;
+    public dynamic CurrentLocation;
+    public Weather Weather;
+    public dynamic StoryGlobals;
 };
 
 public class SaveManager
 {
-    private static uint SaveNr = 0;
+    private static uint CurrentSaveNr = 0;
 
     public static void CreateSave()
     {
         if (!Directory.Exists("Data\\Saves"))
             Directory.CreateDirectory("Data\\Saves");
 
-        string path = $"{Directory.GetCurrentDirectory()}\\Data\\Saves\\Save_{SaveNr}.dat";
-
-        if (!File.Exists(path))
+        for (int i = 0; i < Constants.MAX_SAVES; i++)
         {
-            using StreamWriter newSave = File.CreateText(path);
-            SaveNr++;
-            newSave.WriteLine(Logger.GetFormattedUtcTimestamp());
-            newSave.WriteLine($"Player::Unknown");
-            newSave.WriteLine($"Sex::Undefined");
-            newSave.WriteLine($"{0}::{1}");
-            newSave.Close();
+            string path = $"{Directory.GetCurrentDirectory()}\\Data\\Saves\\Save{i}.dat";
+
+            if (!File.Exists(path))
+            {
+                using StreamWriter newSave = File.CreateText(path);
+                CurrentSaveNr = (uint)i;
+                SaveData save = new()
+                {
+                    Timestamp = Logger.GetFormattedTimestamp(),
+                    Player = Globals.Player,
+                    Npcs = Globals.Npcs,
+                    Locations = Globals.LocationsToJson(),
+                    Fractions = Globals.Fractions,
+                    Quests = Globals.Quests,
+                    Chapter = Globals.Chapter,
+                    CurrentLocation = null!,
+                    Weather = Program.Game!.Weather,
+                    StoryGlobals = Program.Game!.StoryGlobals
+                };
+
+                var serializedObject = JsonConvert.SerializeObject(save, Formatting.Indented);
+                newSave.Write(serializedObject);
+                newSave.Close();
+                break;
+            }
         }
     }
 
     public static void LoadSave(uint nr)
     {
-        //SaveData save;
-        string path = $"{Directory.GetCurrentDirectory()}\\Data\\Saves\\Save_{nr}.dat";
+        string path = $"{Directory.GetCurrentDirectory()}\\Data\\Saves\\Save{nr}.dat";
 
         if (!File.Exists(path))
         {
@@ -47,22 +69,68 @@ public class SaveManager
             return;
         }
 
-        using StreamReader oldSave = File.OpenText(path);
-        string s;
-        while ((s = oldSave.ReadLine()!) != null)
-        {
-            Console.WriteLine(s);
-        }
-        oldSave.Close();
+        using StreamReader saveFile = File.OpenText(path);
+        string? content = null;
+        string? s = null;
 
-        //Hero.heroes["Hero"].Name = save.player;
-        //Hero.heroes["Hero"].Sex = save.gender;
+        while ((s = saveFile.ReadLine()!) != null)
+        {
+            content += s;
+        }
+
+        saveFile.Close();
+        var saveInfo = JsonConvert.DeserializeObject<SaveData>(content!);
+
+        Globals.Player = saveInfo.Player;
+        Dictionary<string, Npc> npcs = saveInfo.Npcs.ToObject<Dictionary<string, Npc>>();
+        Globals.Npcs = npcs;
+        Dictionary<string, Location> locations = saveInfo.Locations.ToObject<Dictionary<string, Location>>();
+        Globals.Locations = locations;
+        Dictionary<string, Fraction> fractions = saveInfo.Fractions.ToObject<Dictionary<string, Fraction>>();
+        Globals.Fractions = fractions;
+        Dictionary<string, Quest> quests = saveInfo.Fractions.ToObject<Dictionary<string, Quest>>();
+        Globals.Quests = quests;
+        Globals.Chapter = saveInfo.Chapter;
+        Location currentLocation = saveInfo.CurrentLocation.ToObject<Location>();
+        Program.Game!.Weather = saveInfo.Weather;
+        StoryGlobals storyGlobals = saveInfo.StoryGlobals.ToObject<StoryGlobals>();
+        Program.Game!.StoryGlobals = storyGlobals;
+        
+        Item.InsertInstances();
+        Console.Clear();
+
+        if (!Globals.Locations.ContainsKey(currentLocation.ID))
+            Globals.Locations.Add(currentLocation.ID, currentLocation);
+        Globals.Locations[currentLocation.ID].SetEvent();
+        Program.Game!.SetCurrentLocation(Globals.Locations[currentLocation.ID]);
     }
 
-    //public static void UpdateSave(int saveNr, string player, int sex, int chapter, int stage)
-    //{
+    public static void UpdateSave()
+    {
+        if (!Directory.Exists("Data\\Saves"))
+            Directory.CreateDirectory("Data\\Saves");
 
-    //}
+        string path = $"{Directory.GetCurrentDirectory()}\\Data\\Saves\\Save{CurrentSaveNr}.dat";
+
+        using StreamWriter saveFile = File.CreateText(path);
+        SaveData save = new()
+        {
+            Timestamp = Logger.GetFormattedTimestamp(),
+            Player = Globals.Player,
+            Npcs = Globals.Npcs,
+            Locations = Globals.LocationsToJson(),
+            Fractions = Globals.Fractions,
+            Quests = Globals.Quests,
+            Chapter = Globals.Chapter,
+            CurrentLocation = Program.Game!.CurrentLocation!.ToJson(),
+            Weather = Program.Game!.Weather,
+            StoryGlobals = Program.Game!.StoryGlobals
+        };
+
+        var serializedObject = JsonConvert.SerializeObject(save, Formatting.Indented);
+        saveFile.Write(serializedObject);
+        saveFile.Close();
+    }
 
     public static string PrintSex(uint sex)
     {
@@ -77,56 +145,107 @@ public class SaveManager
         return $"{Globals.JsonReader!["SEX.UNDEFINED"]}";
     }
 
-    private static string GetChapterString(uint chapter)
+    private static string PrintName(string name)
+    {
+        return name == "" ? Globals.JsonReader!["UNKNOWN"] : name;
+    }
+
+    private static string GetChapterToString(uint chapter)
     {
         if (chapter == 0 || chapter < 0)
         {
             return $"{Globals.JsonReader!["PROLOGUE"]}";
         }
-        else if (chapter == 1 || chapter == 2)
+        else if (chapter == 1 || chapter == 2 || chapter == 3)
         {
             return $"{Globals.JsonReader!["CHAPTER"]} {chapter}";
         }
         return $"{Globals.JsonReader!["EPILOGUE"]}";
     }
 
-    private static void LoadSaveInfo(string saveToLoad)
+    private static string GetLocationToString(string locationName)
     {
-        //SaveData save;
+        if (locationName == "Dark alley" || locationName == "Mroczny zaułek")
+        {
+            return $": {Globals.JsonReader!["LOCATION.DARK_ALLEY"]}";
+        }
+        else if (locationName == "Street" || locationName == "Ulica")
+        {
+            return $": {Globals.JsonReader!["LOCATION.STREET"]}";
+        }
+        return "";
+    }
 
+    private static string LoadSaveInfo(string saveToLoad)
+    {
         if (!File.Exists(saveToLoad))
         {
             Console.WriteLine($"{saveToLoad} - nie ma takiego pliku!");
-            return;
+            return "";
         }
 
         using StreamReader oldSave = File.OpenText(saveToLoad);
-        string s;
+        string? content = null;
+        string? s = null;
+
         while ((s = oldSave.ReadLine()!) != null)
         {
-            Console.WriteLine($"\t{s}");
+            content += s;
         }
-        oldSave.Close();
 
-        //Console.WriteLine($"\t{save.Player}, {PrintSex(save.Gender)} | {GetChapterString(save.Chapter)} : {save.Stage} | {save.Date} {save.Hour}");
+        oldSave.Close();
+        var saveInfo = JsonConvert.DeserializeObject<SaveData>(content!);
+        string currentLocationName = saveInfo.CurrentLocation.Name;
+
+         return $"{PrintName(saveInfo.Player.Name)}, {PrintSex((uint)saveInfo.Player.Sex).ToLower()} | {GetChapterToString(saveInfo.Chapter)}{GetLocationToString(currentLocationName)} | {saveInfo.Timestamp}";
     }
 
     public static void SearchForSaves()
     {
         string path = $"{Directory.GetCurrentDirectory()}\\Data\\Saves";
-        var files = Directory.GetFiles(path, "Save_*", SearchOption.AllDirectories)
-        .Where(s => s.EndsWith(".dat"));
 
-        if (files.Any())
+        if (Directory.Exists("Data\\Saves"))
         {
-            foreach (dynamic file in files)
-                LoadSaveInfo(file);
+            var files = Directory.GetFiles(path, "Save*", SearchOption.AllDirectories)
+                .Where(s => s.EndsWith(".dat"));
+
+            if (files.Any())
+            {
+                Menu savesMenu = new();
+                savesMenu.ClearOptions();
+                Dictionary<string, Action> options = new();
+                uint i = 1;
+
+                foreach (dynamic file in files)
+                {
+                    Action action = () => LoadSave(i);
+                    options.Add(LoadSaveInfo(file), action);
+                    i++;
+                }
+
+                i = 0;
+                options.Add($"{Globals.JsonReader!["BACK_TO_MAIN_MENU"]}", BackToMainMenu);
+                savesMenu.AddOptions(options);
+                savesMenu.ShowOptions(0);
+                savesMenu.InputChoice();
+                return;
+            }
         }
-        else
-        {
-            Console.ForegroundColor = ConsoleColor.Gray;
-            Console.WriteLine($"{Globals.JsonReader!["NO_SAVES_FOUND"]}");
-            Console.ResetColor();
-        }
+
+        Console.ForegroundColor = ConsoleColor.Gray;
+        Console.WriteLine($"\t{Globals.JsonReader!["LOAD_GAME.NO_SAVES_FOUND"]}");
+        Thread.Sleep(2000);
+        Console.ResetColor();
+        Console.Clear();
+        Program.Game!.LoadLogo();
+        Program.Game!.MainMenu();
+    }
+
+    public static void BackToMainMenu()
+    {
+        Console.ResetColor();
+        Console.Clear();
+        Program.Game!.LoadLogo();
+        Program.Game!.MainMenu();
     }
 }

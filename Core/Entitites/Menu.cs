@@ -4,25 +4,32 @@ namespace Nocturnal.Core.Entitites;
 
 public class Menu
 {
-    private int OptionNr = 1;
-    private int Choice = 0;
-    private readonly Dictionary<int, KeyValuePair<string, Action>> Options = new();
+    public int OptionNr { get; set; }
+    public int Choice { get; set; }
+    public IDictionary<int, KeyValuePair<string, Action>> Options { get; set; }
+
+    public Menu()
+    {
+        Options = new Dictionary<int, KeyValuePair<string, Action>>();
+        ClearOptions();
+    }
 
     public Menu(Dictionary<string, Action> options)
     {
+        Options = new Dictionary<int, KeyValuePair<string, Action>>();
         ClearOptions();
         AddOptions(options);
         ShowOptions();
         InputChoice();
     }
 
-    public static void ActionOption(int nr, string text)
-        => Display.Write($"\n\t[{Convert.ToString(nr)}] {text}", 25);
+    public static void ActionOption(int nr, string text, int seconds = 25)
+        => Display.Write($"\n\t[{Convert.ToString(nr)}] {text}", seconds);
 
     public void ShowHeroChoice()
     {
         Console.ResetColor();
-        Console.WriteLine($"\n\t> {Options[Choice].Key}\n\n");
+        Console.WriteLine($"\n\t> {Options[Choice].Key}\n");
     }
 
     public void ClearOptions()
@@ -43,7 +50,7 @@ public class Menu
         }
     }
 
-    public void ShowOptions()
+    public void ShowOptions(int seconds = 25)
     {
         if (Options.Count == 0) return;
 
@@ -51,12 +58,14 @@ public class Menu
 
         foreach (dynamic option in Options)
         {
-            ActionOption(option.Key, option.Value.Key);
+            ActionOption(option.Key, option.Value.Key, seconds);
         }
     }
 
     public void InputChoice()
     {
+        Console.WriteLine();
+
         while (true)
         {
             Choice = Input.GetChoice();

@@ -7,20 +7,36 @@ public enum QuestStatus { NotStarted, Running, Success, Failed, Obsolete }
 
 public class Quest
 {
-    public string Name { get; set; } = "None";
-    public string Description { get; set; } = "None";
-    public QuestStatus Status { get; set; } = QuestStatus.NotStarted;
-    public bool IsRunning { get; set; } = false;
-    public bool IsCompleted { get; set; } = false;
+    public string ID { get; set; }
+    public string Name { get; set; }
+    public string Description { get; set; }
+    public QuestStatus Status { get; set; }
+    public bool IsRunning { get; set; }
+    public bool IsCompleted { get; set; }
 
-    public Quest(string name, string description)
+    public Quest()
     {
-        Name = name;
-        Description = description;
+        ID = "";
+        Name = "";
+        Description = "";
+        Status = QuestStatus.NotStarted;
+        IsRunning = false;
+        IsCompleted = false;
     }
 
-    public Quest(string name, string description, QuestStatus status, bool isRunning, bool isCompleted)
+    public Quest(string id, string name, string description)
     {
+        ID = id;
+        Name = name;
+        Description = description;
+        Status = QuestStatus.NotStarted;
+        IsRunning = false;
+        IsCompleted = false;
+    }
+
+    public Quest(string id, string name, string description, QuestStatus status, bool isRunning, bool isCompleted)
+    {
+        ID = id;
         Name = name;
         Description = description;
         Status = status;
@@ -71,5 +87,14 @@ public class Quest
         return $"{Globals.JsonReader!["NAME"]}: {Name}\n" +
             $"{Globals.JsonReader!["DESCRIPTION"]}: {Description}\n" +
             $"{Globals.JsonReader!["STATUS"]}: {PrintStatus()}";
+    }
+
+    public static void InsertInstances()
+    {
+        Quest KillVincent = new("KillHex", $"{Globals.JsonReader!["QUEST.KILL_HEX.NAME"]}", $"{Globals.JsonReader!["QUEST.KILL_HEX.DESCRIPTION"]}");
+        Quest ZedAccelerator = new("ZedAccelerator", $"{Globals.JsonReader!["QUEST.ZED_ACCELERATOR.NAME"]}", $"{Globals.JsonReader!["QUEST.ZED_ACCELERATOR.DESCRIPTION"]}");
+
+        Globals.Quests[KillVincent.ID] = KillVincent;
+        Globals.Quests[ZedAccelerator.ID] = ZedAccelerator;
     }
 }
