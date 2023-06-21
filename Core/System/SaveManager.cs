@@ -69,6 +69,8 @@ public class SaveManager
             return;
         }
 
+        CurrentSaveNr = nr;
+
         using StreamReader saveFile = File.OpenText(path);
         string? content = null;
         string? s = null;
@@ -91,11 +93,11 @@ public class SaveManager
         Dictionary<string, Quest> quests = saveInfo.Fractions.ToObject<Dictionary<string, Quest>>();
         Globals.Quests = quests;
         Globals.Chapter = saveInfo.Chapter;
-        Location currentLocation = saveInfo.CurrentLocation.ToObject<Location>();
         Program.Game!.Weather = saveInfo.Weather;
         StoryGlobals storyGlobals = saveInfo.StoryGlobals.ToObject<StoryGlobals>();
         Program.Game!.StoryGlobals = storyGlobals;
 
+        Location currentLocation = saveInfo.CurrentLocation.ToObject<Location>();
         if (!Globals.Locations.ContainsKey(currentLocation.ID))
             Globals.Locations.Add(currentLocation.ID, currentLocation);
 
@@ -217,11 +219,12 @@ public class SaveManager
                 Menu savesMenu = new();
                 savesMenu.ClearOptions();
                 Dictionary<string, Action> options = new();
-                uint i = 1;
+                uint i = 0;
 
                 foreach (dynamic file in files)
                 {
-                    void action() => LoadSave(i);
+                    uint currentIndex = i;
+                    void action() => LoadSave(currentIndex);
                     options.Add(LoadSaveInfo(file), (Action)action);
                     i++;
                 }

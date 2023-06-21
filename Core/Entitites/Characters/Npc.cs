@@ -124,7 +124,10 @@ public class Npc
             Console.ResetColor();
         }
 
-        Display.Write($"\t{Name} is {attitude} now.");
+        if (GameSettings.Lang == (int)GameLanguages.EN)
+            Display.Write($"\t{Name} is {attitude} now.\n");
+        else
+            Display.Write($"\t{Name} jest teraz {attitude}.\n");
         Console.ResetColor();
     }
 

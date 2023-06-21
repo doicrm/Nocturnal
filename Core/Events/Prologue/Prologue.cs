@@ -1,4 +1,5 @@
 ﻿using Nocturnal.Core.System;
+using Nocturnal.Core.System.Utilities;
 
 namespace Nocturnal.Core.Events.Prologue;
 
@@ -15,7 +16,7 @@ public static class PrologueEvents
             DarkAlleyEvents.Prologue();
             return;
         }
-        DarkAlleyEvents.DarkAlleyCrossroads();
+        DarkAlleyEvents.Crossroads();
     }
 
     public static void Street()
@@ -35,6 +36,51 @@ public static class PrologueEvents
             return;
         }
 
-        StreetEvents.StreetCrossroads();
+        StreetEvents.Crossroads();
+    }
+
+    public static void GunShop()
+    {
+        if (!Globals.Locations["GunShop"].IsVisited)
+        {
+            Globals.Locations["GunShop"].IsVisited = true;
+            StreetEvents.EncounterGunStore();
+            return;
+        }
+
+        GunShopEvents.Crossroads();
+    }
+
+    public static void Nightclub()
+    {
+        if (!Globals.Locations["GunShop"].IsVisited)
+        {
+            Globals.Locations["GunShop"].IsVisited = true;
+            NightclubEdenEvents.EnterClub();
+            return;
+        }
+
+        NightclubEdenEvents.Crossroads();
+    }
+
+    public static void VisitDarkAlley()
+    {
+        Program.Game!.SetCurrentLocation(Globals.Locations["Street"]);
+    }
+
+    public static void VisitStreet()
+    {
+        Program.Game!.SetCurrentLocation(Globals.Locations["Street"]);
+    }
+
+    public static void VisitNightclubEden()
+    {
+        Display.WriteNarration("\n\tYou enter from a fairly well-lit street into a slightly darkened nightclub, trembling with colour.\n\n");
+        Program.Game!.SetCurrentLocation(Globals.Locations["NightclubEden"]);
+    }
+
+    public static void VisitGunShop()
+    {
+        Program.Game!.SetCurrentLocation(Globals.Locations["GunShop"]);
     }
 }

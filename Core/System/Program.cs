@@ -1,16 +1,17 @@
-﻿namespace Nocturnal.Core.System;
-
-public class Program
+﻿namespace Nocturnal.Core.System
 {
-    public static Game? Game { get; private set; }
-
-    static void Main()
+    public class Program
     {
-        Game = Game.Instance;
+        public static Game? Game { get; private set; }
 
-        if (GameSettings.LoadConfigFile())
+        static void Main()
         {
-            Game.Run();
+            Game = Game.Instance;
+
+            if (GameSettings.LoadConfigFile())
+            {
+                Game.Run();
+            }
         }
     }
 }

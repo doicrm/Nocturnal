@@ -134,7 +134,7 @@ public static class DarkAlleyEvents
     public static void OutOfAlley_02()
     {
         Display.WriteNarration($"\t{Globals.JsonReader!["DARK_ALLEY.OUT_OF_ALLEY_08"]}");
-        Display.WriteDialogue($"{Globals.JsonReader!["DARK_ALLEY.DIA_BOB_03"]}");
+        Display.WriteDialogue($"\n\t{Globals.JsonReader!["DARK_ALLEY.DIA_BOB_03"]}");
         Display.WriteNarration($"\n\t{Globals.JsonReader!["DARK_ALLEY.OUT_OF_ALLEY_09"]}");
         Thread.Sleep(1000);
         Program.Game!.SetCurrentLocation(Globals.Locations["Street"]);
@@ -142,96 +142,153 @@ public static class DarkAlleyEvents
 
     public static void DialogueWithBob()
     {
-        Console.WriteLine("DEBUG: DialogueWithBob");
+        Display.WriteDialogue($"\t{Globals.JsonReader!["DARK_ALLEY.DIA_BOB_04"]}\n");
+
+        if (!Globals.Npcs["Bob"].IsKnowHero && !Globals.Npcs["Caden"].IsKnowHero && !Globals.Npcs["CadensPartner"].IsKnowHero)
+        {
+            Menu heroNameMenu = new(new Dictionary<string, Action>()
+            {
+                { $"{Globals.JsonReader!["DARK_ALLEY.HERO_NAME_MENU.INTRODUCE_YOURSELF"]}", DialogueWithBob_01 },
+                { $"{Globals.JsonReader!["DARK_ALLEY.HERO_NAME_MENU.KEEP_YOUR_INDETIFY"]}", DialogueWithBob_02 }
+            });
+
+            Menu diaBobMenu1 = new(new Dictionary<string, Action>()
+            {
+                { $"{Globals.JsonReader!["DARK_ALLEY.DIA_BOB_MENU_01.DONT_WANT_TROUBLE"]}", DialogueWithBob_03 },
+                { $"{Globals.JsonReader!["DARK_ALLEY.DIA_BOB_MENU_01.LUST_LOOKING_AROUND"]}", DialogueWithBob_04 },
+                { $"{Globals.JsonReader!["DARK_ALLEY.DIA_BOB_MENU_01.ITS_NOT_YOUR_BUSINESS"]}", DialogueWithBob_05 }
+            });
+
+            if (!Globals.Locations["Street"].IsVisited)
+            {
+                Display.WriteNarration($"\t{Globals.JsonReader!["DARK_ALLEY.DIA_BOB_20"]}");
+                Thread.Sleep(1000);
+                Display.WriteNarration($" {Globals.JsonReader!["DARK_ALLEY.DIA_BOB_21"]}");
+                Thread.Sleep(2000);
+                Display.WriteNarration($"\n\t{Globals.JsonReader!["DARK_ALLEY.DIA_BOB_22"]}");
+                Thread.Sleep(1000);
+                Display.WriteNarration($" {Globals.JsonReader!["DARK_ALLEY.DIA_BOB_23"]}");
+                Display.WriteDialogue($"\n\t{Globals.JsonReader!["DARK_ALLEY.DIA_BOB_24"]}");
+                Thread.Sleep(500);
+                Display.WriteDialogue($"{Globals.JsonReader!["DARK_ALLEY.DIA_BOB_25"]}");
+                Thread.Sleep(500);
+                Display.WriteDialogue($" {Globals.JsonReader!["DARK_ALLEY.DIA_BOB_26"]}");
+                Thread.Sleep(1500);
+                Display.WriteNarration($"\n\t{Globals.JsonReader!["DARK_ALLEY.DIA_BOB_27"]}");
+                Thread.Sleep(1500);
+                Display.WriteNarration($" {Globals.JsonReader!["DARK_ALLEY.DIA_BOB_28"]}");
+                Thread.Sleep(3500);
+                Program.Game!.SetCurrentLocation(Globals.Locations["Street"]);
+            }
+            else
+            {
+                Display.WriteDialogue($"\t{Globals.JsonReader!["DARK_ALLEY.DIA_BOB_29"]}");
+                Thread.Sleep(1500);
+                Display.WriteDialogue($" {Globals.JsonReader!["DARK_ALLEY.DIA_BOB_30"]}");
+
+                if (Globals.Npcs["Bob"].Attitude == Attitudes.Angry
+                || Globals.Npcs["Bob"].Attitude == Attitudes.Hostile)
+                {
+                    Display.WriteDialogue($" {Globals.JsonReader!["DARK_ALLEY.DIA_BOB_31"]}");
+                }
+                else
+                {
+                    Display.WriteDialogue($" {Globals.JsonReader!["DARK_ALLEY.DIA_BOB_32"]}");
+                }
+
+                Thread.Sleep(1500);
+                Display.WriteNarration($"\n\t{Globals.JsonReader!["DARK_ALLEY.DIA_BOB_27"]}");
+                Thread.Sleep(1500);
+                Display.WriteNarration($" {Globals.JsonReader!["DARK_ALLEY.DIA_BOB_28"]}");
+                Game.Pause();
+                Console.Clear();
+                Program.Game!.SetCurrentLocation(Globals.Locations["Street"]);
+            }
+        }
     }
 
-    //public static void DialogueWithBob_01()
-    //{
-    //    Console.WriteLine();
-    //    MiscEvents.NamingHero();
-    //    Globals.Npcs["Bob"].IsKnowHero = true;
-    //    Display.WriteDialogue((std::string)json["prologue"]["dialogueWithBob"][4]
-    //        + Npc::npcs["Hero"].getName()
-    //        + (std::string)json["prologue"]["dialogueWithBob"][5]);
-    //    Thread.Sleep(1500);
-    //    Display.WriteDialogue((std::string)json["prologue"]["dialogueWithBob"][6]
-    //        + Npc::npcs["Bob"].getName() + ".");
-    //    Thread.Sleep(1500);
-    //    Display.WriteDialogue(json["prologue"]["dialogueWithBob"][7]);
-    //    Display.WriteNarration(json["prologue"]["dialogueWithBob"][0]);
-    //}
+    public static void DialogueWithBob_01()
+    {
+        Console.WriteLine();
+        MiscEvents.NamingHero();
+        Globals.Npcs["Bob"].IsKnowHero = true;
+        Display.WriteDialogue($"\t{Globals.JsonReader!["DARK_ALLEY.DIA_BOB_05"]} {Globals.Player.Name}{Globals.JsonReader!["DARK_ALLEY.DIA_BOB_06"]}");
+        Thread.Sleep(1500);
+        Display.WriteDialogue($" {Globals.JsonReader!["DARK_ALLEY.DIA_BOB_07"]} {Globals.Npcs["Bob"].Name}.");
+        Thread.Sleep(1500);
+        Display.WriteDialogue($" {Globals.JsonReader!["DARK_ALLEY.DIA_BOB_08"]}");
+        Display.WriteNarration($"\n\t{Globals.JsonReader!["DARK_ALLEY.DIA_BOB_01"]}\n");
+    }
 
-    //public static void DialogueWithBob_2()
-    //{
-    //    Console.WriteLine();
-    //    Globals.Npcs["Bob"].SetAttitude(Attitudes.Angry);
-    //    Thread.Sleep(500);
-    //    Display.WriteDialogue(json["prologue"]["dialogueWithBob"][8]);
-    //}
+    public static void DialogueWithBob_02()
+    {
+        Globals.Npcs["Bob"].SetAttitude(Attitudes.Angry);
+        Thread.Sleep(500);
+        Display.WriteDialogue($"\t{Globals.JsonReader!["DARK_ALLEY.DIA_BOB_09"]}\n");
+    }
 
-    //public static void DialogueWithBob_3()
-    //{
-    //    Program.Game!.StoryGlobals.Bob_RecommendsZed = true; // Bob recommends Zed's gun shop to the hero
-    //    Display.WriteDialogue(json["prologue"]["dialogueWithBob"][9]);
-    //    Thread.Sleep(1000);
-    //    Display.WriteDialogue(json["prologue"]["dialogueWithBob"][10]);
-    //    Thread.Sleep(1000);
-    //    Display.WriteDialogue(json["prologue"]["dialogueWithBob"][11]);
-    //}
+    public static void DialogueWithBob_03()
+    {
+        Program.Game!.StoryGlobals.Bob_RecommendsZed = true; // Bob recommends Zed's gun shop to the hero
+        Display.WriteDialogue($"\t{Globals.JsonReader!["DARK_ALLEY.DIA_BOB_10"]}");
+        Thread.Sleep(1000);
+        Display.WriteDialogue($" {Globals.JsonReader!["DARK_ALLEY.DIA_BOB_11"]}");
+        Thread.Sleep(1000);
+        Display.WriteDialogue($"\n\t{Globals.JsonReader!["DARK_ALLEY.DIA_BOB_12"]}\n");
+    }
 
-    //public static void DialogueWithBob_4()
-    //{
-    //    Display.WriteDialogue(json["prologue"]["dialogueWithBob"][12]);
-    //    Thread.Sleep(1000);
-    //    Display.WriteDialogue(json["prologue"]["dialogueWithBob"][13]);
-    //    Thread.Sleep(1500);
-    //    Display.WriteDialogue(json["prologue"]["dialogueWithBob"][14]);
-    //    Thread.Sleep(1500);
-    //    Display.WriteDialogue(json["prologue"]["dialogueWithBob"][15]);
-    //    Thread.Sleep(1000);
-    //    Display.WriteDialogue(json["prologue"]["dialogueWithBob"][16]);
-    //    AboutParadiseLost();
-    //}
+    public static void DialogueWithBob_04()
+    {
+        Display.WriteDialogue($"\t{Globals.JsonReader!["DARK_ALLEY.DIA_BOB_13"]}");
+        Thread.Sleep(1000);
+        Display.WriteDialogue($" {Globals.JsonReader!["DARK_ALLEY.DIA_BOB_14"]}");
+        Thread.Sleep(1500);
+        Display.WriteDialogue($" {Globals.JsonReader!["DARK_ALLEY.DIA_BOB_15"]}");
+        Thread.Sleep(1500);
+        Display.WriteDialogue($" {Globals.JsonReader!["DARK_ALLEY.DIA_BOB_16"]}");
+        Thread.Sleep(1000);
+        Display.WriteDialogue($" {Globals.JsonReader!["DARK_ALLEY.DIA_BOB_17"]}");
+        AboutParadiseLost();
+    }
 
-    //public static void DialogueWithBob_5()
-    //{
-    //    Console.WriteLine();
-    //    Globals.Npcs["Bob"].SetAttitude(Attitudes.Angry);
-    //    Thread.Sleep(500);
-    //    Display.WriteDialogue(json["prologue"]["dialogueWithBob"][17]);
-    //}
+    public static void DialogueWithBob_05()
+    {
+        Globals.Npcs["Bob"].SetAttitude(Attitudes.Angry);
+        Thread.Sleep(500);
+        Display.WriteDialogue($"\t{Globals.JsonReader!["DARK_ALLEY.DIA_BOB_18"]}\n");
+    }
 
-    //public static void AboutParadiseLost()
-    //{
-    //    Console.WriteLine();
+    public static void AboutParadiseLost()
+    {
+        Console.WriteLine();
 
-    //    Menu paradiseLostMenu = new(new Dictionary<string, Action>()
-    //    {
-    //        { $"{Globals.JsonReader!["DARK_ALLEY.PARADISE_LOST_MENU.01"]}", AboutParadiseLost_01 },
-    //        { $"{Globals.JsonReader!["DARK_ALLEY.PARADISE_LOST_MENU.02"]}", AboutParadiseLost_02 }
-    //    });
-    //}
+        Menu paradiseLostMenu = new(new Dictionary<string, Action>()
+        {
+            { $"{Globals.JsonReader!["DARK_ALLEY.PARADISE_LOST_MENU.TELL_ME_MORE"]}", AboutParadiseLost_01 },
+            { $"{Globals.JsonReader!["DARK_ALLEY.PARADISE_LOST_MENU.REMEMBER_SOMETHING"]}", AboutParadiseLost_02 }
+        });
+    }
 
-    //public static void AboutParadiseLost_01()
-    //{
-    //    Display.WriteDialogue($"{Globals.JsonReader!["DARK_ALLEY.ABOUT_PARADISE_LOST_01"]}");
-    //    Thread.Sleep(500);
-    //    Display.WriteDialogue($"{Globals.JsonReader!["DARK_ALLEY.ABOUT_PARADISE_LOST_02"]}");
-    //    Thread.Sleep(1000);
-    //    Display.WriteDialogue($"{Globals.JsonReader!["DARK_ALLEY.ABOUT_PARADISE_LOST_03"]}");
-    //    Thread.Sleep(1000);
-    //    Display.WriteDialogue($"{Globals.JsonReader!["DARK_ALLEY.ABOUT_PARADISE_LOST_04"]}");
-    //    Thread.Sleep(1000);
-    //    Display.WriteDialogue($"{Globals.JsonReader!["DARK_ALLEY.ABOUT_PARADISE_LOST_05"]}");
-    //    Thread.Sleep(1500);
-    //    Display.WriteDialogue($"{Globals.JsonReader!["DARK_ALLEY.ABOUT_PARADISE_LOST_06"]}");
-    //}
+    public static void AboutParadiseLost_01()
+    {
+        Display.WriteDialogue($"\t{Globals.JsonReader!["DARK_ALLEY.ABOUT_PARADISE_LOST_01"]}");
+        Thread.Sleep(500);
+        Display.WriteDialogue($" {Globals.JsonReader!["DARK_ALLEY.ABOUT_PARADISE_LOST_02"]}");
+        Thread.Sleep(1000);
+        Display.WriteDialogue($" {Globals.JsonReader!["DARK_ALLEY.ABOUT_PARADISE_LOST_03"]}");
+        Thread.Sleep(1000);
+        Display.WriteDialogue($" {Globals.JsonReader!["DARK_ALLEY.ABOUT_PARADISE_LOST_04"]}");
+        Thread.Sleep(1000);
+        Display.WriteDialogue($"\n\t{Globals.JsonReader!["DARK_ALLEY.ABOUT_PARADISE_LOST_05"]}");
+        Thread.Sleep(1500);
+        Display.WriteDialogue($" {Globals.JsonReader!["DARK_ALLEY.ABOUT_PARADISE_LOST_06"]}\n");
+    }
 
-    //public static void AboutParadiseLost_02()
-    //{
-    //}
+    public static void AboutParadiseLost_02()
+    {
+    }
 
-    public static void DarkAlleyCrossroads()
+    public static void Crossroads()
     {
         if (!Globals.Npcs["Bob"].IsKnowHero)
         {
@@ -257,8 +314,8 @@ public static class DarkAlleyEvents
 
                 Menu wakeUpMenu = new(new Dictionary<string, Action>()
                 {
-                    { $"{Globals.JsonReader!["DARK_ALLEY.OUT_OF_ALLEY_MENU.FIND_OUT_FINALLY"]}", DarkAlleyCrossroads_01 },
-                    { $"{Globals.JsonReader!["DARK_ALLEY.OUT_OF_ALLEY_MENU.IGNORE_STRANGER"]}", DarkAlleyCrossroads_02 }
+                    { $"{Globals.JsonReader!["DARK_ALLEY.OUT_OF_ALLEY_MENU.FIND_OUT_FINALLY"]}", Crossroads_01 },
+                    { $"{Globals.JsonReader!["DARK_ALLEY.OUT_OF_ALLEY_MENU.IGNORE_STRANGER"]}", Crossroads_02 }
                 });
             }
             else
@@ -271,7 +328,7 @@ public static class DarkAlleyEvents
         }
     }
 
-    public static void DarkAlleyCrossroads_01()
+    public static void Crossroads_01()
     {
         AcceleratorFinding();
         Display.WriteNarration($"{Globals.JsonReader!["DARK_ALLEY.CROSSROADS_04"]}");
@@ -280,7 +337,7 @@ public static class DarkAlleyEvents
         Program.Game!.SetCurrentLocation(Globals.Locations["Street"]);
     }
 
-    public static void DarkAlleyCrossroads_02()
+    public static void Crossroads_02()
     {
         Console.Clear();
         Program.Game!.SetCurrentLocation(Globals.Locations["Street"]);

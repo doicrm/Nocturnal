@@ -170,11 +170,15 @@ public sealed class Game
 
     public static void InitLocations()
     {
-        Location DarkAlley = new("DarkAlley", "Dark alley", null!, PrologueEvents.DarkAlley);
-        Location Street = new("Street", "Street", Globals.Fractions["Police"], PrologueEvents.Street);
+        Location DarkAlley = new("DarkAlley", $"{Globals.JsonReader!["LOCATION.DARK_ALLEY"]}", null!, PrologueEvents.DarkAlley);
+        Location Street = new("Street", $"{Globals.JsonReader!["LOCATION.STREET"]}", Globals.Fractions["Police"], PrologueEvents.Street);
+        Location GunShop = new("GunShop", $"{Globals.JsonReader!["LOCATION.GUN_SHOP"]}", Globals.Fractions["Police"], PrologueEvents.Street);
+        Location NightclubEden = new("NightclubEden", $"{Globals.JsonReader!["LOCATION.NIGHTCLUB_EDEN"]}", Globals.Fractions["Police"], PrologueEvents.Street);
 
         Globals.Locations.Add(DarkAlley.ID, DarkAlley);
         Globals.Locations.Add(Street.ID, Street);
+        Globals.Locations.Add(GunShop.ID, GunShop);
+        Globals.Locations.Add(NightclubEden.ID, NightclubEden);
     }
 
     public static void InitAll()
