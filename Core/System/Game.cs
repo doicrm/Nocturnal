@@ -93,11 +93,7 @@ public sealed class Game
         InitAll();
         SaveManager.CreateSave();
         Console.Clear();
-
-        if (Globals.Locations.ContainsKey("DarkAlley"))
-        {
-            SetCurrentLocation(Globals.Locations["DarkAlley"]);
-        }
+        PrologueEvents.Prologue();
     }
 
     public static void LoadGame()
@@ -146,11 +142,20 @@ public sealed class Game
 
     public void SetCurrentLocation(Location location)
     {
+        if (CurrentLocation != null)
+        {
+            CurrentLocation.IsVisited = true;
+            SaveManager.UpdateSave();
+        }
+
+        if (!Globals.Locations.ContainsKey(location.ID))
+        {
+            return;
+        }
+
         CurrentLocation = location;
         CurrentLocation!.Events!.Invoke();
     }
-
-    public void SetWeather(Weather weather) => Weather = weather;
 
     public static void InitHeroIventory()
     {
@@ -172,8 +177,8 @@ public sealed class Game
     {
         Location DarkAlley = new("DarkAlley", $"{Globals.JsonReader!["LOCATION.DARK_ALLEY"]}", null!, PrologueEvents.DarkAlley);
         Location Street = new("Street", $"{Globals.JsonReader!["LOCATION.STREET"]}", Globals.Fractions["Police"], PrologueEvents.Street);
-        Location GunShop = new("GunShop", $"{Globals.JsonReader!["LOCATION.GUN_SHOP"]}", Globals.Fractions["Police"], PrologueEvents.Street);
-        Location NightclubEden = new("NightclubEden", $"{Globals.JsonReader!["LOCATION.NIGHTCLUB_EDEN"]}", Globals.Fractions["Police"], PrologueEvents.Street);
+        Location GunShop = new("GunShop", $"{Globals.JsonReader!["LOCATION.GUN_SHOP"]}", Globals.Fractions["Police"], PrologueEvents.GunShop);
+        Location NightclubEden = new("NightclubEden", $"{Globals.JsonReader!["LOCATION.NIGHTCLUB_EDEN"]}", Globals.Fractions["Police"], PrologueEvents.NightclubEden);
 
         Globals.Locations.Add(DarkAlley.ID, DarkAlley);
         Globals.Locations.Add(Street.ID, Street);

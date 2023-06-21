@@ -10,35 +10,6 @@ public static class DarkAlleyEvents
     // 		DARK ALLEY in 'Eden' nigthclub area
     // ************************************************************
 
-    public static void Prologue()
-    {
-        Display.Write($"\n\t{Globals.JsonReader!["PROLOGUE"]}");
-        Thread.Sleep(2000);
-        Display.Write($"\n\n\t{Globals.JsonReader!["PARADISE_LOST"]}");
-        Thread.Sleep(5000);
-        Console.Clear();
-        StoryIntroduction();
-    }
-
-    public static void StoryIntroduction()
-    {
-        Display.Write($"\n\t{Globals.JsonReader!["INTRO_01"]}");
-        Thread.Sleep(1000);
-        Display.Write($" {Globals.JsonReader!["INTRO_02"]}\n\n", 20);
-        Game.Pause();
-        Console.Clear();
-        Console.WriteLine();
-        Thread.Sleep(2500);
-        Display.WriteNarration($"\t{Globals.JsonReader!["INTRO_03"]}", 75);
-        Thread.Sleep(2500);
-        Display.WriteNarration($"\n\t{Globals.JsonReader!["INTRO_04"]}", 75);
-        Thread.Sleep(2500);
-        Display.WriteNarration($"\n\t{Globals.JsonReader!["INTRO_05"]}", 75);
-        Thread.Sleep(3000);
-        Console.Clear();
-        WakeUp();
-    }
-
     public static void WakeUp()
     {
         Thread.Sleep(2000);

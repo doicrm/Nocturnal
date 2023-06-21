@@ -5,23 +5,55 @@ namespace Nocturnal.Core.Events.Prologue;
 
 public static class PrologueEvents
 {
+    public static void Prologue()
+    {
+        Display.Write($"\n\t{Globals.JsonReader!["PROLOGUE"]}");
+        Thread.Sleep(2000);
+        Display.Write($"\n\n\t{Globals.JsonReader!["PARADISE_LOST"]}");
+        Thread.Sleep(5000);
+        Console.Clear();
+        StoryIntroduction();
+    }
+
+    public static void StoryIntroduction()
+    {
+        Display.Write($"\n\t{Globals.JsonReader!["INTRO_01"]}");
+        Thread.Sleep(1000);
+        Display.Write($" {Globals.JsonReader!["INTRO_02"]}\n\n", 20);
+        Game.Pause();
+        Console.Clear();
+        Console.WriteLine();
+        Thread.Sleep(2500);
+        Display.WriteNarration($"\t{Globals.JsonReader!["INTRO_03"]}", 75);
+        Thread.Sleep(2500);
+        Display.WriteNarration($"\n\t{Globals.JsonReader!["INTRO_04"]}", 75);
+        Thread.Sleep(2500);
+        Display.WriteNarration($"\n\t{Globals.JsonReader!["INTRO_05"]}", 75);
+        Thread.Sleep(3000);
+        Console.Clear();
+
+        if (Globals.Locations.ContainsKey("DarkAlley"))
+        {
+            Program.Game!.SetCurrentLocation(Globals.Locations["DarkAlley"]);
+        }
+    }
+
     public static void DarkAlley()
     {
         Globals.Chapter = 0;
+        SaveManager.UpdateSave();
 
         if (!Globals.Locations["DarkAlley"].IsVisited)
         {
-            Globals.Locations["DarkAlley"].IsVisited = true;
-            SaveManager.UpdateSave();
-            DarkAlleyEvents.Prologue();
+            DarkAlleyEvents.WakeUp();
             return;
         }
+
         DarkAlleyEvents.Crossroads();
     }
 
     public static void Street()
     {
-        SaveManager.UpdateSave();
         if (Program.Game!.Weather != Weather.Rainy)
         {
             Random rnd = new(); int rand = rnd.Next(0, 10);
@@ -29,9 +61,10 @@ public static class PrologueEvents
                 RandomEvents.StartRaining();
         }
 
+        SaveManager.UpdateSave();
+
         if (!Globals.Locations["Street"].IsVisited)
         {
-            Globals.Locations["Street"].IsVisited = true;
             StreetEvents.LookAtEden();
             return;
         }
@@ -41,21 +74,24 @@ public static class PrologueEvents
 
     public static void GunShop()
     {
+        SaveManager.UpdateSave();
+
         if (!Globals.Locations["GunShop"].IsVisited)
         {
             Globals.Locations["GunShop"].IsVisited = true;
-            StreetEvents.EncounterGunStore();
+            GunShopEvents.EnterGunShop();
             return;
         }
 
         GunShopEvents.Crossroads();
     }
 
-    public static void Nightclub()
+    public static void NightclubEden()
     {
-        if (!Globals.Locations["GunShop"].IsVisited)
+        SaveManager.UpdateSave();
+
+        if (!Globals.Locations["NightclubEden"].IsVisited)
         {
-            Globals.Locations["GunShop"].IsVisited = true;
             NightclubEdenEvents.EnterClub();
             return;
         }
@@ -75,7 +111,7 @@ public static class PrologueEvents
 
     public static void VisitNightclubEden()
     {
-        Display.WriteNarration("\n\tYou enter from a fairly well-lit street into a slightly darkened nightclub, trembling with colour.\n\n");
+        Display.WriteNarration($"\n\t{Globals.JsonReader!["NIGHTCLUB_EDEN.VISIT_CLUB"]}\n\n");
         Program.Game!.SetCurrentLocation(Globals.Locations["NightclubEden"]);
     }
 
