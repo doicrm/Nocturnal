@@ -111,12 +111,12 @@ public static class PrologueEvents
 
     public static void VisitNightclubEden()
     {
-        Display.WriteNarration($"\n\t{Globals.JsonReader!["NIGHTCLUB_EDEN.VISIT_CLUB"]}\n\n");
         Program.Game!.SetCurrentLocation(Globals.Locations["NightclubEden"]);
     }
 
     public static void VisitGunShop()
     {
+        Display.WriteNarration($"\n\t{Globals.JsonReader!["NIGHTCLUB_EDEN.VISIT_CLUB"]}");
         Program.Game!.SetCurrentLocation(Globals.Locations["GunShop"]);
     }
 }

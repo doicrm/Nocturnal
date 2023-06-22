@@ -44,7 +44,7 @@ namespace Nocturnal.Core.Events.Prologue
                 Thread.Sleep(1000);
                 Display.WriteNarration(" You are doing quite well when an attractive girl appears in\n\tfront of you. She's wearing a see-through, brightly coloured dress.");
                 Thread.Sleep(1500);
-                Display.WriteNarration(" Is it a coincidence\n\tthat she has just appeared and is dancing so close to you?\n\n");
+                Display.WriteNarration(" Is it a coincidence\n\tthat she has just appeared and is dancing so close to you?");
 
                 Menu danceWithLunaMenu = new(new Dictionary<string, Action>()
                 {
@@ -90,7 +90,7 @@ namespace Nocturnal.Core.Events.Prologue
         {
             Program.Game!.StoryGlobals.PC_IsAtBar = true;
             Display.WriteNarration("\tWith a slow step, you approach the counter, settle comfortably on a stool, and lift your\n\tgaze to the barman in front of you.");
-            Display.WriteDialogue("\n\t- 'What's for you?'\n\n");
+            Display.WriteDialogue("\n\t- 'What's for you?'");
 
             while (true)
             {
@@ -534,7 +534,13 @@ namespace Nocturnal.Core.Events.Prologue
 
         public static void Crossroads()
         {
-            EnterClub();
+            Menu enterClubMenu = new(new Dictionary<string, Action>()
+            {
+                { $"Go to the dance floor.", ClubDanceFloor },
+                { $"Go to the bar.", ClubBar },
+                { $"Go upstairs.", ClubUpstairs },
+                { $"Back on the street.", PrologueEvents.VisitStreet },
+            });
         }
     }
 }
