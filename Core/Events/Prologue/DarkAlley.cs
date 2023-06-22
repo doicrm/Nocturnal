@@ -29,7 +29,7 @@ public static class DarkAlleyEvents
         Thread.Sleep(1000);
         Display.WriteNarration($" {Globals.JsonReader!["DARK_ALLEY.WAKE_UP_08"]}");
         Thread.Sleep(2500);
-        Display.WriteNarration($"\n\t{Globals.JsonReader!["DARK_ALLEY.WAKE_UP_09"]}\n");
+        Display.WriteNarration($"\n\t{Globals.JsonReader!["DARK_ALLEY.WAKE_UP_09"]}");
 
         Menu wakeUpMenu = new(new Dictionary<string, Action>()
         {
@@ -84,7 +84,7 @@ public static class DarkAlleyEvents
 
         Thread.Sleep(3000);
         Display.WriteNarration($"\n\t{Globals.JsonReader!["DARK_ALLEY.OUT_OF_ALLEY_05"]}");
-        Display.WriteDialogue($"\n\t{Globals.JsonReader!["DARK_ALLEY.DIA_BOB_02"]}\n");
+        Display.WriteDialogue($"\n\t{Globals.JsonReader!["DARK_ALLEY.DIA_BOB_02"]}");
 
         Menu outOfAlleyMenu = new(new Dictionary<string, Action>()
         {
@@ -97,7 +97,7 @@ public static class DarkAlleyEvents
     {
         Display.WriteNarration($"\t{Globals.JsonReader!["DARK_ALLEY.OUT_OF_ALLEY_06"]}");
         Thread.Sleep(1500);
-        Display.WriteNarration($" {Globals.JsonReader!["DARK_ALLEY.OUT_OF_ALLEY_07"]}\n");
+        Display.WriteNarration($" {Globals.JsonReader!["DARK_ALLEY.OUT_OF_ALLEY_07"]}");
         Thread.Sleep(1000);
         DialogueWithBob();
     }
@@ -188,14 +188,14 @@ public static class DarkAlleyEvents
         Display.WriteDialogue($" {Globals.JsonReader!["DARK_ALLEY.DIA_BOB_07"]} {Globals.Npcs["Bob"].Name}.");
         Thread.Sleep(1500);
         Display.WriteDialogue($" {Globals.JsonReader!["DARK_ALLEY.DIA_BOB_08"]}");
-        Display.WriteNarration($"\n\t{Globals.JsonReader!["DARK_ALLEY.DIA_BOB_01"]}\n");
+        Display.WriteNarration($"\n\t{Globals.JsonReader!["DARK_ALLEY.DIA_BOB_01"]}");
     }
 
     public static void DialogueWithBob_02()
     {
         Globals.Npcs["Bob"].SetAttitude(Attitudes.Angry);
         Thread.Sleep(500);
-        Display.WriteDialogue($"\t{Globals.JsonReader!["DARK_ALLEY.DIA_BOB_09"]}\n");
+        Display.WriteDialogue($"\t{Globals.JsonReader!["DARK_ALLEY.DIA_BOB_09"]}");
     }
 
     public static void DialogueWithBob_03()
@@ -205,7 +205,7 @@ public static class DarkAlleyEvents
         Thread.Sleep(1000);
         Display.WriteDialogue($" {Globals.JsonReader!["DARK_ALLEY.DIA_BOB_11"]}");
         Thread.Sleep(1000);
-        Display.WriteDialogue($"\n\t{Globals.JsonReader!["DARK_ALLEY.DIA_BOB_12"]}\n");
+        Display.WriteDialogue($"\n\t{Globals.JsonReader!["DARK_ALLEY.DIA_BOB_12"]}");
     }
 
     public static void DialogueWithBob_04()
@@ -226,7 +226,7 @@ public static class DarkAlleyEvents
     {
         Globals.Npcs["Bob"].SetAttitude(Attitudes.Angry);
         Thread.Sleep(500);
-        Display.WriteDialogue($"\t{Globals.JsonReader!["DARK_ALLEY.DIA_BOB_18"]}\n");
+        Display.WriteDialogue($"\t{Globals.JsonReader!["DARK_ALLEY.DIA_BOB_18"]}");
     }
 
     public static void AboutParadiseLost()
@@ -252,7 +252,7 @@ public static class DarkAlleyEvents
         Thread.Sleep(1000);
         Display.WriteDialogue($"\n\t{Globals.JsonReader!["DARK_ALLEY.ABOUT_PARADISE_LOST_05"]}");
         Thread.Sleep(1500);
-        Display.WriteDialogue($" {Globals.JsonReader!["DARK_ALLEY.ABOUT_PARADISE_LOST_06"]}\n");
+        Display.WriteDialogue($" {Globals.JsonReader!["DARK_ALLEY.ABOUT_PARADISE_LOST_06"]}");
     }
 
     public static void AboutParadiseLost_02()
@@ -264,7 +264,7 @@ public static class DarkAlleyEvents
         if (!Globals.Npcs["Bob"].IsKnowHero)
         {
             Display.WriteNarration($"\n\t{Globals.JsonReader!["DARK_ALLEY.CROSSROADS_01"]}");
-            Display.WriteDialogue($"\n\t{Globals.JsonReader!["DARK_ALLEY.CROSSROADS_02"]}\n");
+            Display.WriteDialogue($"\n\t{Globals.JsonReader!["DARK_ALLEY.CROSSROADS_02"]}");
 
             Menu outOfAlleyMenu = new(new Dictionary<string, Action>()
             {

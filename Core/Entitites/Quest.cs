@@ -91,10 +91,10 @@ public class Quest
 
     public static void InsertInstances()
     {
-        Quest KillVincent = new("KillHex", $"{Globals.JsonReader!["QUEST.KILL_HEX.NAME"]}", $"{Globals.JsonReader!["QUEST.KILL_HEX.DESCRIPTION"]}");
+        Quest KillHex = new("KillHex", $"{Globals.JsonReader!["QUEST.KILL_HEX.NAME"]}", $"{Globals.JsonReader!["QUEST.KILL_HEX.DESCRIPTION"]}");
         Quest ZedAccelerator = new("ZedAccelerator", $"{Globals.JsonReader!["QUEST.ZED_ACCELERATOR.NAME"]}", $"{Globals.JsonReader!["QUEST.ZED_ACCELERATOR.DESCRIPTION"]}");
 
-        Globals.Quests[KillVincent.ID] = KillVincent;
+        Globals.Quests[KillHex.ID] = KillHex;
         Globals.Quests[ZedAccelerator.ID] = ZedAccelerator;
     }
 }

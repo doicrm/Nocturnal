@@ -55,6 +55,7 @@ public class Menu
         if (Options.Count == 0) return;
 
         Console.ResetColor();
+        Console.WriteLine();
 
         foreach (dynamic option in Options)
         {

@@ -90,14 +90,20 @@ public class SaveManager
         Globals.Locations = locations;
         Dictionary<string, Fraction> fractions = saveInfo.Fractions.ToObject<Dictionary<string, Fraction>>();
         Globals.Fractions = fractions;
-        Dictionary<string, Quest> quests = saveInfo.Fractions.ToObject<Dictionary<string, Quest>>();
+        Dictionary<string, Quest> quests = saveInfo.Quests.ToObject<Dictionary<string, Quest>>();
         Globals.Quests = quests;
         Globals.Chapter = saveInfo.Chapter;
         Program.Game!.Weather = saveInfo.Weather;
         StoryGlobals storyGlobals = saveInfo.StoryGlobals.ToObject<StoryGlobals>();
         Program.Game!.StoryGlobals = storyGlobals;
 
-        Location currentLocation = saveInfo.CurrentLocation.ToObject<Location>();
+        Location currentLocation;
+
+        if (saveInfo.CurrentLocation != null)
+            currentLocation = saveInfo.CurrentLocation.ToObject<Location>();
+        else
+            currentLocation = locations["DarkAlley"];
+
         if (!Globals.Locations.ContainsKey(currentLocation.ID))
             Globals.Locations.Add(currentLocation.ID, currentLocation);
 
@@ -168,15 +174,23 @@ public class SaveManager
         return $"{Globals.JsonReader!["EPILOGUE"]}";
     }
 
-    private static string GetLocationToString(string locationName)
+    private static string GetLocationName(Location location)
     {
-        if (locationName == "Dark alley" || locationName == "Mroczny zaułek")
+        if (location.ID == "DarkAlley")
         {
             return $": {Globals.JsonReader!["LOCATION.DARK_ALLEY"]}";
         }
-        else if (locationName == "Street" || locationName == "Ulica")
+        else if (location.ID == "Street")
         {
             return $": {Globals.JsonReader!["LOCATION.STREET"]}";
+        }
+        else if (location.ID == "GunShop")
+        {
+            return $": {Globals.JsonReader!["LOCATION.GUN_SHOP"]}";
+        }
+        else if (location.ID == "NightclubEden")
+        {
+            return $": {Globals.JsonReader!["LOCATION.NIGHTCLUB_EDEN"]}";
         }
         return "";
     }
@@ -200,9 +214,18 @@ public class SaveManager
 
         oldSave.Close();
         var saveInfo = JsonConvert.DeserializeObject<SaveData>(content!);
-        string currentLocationName = saveInfo.CurrentLocation.Name;
 
-        return $"{PrintName(saveInfo.Player.Name)}, {PrintSex((uint)saveInfo.Player.Sex).ToLower()} | {GetChapterToString(saveInfo.Chapter)}{GetLocationToString(currentLocationName)} | {saveInfo.Timestamp}";
+        Location currentLocation;
+
+        if (saveInfo.CurrentLocation != null)
+            currentLocation = saveInfo.CurrentLocation.ToObject<Location>();
+        else
+        {
+            Dictionary<string, Location> locations = saveInfo.Locations.ToObject<Dictionary<string, Location>>();
+            currentLocation = locations["DarkAlley"];
+        }
+
+        return $"{PrintName(saveInfo.Player.Name)}, {PrintSex((uint)saveInfo.Player.Sex).ToLower()} | {GetChapterToString(saveInfo.Chapter)}{GetLocationName(currentLocation)} | {saveInfo.Timestamp}";
     }
 
     public static void SearchForSaves()

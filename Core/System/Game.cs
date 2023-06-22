@@ -72,7 +72,16 @@ public sealed class Game
         Console.WriteLine();
         foreach (var s in Constants.GAME_LOGO) Display.Write(s, 1);
         Console.ResetColor();
+    }
+
+    public void LoadLogo()
+    {
+        Console.Clear();
+        Console.ForegroundColor = ConsoleColor.Blue;
         Console.WriteLine();
+        foreach (var s in Constants.GAME_LOGO) Console.Write(s);
+        Console.ResetColor();
+        MainMenu();
     }
 
     public void MainMenu()
@@ -99,7 +108,7 @@ public sealed class Game
     public static void LoadGame()
     {
         Console.Clear();
-        Console.Write($"\n\t{Globals.JsonReader!["MAIN_MENU.LOAD_GAME"]!.ToString().ToUpper()}\n\n");
+        Console.Write($"\n\t{Globals.JsonReader!["MAIN_MENU.LOAD_GAME"]!.ToString().ToUpper()}");
         Console.ResetColor();
         SaveManager.SearchForSaves();
     }
@@ -109,17 +118,6 @@ public sealed class Game
         GameSettings.CreateConfigFile();
         GameSettings.LoadDataFromFile(GameSettings.Lang);
         LoadLogo();
-    }
-
-    public void LoadLogo()
-    {
-        Console.Clear();
-        Console.ForegroundColor = ConsoleColor.Blue;
-        Console.WriteLine();
-        foreach (var s in Constants.GAME_LOGO) Console.Write(s);
-        Console.WriteLine();
-        Console.ResetColor();
-        MainMenu();
     }
 
     public void EndGame()
@@ -145,7 +143,13 @@ public sealed class Game
         if (CurrentLocation != null)
         {
             CurrentLocation.IsVisited = true;
+            Globals.Locations[CurrentLocation.ID].IsVisited = true;
             SaveManager.UpdateSave();
+        }
+
+        if (CurrentLocation == null && !Globals.Locations["DarkAlley"].IsVisited)
+        {
+            location = Globals.Locations["DarkAlley"];
         }
 
         if (!Globals.Locations.ContainsKey(location.ID))

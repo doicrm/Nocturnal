@@ -71,7 +71,20 @@ namespace Nocturnal.Core.Events.Prologue
 
         public static void EndHookersMeeting_03()
         {
-            NightclubEdenEvents.Crossroads();
+            if (!Globals.Npcs["Caden"].IsKnowHero && !Globals.Npcs["CadensPartner"].IsKnowHero)
+            {
+                if (!Globals.Npcs["Bob"].IsKnowHero)
+                {
+                    StreetEvents.MeetingWithSecurityGuards();
+                    StreetEvents.MeetingWithPolicemans();
+                }
+                else
+                    StreetEvents.MeetingWithPolicemans();
+            }
+            else
+            {
+                Program.Game!.SetCurrentLocation(Globals.Locations["NightclubEden"]);
+            }        
         }
 
         public static void PunksAmbush()

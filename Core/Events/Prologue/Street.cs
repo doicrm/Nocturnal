@@ -18,14 +18,14 @@ public static class StreetEvents
             Thread.Sleep(1000);
             Display.WriteNarration($" {Globals.JsonReader!["STREET.LOOK_AT_EDEN_02"]}");
             Thread.Sleep(1500);
-            Display.WriteNarration($" {Globals.JsonReader!["STREET.LOOK_AT_EDEN_03"]}\n");
+            Display.WriteNarration($" {Globals.JsonReader!["STREET.LOOK_AT_EDEN_03"]}");
         }
         else
         {
             Display.WriteNarration($"\n\t{Globals.JsonReader!["STREET.LOOK_AT_EDEN_04"]}");
             Display.WriteNarration($" {Globals.JsonReader!["STREET.LOOK_AT_EDEN_05"]}");
             Thread.Sleep(1500);
-            Display.WriteNarration($" {Globals.JsonReader!["STREET.LOOK_AT_EDEN_03"]}\n");
+            Display.WriteNarration($" {Globals.JsonReader!["STREET.LOOK_AT_EDEN_03"]}");
         }
 
         Menu lookAtEdenMenu = new(new Dictionary<string, Action>()
@@ -72,8 +72,6 @@ public static class StreetEvents
             RandomEvents.PunksAmbush();
         }
 
-        Console.Write("\n");
-
         Menu encounterGunStoreMenu = new(new Dictionary<string, Action>()
         {
             { $"{Globals.JsonReader!["STREET.ENCOUNTER_GUN_STORE_MENU.ENTER_SHOP"]}", EncounterGunStore_01 },
@@ -88,8 +86,6 @@ public static class StreetEvents
 
     public static void EncounterGunStore_02()
     {
-        Console.WriteLine();
-
         if (!Globals.Npcs["Caden"].IsKnowHero && !Globals.Npcs["CadensPartner"].IsKnowHero)
         {
             if (!Globals.Npcs["Bob"].IsKnowHero)
@@ -102,96 +98,99 @@ public static class StreetEvents
         }
         else
         {
-            Program.Game!.SetCurrentLocation(Globals.Locations["Street"]);
+            Crossroads();
         }
     }
 
     public static void MeetingWithSecurityGuards()
     {
-        Display.WriteNarration("\tWhen you get closer, the faces turn toward you and start looking at you intently.");
+        Display.WriteNarration($"\t{Globals.JsonReader!["STREET.MEETING_WITH_SECURITY_GUARDS_01"]}");
         Thread.Sleep(1000);
-        Display.WriteNarration(" You pass\n\tthem in silenceand are confronted by a broad-shouldered security guard.");
-        Display.WriteDialogue("\n\t- 'What are you looking for here?");
+        Display.WriteNarration($" {Globals.JsonReader!["STREET.MEETING_WITH_SECURITY_GUARDS_02"]}");
+        Display.WriteDialogue($"\n\t{Globals.JsonReader!["STREET.MEETING_WITH_SECURITY_GUARDS_03"]}");
         Thread.Sleep(1500);
-        Display.WriteDialogue(" Trouble, maybe?'");
-        Display.WriteNarration("\n\tThe man clenches his hands into fists and smiles unpleasantly.");
-        Display.WriteDialogue("\n\t- 'You asshole, better let us in! I want a drink and for fuck's sake. I'm losing my patience!");
-        Display.WriteNarration("\n\tOne of the men waiting in the queue rushes forward and threatens the bouncer with his fist.");
+        Display.WriteDialogue($" {Globals.JsonReader!["STREET.MEETING_WITH_SECURITY_GUARDS_04"]}");
+        Display.WriteNarration($"\n\t{Globals.JsonReader!["STREET.MEETING_WITH_SECURITY_GUARDS_05"]}");
+        Display.WriteDialogue($"\n\t{Globals.JsonReader!["STREET.MEETING_WITH_SECURITY_GUARDS_06"]}");
+        Display.WriteNarration($"\n\t{Globals.JsonReader!["STREET.MEETING_WITH_SECURITY_GUARDS_07"]}");
         Thread.Sleep(1500);
-        Display.WriteNarration("\n\tThe security guard's attention shifts from you to the furious guy next to you.");
-        Display.WriteDialogue("\n\t- 'I'll say it one last time: get the fuck out of here or you'll get fucked.'\n");
+        Display.WriteNarration($"\n\t{Globals.JsonReader!["STREET.MEETING_WITH_SECURITY_GUARDS_08"]}");
+        Display.WriteDialogue($"\n\t{Globals.JsonReader!["STREET.MEETING_WITH_SECURITY_GUARDS_09"]}");
     }
 
     public static void MeetingWithPolicemans()
     {
         if (Globals.Npcs["Bob"].IsKnowHero)
-        {
-            Display.WriteNarration("\tWhen you get closer, one of the police officers in a dark blue uniform turns toward you.");
-        }
+            Display.WriteNarration($"\t{Globals.JsonReader!["STREET.MEETING_WITH_POLICEMANS_01"]}");
         else
         {
-            Display.WriteNarration("\tIn an instant the street is filled with the howling of a police siren.");
+            Display.WriteNarration($"\t{Globals.JsonReader!["STREET.MEETING_WITH_POLICEMANS_02"]}");
             Thread.Sleep(1000);
-            Display.WriteNarration(" The reds and blues\n\tbegin to dance with each other on the sidewalk and the silhouettes of the people around you.");
+            Display.WriteNarration($" {Globals.JsonReader!["STREET.MEETING_WITH_POLICEMANS_03"]}");
             Thread.Sleep(2000);
-            Display.WriteNarration("\n\tTwo grim-looking guys in dark blue uniforms get out of a police car and walk towards you.\n\tOne of them points at you, taking out a tablet from behind his belt.");
+            Display.WriteNarration($"\n\t{Globals.JsonReader!["STREET.MEETING_WITH_POLICEMANS_04"]}");
         }
 
-        Display.WriteDialogue("\n\t- 'Who are you?");
+        Display.WriteDialogue($"\n\t{Globals.JsonReader!["STREET.MEETING_WITH_POLICEMANS_05"]}");
         Thread.Sleep(1500);
-        Display.WriteDialogue(" And what are you doing here? Please show me your ID card.'");
+        Display.WriteDialogue($" {Globals.JsonReader!["STREET.MEETING_WITH_POLICEMANS_06"]}");
 
         if (Globals.Player.HasItem(Globals.Items["AD13"]))
-        {
-            Display.WriteNarration("\n\tYou start searching through the pockets of your jacket and pants, but other than the accelerator\n\tyou found in the trash, there's nothing else there.");
-        }
+            Display.WriteNarration($"\n\t{Globals.JsonReader!["STREET.MEETING_WITH_POLICEMANS_07"]}");
         else
-        {
-            Display.WriteNarration("\n\tYou start searching through the pockets of your jacket and pants, but there's nothing there.");
-        }
+            Display.WriteNarration($"\n\t{Globals.JsonReader!["STREET.MEETING_WITH_POLICEMANS_08"]}");
 
-        Display.WriteDialogue("\n\t- 'I see that we have a problem.");
+        Display.WriteDialogue($"\n\t{Globals.JsonReader!["STREET.MEETING_WITH_POLICEMANS_09"]}");
         Thread.Sleep(1500);
-        Display.WriteDialogue(" Okay, then what's your name, citizen?");
+        Display.WriteDialogue($" {Globals.JsonReader!["STREET.MEETING_WITH_POLICEMANS_10"]}");
 
         if (!Globals.Npcs["Bob"].IsKnowHero)
         {
-            Display.WriteDialogue("'\n");
+            if (GameSettings.Lang == (int)GameLanguages.EN)
+                Display.WriteDialogue("'\n");
+            else
+                Display.WriteDialogue("\n");
+
             MiscEvents.NamingHero();
             Thread.Sleep(1500);
-            Display.WriteDialogue($"\t- '{Globals.Player.Name}...");
+
+            if (GameSettings.Lang == (int)GameLanguages.EN)
+                Display.WriteDialogue($"\t- '{Globals.Player.Name}...");
+            else
+                Display.WriteDialogue($"\t- {Globals.Player.Name}...");
+
             Thread.Sleep(1000);
-            Display.WriteDialogue(" Caden, check it out in the database.");
+            Display.WriteDialogue($" {Globals.JsonReader!["STREET.MEETING_WITH_POLICEMANS_11"]}");
         }
         else
         {
             Display.WriteDialogue($" {Globals.Player.Name}...");
             Thread.Sleep(1000);
-            Display.WriteDialogue(" Caden, check\n\tit out in the database.");
+            Display.WriteDialogue($" {Globals.JsonReader!["STREET.MEETING_WITH_POLICEMANS_12"]}");
         }
 
         Globals.Npcs["CadensPartner"].IsKnowHero = true;
         Globals.Npcs["Caden"].IsKnowHero = true;
         Thread.Sleep(1500);
-        Display.WriteDialogue(" And you, stand where you are.'");
-        Display.WriteNarration("\n\tThe other police officer nods, gets back in the car, and it looks like he's connecting with\n\theadquarters.");
+        Display.WriteDialogue($" {Globals.JsonReader!["STREET.MEETING_WITH_POLICEMANS_13"]}");
+        Display.WriteNarration($"\n\t{Globals.JsonReader!["STREET.MEETING_WITH_POLICEMANS_14"]}");
         Thread.Sleep(3000);
-        Display.WriteNarration("\n\tA minute later, the same policeman returns and whispers something in his partner's ear.");
+        Display.WriteNarration($"\n\t{Globals.JsonReader!["STREET.MEETING_WITH_POLICEMANS_15"]}");
         Thread.Sleep(1500);
-        Display.WriteNarration(" That\n\tone nods and turns to look at you.");
-        Display.WriteDialogue("\n\t- 'I have good news for you.");
+        Display.WriteNarration($" {Globals.JsonReader!["STREET.MEETING_WITH_POLICEMANS_16"]}");
+        Display.WriteDialogue($"\n\t{Globals.JsonReader!["STREET.MEETING_WITH_POLICEMANS_17"]}");
         Thread.Sleep(1500);
-        Display.WriteDialogue(" You're free for now, just don't let it occur to you to do\n\tsomething here, or you'll end up in arrest at the police station.");
+        Display.WriteDialogue($" {Globals.JsonReader!["STREET.MEETING_WITH_POLICEMANS_18"]}");
         Thread.Sleep(1000);
-        Display.WriteDialogue(" Caden, take care of the\n\trest of the attendees.'");
-        Display.WriteNarration("\n\tThe cop walks away to talk to the nearest person standing.");
-        Display.WriteDialogue("\n\t- 'If you're so pure, get in.'");
-        Display.WriteNarration("\n\tThe bouncer points to the door behind him.\n\n");
+        Display.WriteDialogue($" {Globals.JsonReader!["STREET.MEETING_WITH_POLICEMANS_19"]}");
+        Display.WriteNarration($"\n\t{Globals.JsonReader!["STREET.MEETING_WITH_POLICEMANS_20"]}");
+        Display.WriteDialogue($"\n\t{Globals.JsonReader!["STREET.MEETING_WITH_POLICEMANS_21"]}");
+        Display.WriteNarration($"\n\t{Globals.JsonReader!["STREET.MEETING_WITH_POLICEMANS_22"]}");
 
         Menu meeetingWithPolicemansMenu = new(new Dictionary<string, Action>()
         {
             { $"{Globals.JsonReader!["STREET.MEETING_WITH_POLICEMANS_MENU.ENTER_CLUB"]}", MeetingWithPolicemans_01 },
-            { $"{Globals.JsonReader!["STREET.MEETING_WITH_POLICEMANS_MENU.GO_TO"]}", MeetingWithPolicemans_02 }
+            { $"{Globals.JsonReader!["STREET.MEETING_WITH_POLICEMANS_MENU.GO_TO_STORE"]}", MeetingWithPolicemans_02 }
         });
     }
 
@@ -207,7 +206,7 @@ public static class StreetEvents
 
     public static void Crossroads()
     {
-        Display.WriteNarration($"\n\t{Globals.JsonReader!["STREET.CROSSROADS_01"]}\n");
+        Display.WriteNarration($"\n\t{Globals.JsonReader!["STREET.CROSSROADS_01"]}");
 
         Menu streetCrossroadsMenu = new(new Dictionary<string, Action>()
         {

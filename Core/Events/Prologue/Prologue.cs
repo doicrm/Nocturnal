@@ -7,6 +7,7 @@ public static class PrologueEvents
 {
     public static void Prologue()
     {
+        Globals.Chapter = 0;
         Display.Write($"\n\t{Globals.JsonReader!["PROLOGUE"]}");
         Thread.Sleep(2000);
         Display.Write($"\n\n\t{Globals.JsonReader!["PARADISE_LOST"]}");
@@ -40,7 +41,6 @@ public static class PrologueEvents
 
     public static void DarkAlley()
     {
-        Globals.Chapter = 0;
         SaveManager.UpdateSave();
 
         if (!Globals.Locations["DarkAlley"].IsVisited)

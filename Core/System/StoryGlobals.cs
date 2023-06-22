@@ -5,7 +5,7 @@
         public bool Bob_RecommendsZed;
         public bool PC_IsOnDanceFloor;
         public bool PC_IsAtBar;
-        public bool PC_KnowsVincentCode;
+        public bool PC_KnowsHexCode;
         public bool PC_TalkedAboutBusinessWithZed;
         public bool Zed_KnowsAboutBobAndZed;
         public bool Zed_TellsAboutWeapons;

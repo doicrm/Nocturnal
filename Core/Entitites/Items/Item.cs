@@ -40,5 +40,7 @@ public class Item
 
         Globals.Items[AD13.ID] = AD13;
         Globals.Items[AccessCard.ID] = AccessCard;
+
+        Weapon.InsertInstances();
     }
 }
