@@ -87,15 +87,15 @@ namespace Nocturnal.Core.Events.Prologue
             }        
         }
 
-        public static void PunksAmbush()
-        {
-            Display.WriteNarration($"\n\t{Globals.JsonReader!["STREET.PUNKS_AMBUSH_01"]}");
-            Display.WriteNarration("");
-        }
+        //public static void PunksAmbush()
+        //{
+        //    Display.WriteNarration($"\n\t{Globals.JsonReader!["STREET.PUNKS_AMBUSH_01"]}");
+        //    Display.WriteNarration("");
+        //}
 
-        public static void ClubOverdose()
-        {
-            Display.WriteNarration($"{Globals.JsonReader!["NIGHTCLUB_EDEN.CLUB_OVERDOSE_01"]}");
-        }
+        //public static void ClubOverdose()
+        //{
+        //    Display.WriteNarration($"{Globals.JsonReader!["NIGHTCLUB_EDEN.CLUB_OVERDOSE_01"]}");
+        //}
     }
 }

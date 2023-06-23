@@ -25,7 +25,7 @@ public static class StreetEvents
             Display.WriteNarration($"\n\t{Globals.JsonReader!["STREET.LOOK_AT_EDEN_04"]}");
             Display.WriteNarration($" {Globals.JsonReader!["STREET.LOOK_AT_EDEN_05"]}");
             Thread.Sleep(1500);
-            Display.WriteNarration($" {Globals.JsonReader!["STREET.LOOK_AT_EDEN_03"]}");
+            Display.WriteNarration($" {Globals.JsonReader!["STREET.LOOK_AT_EDEN_06"]}");
         }
 
         Menu lookAtEdenMenu = new(new Dictionary<string, Action>()
@@ -66,11 +66,11 @@ public static class StreetEvents
         {
             RandomEvents.HookersMeeting();
         }
-        else if (rand > 15 && rand <= 20)
-        {
-            Console.WriteLine();
-            RandomEvents.PunksAmbush();
-        }
+        //else if (rand > 15 && rand <= 20)
+        //{
+        //    Console.WriteLine();
+        //    RandomEvents.PunksAmbush();
+        //}
 
         Menu encounterGunStoreMenu = new(new Dictionary<string, Action>()
         {

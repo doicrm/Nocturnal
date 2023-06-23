@@ -262,7 +262,7 @@ public class SaveManager
         }
 
         Console.ForegroundColor = ConsoleColor.Gray;
-        Console.WriteLine($"\t{Globals.JsonReader!["LOAD_GAME.NO_SAVES_FOUND"]}");
+        Console.WriteLine($"\n\n\t{Globals.JsonReader!["LOAD_GAME.NO_SAVES_FOUND"]}");
         Thread.Sleep(2000);
         Console.ResetColor();
         Console.Clear();

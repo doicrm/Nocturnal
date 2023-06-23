@@ -17,7 +17,7 @@ public class Journal
 
         foreach (Quest q in Quests)
         {
-            if (q == quest) Console.WriteLine($"\n\t{Globals.JsonReader!["NEW_QUEST"]}: {quest.Name}\n");
+            if (q == quest) Console.WriteLine($"\n\t{Globals.JsonReader!["NEW_QUEST"]}: {quest.Name}\n\n");
         }
 
         quest.Start();
