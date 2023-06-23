@@ -111,6 +111,8 @@ public class SaveManager
             location.SetEvent();
 
         Item.InsertInstances();
+        Game.InitHeroIventory();
+        Game.InitHeroJournal();
         Console.Clear();
 
         Program.Game!.SetCurrentLocation(Globals.Locations[currentLocation.ID]);

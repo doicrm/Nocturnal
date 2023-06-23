@@ -53,7 +53,7 @@ public sealed class Game
 
     public static void Pause()
     {
-        Console.Write($"\t{Globals.JsonReader!["PRESS_ANY_KEY"]}");
+        Console.Write($"\t{Display.GetJsonString("PRESS_ANY_KEY")}");
         Console.ReadKey();
     }
 
@@ -61,7 +61,7 @@ public sealed class Game
     {
         Console.Clear();
         Thread.Sleep(500);
-        Display.Write($"\n\t{Globals.JsonReader!["AUTHOR_PRESENTS"]}", 40);
+        Display.Write($"\n\t{Display.GetJsonString("AUTHOR_PRESENTS")}", 40);
         Thread.Sleep(2000);
         Console.Clear();
     }
@@ -90,10 +90,10 @@ public sealed class Game
         Console.WriteLine();
         Menu mainMenu = new(new Dictionary<string, Action>()
         {
-            { $"{Globals.JsonReader!["MAIN_MENU.NEW_GAME"]}", NewGame },
-            { $"{Globals.JsonReader!["MAIN_MENU.LOAD_GAME"]}", LoadGame },
-            { $"{Globals.JsonReader!["MAIN_MENU.CHANGE_LANG"]}", ChangeLanguage },
-            { $"{Globals.JsonReader!["MAIN_MENU.QUIT_GAME"]}", EndGame }
+            { $"{Display.GetJsonString("MAIN_MENU.NEW_GAME")}", NewGame },
+            { $"{Display.GetJsonString("MAIN_MENU.LOAD_GAME")}", LoadGame },
+            { $"{Display.GetJsonString("MAIN_MENU.CHANGE_LANG")}", ChangeLanguage },
+            { $"{Display.GetJsonString("MAIN_MENU.QUIT_GAME")}", EndGame }
         });
     }
 
@@ -108,7 +108,7 @@ public sealed class Game
     public static void LoadGame()
     {
         Console.Clear();
-        Console.Write($"\n\t{Globals.JsonReader!["MAIN_MENU.LOAD_GAME"]!.ToString().ToUpper()}");
+        Console.Write($"\n\t{Display.GetJsonString("MAIN_MENU.LOAD_GAME").ToUpper()}");
         Console.ResetColor();
         SaveManager.SearchForSaves();
     }
@@ -123,7 +123,7 @@ public sealed class Game
     public void EndGame()
     {
         Console.Clear();
-        Display.Write($"\n\t{Globals.JsonReader!["QUIT_GAME"]}", 25);
+        Display.Write($"\n\t{Display.GetJsonString("QUIT_GAME")}", 25);
         Menu quitMenu = new(new Dictionary<string, Action>()
         {
             { $"{Globals.JsonReader!["YES"]}", End },
@@ -152,10 +152,7 @@ public sealed class Game
             location = Globals.Locations["DarkAlley"];
         }
 
-        if (!Globals.Locations.ContainsKey(location.ID))
-        {
-            return;
-        }
+        if (!Globals.Locations.ContainsKey(location.ID)) return;
 
         CurrentLocation = location;
         CurrentLocation!.Events!.Invoke();
@@ -165,7 +162,7 @@ public sealed class Game
     {
         string path = $"{Directory.GetCurrentDirectory()}\\Inventory.txt";
         using StreamWriter output = new(path);
-        output.WriteLine($"{Globals.JsonReader!["INVENTORY.NO_ITEMS"]}");
+        output.WriteLine($"{Display.GetJsonString("INVENTORY.NO_ITEMS")}");
         output.Close();
     }
 
@@ -173,16 +170,16 @@ public sealed class Game
     {
         string path = $"{Directory.GetCurrentDirectory()}\\Journal.txt";
         using StreamWriter output = new(path);
-        output.WriteLine($"{Globals.JsonReader!["JOURNAL.NO_QUESTS"]}");
+        output.WriteLine($"{Display.GetJsonString("JOURNAL.NO_QUESTS")}");
         output.Close();
     }
 
     public static void InitLocations()
     {
-        Location DarkAlley = new("DarkAlley", $"{Globals.JsonReader!["LOCATION.DARK_ALLEY"]}", null!, PrologueEvents.DarkAlley);
-        Location Street = new("Street", $"{Globals.JsonReader!["LOCATION.STREET"]}", Globals.Fractions["Police"], PrologueEvents.Street);
-        Location GunShop = new("GunShop", $"{Globals.JsonReader!["LOCATION.GUN_SHOP"]}", Globals.Fractions["Police"], PrologueEvents.GunShop);
-        Location NightclubEden = new("NightclubEden", $"{Globals.JsonReader!["LOCATION.NIGHTCLUB_EDEN"]}", Globals.Fractions["Police"], PrologueEvents.NightclubEden);
+        Location DarkAlley = new("DarkAlley", $"{Display.GetJsonString("LOCATION.DARK_ALLEY")}", null!, PrologueEvents.DarkAlley);
+        Location Street = new("Street", $"{Display.GetJsonString("LOCATION.STREET")}", Globals.Fractions["Police"], PrologueEvents.Street);
+        Location GunShop = new("GunShop", $"{Display.GetJsonString("LOCATION.GUN_SHOP")}", Globals.Fractions["Police"], PrologueEvents.GunShop);
+        Location NightclubEden = new("NightclubEden", $"{Display.GetJsonString("LOCATION.NIGHTCLUB_EDEN")}", Globals.Fractions["Police"], PrologueEvents.NightclubEden);
 
         Globals.Locations.Add(DarkAlley.ID, DarkAlley);
         Globals.Locations.Add(Street.ID, Street);

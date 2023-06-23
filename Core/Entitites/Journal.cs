@@ -1,4 +1,5 @@
 ﻿using Nocturnal.Core.System;
+using Nocturnal.Core.System.Utilities;
 
 namespace Nocturnal.Core.Entitites;
 
@@ -13,15 +14,18 @@ public class Journal
 
     public void AddQuest(Quest quest)
     {
-        Quests.Add(quest);
-
-        foreach (Quest q in Quests)
+        if (!quest.IsRunning && !quest.IsCompleted)
         {
-            if (q == quest) Console.WriteLine($"\n\t{Globals.JsonReader!["NEW_QUEST"]}: {quest.Name}\n\n");
-        }
+            Quests.Add(quest);
 
-        quest.Start();
-        UpdatedJournalFile();
+            foreach (Quest q in Quests)
+            {
+                if (q == quest) quest.Start();
+            }
+
+            UpdatedJournalFile();
+            SaveManager.UpdateSave();
+        }
     }
 
     public void EndQuest(Quest quest, QuestStatus status)
@@ -30,6 +34,7 @@ public class Journal
         {
             quest.End(status);
             UpdatedJournalFile();
+            SaveManager.UpdateSave();
         }
     }
 
@@ -41,7 +46,7 @@ public class Journal
 
         if (Quests.Any())
         {
-            output.WriteLine($"{Globals.JsonReader!["JOURNAL.NO_QUESTS"]}");
+            output.WriteLine(Display.GetJsonString("JOURNAL.NO_QUESTS"));
             return;
         }
 
@@ -58,6 +63,7 @@ public class Journal
         {
             Quests.Clear();
             UpdatedJournalFile();
+            SaveManager.UpdateSave();
         }
     }
 }

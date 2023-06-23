@@ -1,4 +1,6 @@
-﻿namespace Nocturnal.Core.System.Utilities;
+﻿using System.ComponentModel.Design;
+
+namespace Nocturnal.Core.System.Utilities;
 
 public class Display
 {
@@ -24,5 +26,11 @@ public class Display
         Console.ForegroundColor = ConsoleColor.White;
         Write(text, speed);
         Console.ResetColor();
+    }
+
+    public static string GetJsonString(string stringName)
+    {
+        if (stringName == null) return "";
+        return Globals.JsonReader![stringName].ToString();
     }
 }

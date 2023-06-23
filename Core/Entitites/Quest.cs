@@ -46,12 +46,15 @@ public class Quest
 
     public void Start()
     {
-        IsCompleted = false;
-        IsRunning = true;
-        Status = QuestStatus.Running;
+        if (Status != QuestStatus.Running)
+        {
+            IsCompleted = false;
+            IsRunning = true;
+            Status = QuestStatus.Running;
 
-        Console.ResetColor();
-        Display.Write($"{Globals.JsonReader!["JOURNAL.ENTRY"]}: {Name}");
+            Console.ResetColor();
+            Console.WriteLine($"\n\n\t{Display.GetJsonString("NEW_QUEST")}: {Name}");
+        }
     }
 
     public void End(QuestStatus status)
@@ -65,34 +68,34 @@ public class Quest
     {
         if (Status is QuestStatus.Running)
         {
-            return $"{Globals.JsonReader!["QUEST_STATUS.RUNNING"]!.ToString().ToLower()}";
+            return Display.GetJsonString("QUEST_STATUS.RUNNING").ToLower();
         }
         else if (Status is QuestStatus.Success)
         {
-            return $"{Globals.JsonReader!["QUEST_STATUS.SUCCESS"]!.ToString().ToLower()}";
+            return Display.GetJsonString("QUEST_STATUS.SUCCESS").ToLower();
         }
         else if (Status is QuestStatus.Failed)
         {
-            return $"{Globals.JsonReader!["QUEST_STATUS.FAILED"]!.ToString().ToLower()}";
+            return Display.GetJsonString("QUEST_STATUS.FAILED").ToLower();
         }
         else if (Status is QuestStatus.Obsolete)
         {
-            return $"{Globals.JsonReader!["QUEST_STATUS.OBSOLETE"]!.ToString().ToLower()}";
+            return Display.GetJsonString("QUEST_STATUS.OBSOLETE").ToLower();
         }
-        return $"{Globals.JsonReader!["QUEST_STATUS.NOT_STARTED"]!.ToString().ToLower()}";
+        return Display.GetJsonString("QUEST_STATUS.NOT_STARTED").ToLower();
     }
 
     public string PrintInfo()
     {
-        return $"{Globals.JsonReader!["NAME"]}: {Name}\n" +
-            $"{Globals.JsonReader!["DESCRIPTION"]}: {Description}\n" +
-            $"{Globals.JsonReader!["STATUS"]}: {PrintStatus()}";
+        return $"{Display.GetJsonString("NAME")}: {Name}\n" +
+            $"{Display.GetJsonString("DESCRIPTION")}: {Description}\n" +
+            $"{Display.GetJsonString("STATUS")}: {PrintStatus()}";
     }
 
     public static void InsertInstances()
     {
-        Quest KillHex = new("KillHex", $"{Globals.JsonReader!["QUEST.KILL_HEX.NAME"]}", $"{Globals.JsonReader!["QUEST.KILL_HEX.DESCRIPTION"]}");
-        Quest ZedAccelerator = new("ZedAccelerator", $"{Globals.JsonReader!["QUEST.ZED_ACCELERATOR.NAME"]}", $"{Globals.JsonReader!["QUEST.ZED_ACCELERATOR.DESCRIPTION"]}");
+        Quest KillHex = new("KillHex", Display.GetJsonString("QUEST.KILL_HEX.NAME"), Display.GetJsonString("QUEST.KILL_HEX.DESCRIPTION"));
+        Quest ZedAccelerator = new("ZedAccelerator", Display.GetJsonString("QUEST.ZED_ACCELERATOR.NAME"), Display.GetJsonString("QUEST.ZED_ACCELERATOR.DESCRIPTION"));
 
         Globals.Quests[KillHex.ID] = KillHex;
         Globals.Quests[ZedAccelerator.ID] = ZedAccelerator;

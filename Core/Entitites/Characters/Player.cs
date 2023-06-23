@@ -8,13 +8,14 @@ public class Player : Npc
 {
     public float Money { get; set; }
     public Weapon? Weapon { get; set; }
-    //public Clothes Clothes { get; set; }
     public Journal? Journal = new();
 
     public Player() : base()
     {
         ID = "Player";
         Money = 0.0f;
+        Weapon = null;
+        Journal = new();
     }
 
     public Player(float money, Weapon weapon, /*Clothes clothes,*/ Inventory inventory, Journal journal) : base()

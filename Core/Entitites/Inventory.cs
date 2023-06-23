@@ -1,5 +1,6 @@
 ﻿using Nocturnal.Core.Entitites.Items;
 using Nocturnal.Core.System;
+using Nocturnal.Core.System.Utilities;
 
 namespace Nocturnal.Core.Entitites;
 
@@ -40,16 +41,13 @@ public class Inventory
 
     public void Clear()
     {
-        if (Items.Any())
-            Items.Clear();
+        if (Items.Any()) Items.Clear();
+        SaveManager.UpdateSave();
     }
 
     public bool HasItem(Item item)
     {
-        foreach (Item Item in Items)
-            if (Item == item)
-                return true;
-        return false;
+        return Items.Contains(item);
     }
 
     public void UpdateFile()
@@ -59,17 +57,17 @@ public class Inventory
 
         if (Items.Count <= 0)
         {
-            output.WriteLine($"{Globals.JsonReader!["INVENTORY.NO_ITEMS"]}");
+            output.WriteLine($"{Display.GetJsonString("INVENTORY.NO_ITEMS")}");
             output.Close();
             return;
         }
 
         foreach (Item Item in Items)
         {
-            output.WriteLine($"{Globals.JsonReader!["NAME"]}: {Item.Name}");
-            output.WriteLine($"{Globals.JsonReader!["TYPE"]}: {Item.Type}");
-            output.WriteLine($"{Globals.JsonReader!["DESCRIPTION"]}: {Item.Description}");
-            output.WriteLine($"{Globals.JsonReader!["VALUE"]}: {Item.Value}$");
+            output.WriteLine($"{Display.GetJsonString("NAME")}: {Item.Name}");
+            output.WriteLine($"{Display.GetJsonString("TYPE")}: {Item.Type}");
+            output.WriteLine($"{Display.GetJsonString("DESCRIPTION")}: {Item.Description}");
+            output.WriteLine($"{Display.GetJsonString("VALUE")}: {Item.Value}$");
             output.WriteLine("...........................................................................");
         }
 

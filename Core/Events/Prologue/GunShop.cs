@@ -1,4 +1,5 @@
 ﻿using Nocturnal.Core.Entitites;
+using Nocturnal.Core.Entitites.Items;
 using Nocturnal.Core.System;
 using Nocturnal.Core.System.Utilities;
 
@@ -32,40 +33,32 @@ namespace Nocturnal.Core.Events.Prologue
                 if (Globals.Player.HasItem(Globals.Items["Pistol"]))
                     Display.WriteDialogue($"\n\t{Globals.JsonReader!["GUN_SHOP.ENTER_06"]}");
 
-                Console.WriteLine();
                 DialogueWithZed();
             }
         }
 
         public static void DialogueWithZed()
         {
-            while (true)
+            Console.WriteLine();
+
+            Menu dialogueWithZedMenu = new();
+            dialogueWithZedMenu.ClearOptions();
+            Dictionary<string, Action> options = new()
             {
-                Console.WriteLine();
+                { Display.GetJsonString("GUN_SHOP.DIA_ZED_MENU.01"), DialogueWithZed_01 },
+                { Display.GetJsonString("GUN_SHOP.DIA_ZED_MENU.02"), DialogueWithZed_02 }
+            };
 
-                Menu dialogueWithZedMenu = new();
-                dialogueWithZedMenu.ClearOptions();
-                Dictionary<string, Action> options = new()
-                {
-                    { $"{Globals.JsonReader!["GUN_SHOP.DIA_ZED_MENU.01"]}", DialogueWithZed_01 },
-                    { $"{Globals.JsonReader!["GUN_SHOP.DIA_ZED_MENU.02"]}", DialogueWithZed_02 }
-                };
+            if (Program.Game!.StoryGlobals.Bob_RecommendsZed && !Program.Game!.StoryGlobals.Zed_KnowsAboutBobAndZed)
+                options.Add(Display.GetJsonString("GUN_SHOP.DIA_ZED_MENU.03"), DialogueWithZed_03);
 
-                if (Program.Game!.StoryGlobals.Bob_RecommendsZed && !Program.Game!.StoryGlobals.Zed_KnowsAboutBobAndZed)
-                    options.Add($"{Globals.JsonReader!["GUN_SHOP.DIA_ZED_MENU.03"]}", DialogueWithZed_03);
+            if (Globals.Quests["ZedAccelerator"].IsRunning && Globals.Player.HasItem(Globals.Items["AD13"]))
+                options.Add(Display.GetJsonString("GUN_SHOP.DIA_ZED_MENU.04"), DialogueWithZed_04);
 
-                if (Globals.Quests["ZedAccelerator"].IsRunning && Globals.Player.HasItem(Globals.Items["AD13"]))
-                    options.Add($"{Globals.JsonReader!["GUN_SHOP.DIA_ZED_MENU.04"]}", DialogueWithZed_04);
-
-                options.Add($"{Globals.JsonReader!["GUN_SHOP.DIA_ZED_MENU.05"]}", DialogueWithZed_05);
-                dialogueWithZedMenu.AddOptions(options);
-                dialogueWithZedMenu.ShowOptions();
-                dialogueWithZedMenu.InputChoice();
-
-                if (dialogueWithZedMenu.Choice <= dialogueWithZedMenu.Options.Count
-                    && dialogueWithZedMenu.Choice > 0)
-                    break;
-            }
+            options.Add(Display.GetJsonString("GUN_SHOP.DIA_ZED_MENU.05"), DialogueWithZed_05);
+            dialogueWithZedMenu.AddOptions(options);
+            dialogueWithZedMenu.ShowOptions();
+            dialogueWithZedMenu.InputChoice();
         }
 
         public static void DialogueWithZed_01()
@@ -76,11 +69,11 @@ namespace Nocturnal.Core.Events.Prologue
         public static void DialogueWithZed_02()
         {
             if (Program.Game!.StoryGlobals.PC_TalkedAboutBusinessWithZed)
-                Display.WriteDialogue($"\t{Globals.JsonReader!["GUN_SHOP.DIA_ZED_01"]}");
+                Display.WriteDialogue($"\t{Display.GetJsonString("GUN_SHOP.DIA_ZED_01")}");
             else
             {
                 Program.Game!.StoryGlobals.PC_TalkedAboutBusinessWithZed = true;
-                Display.WriteDialogue($"\t{Globals.JsonReader!["GUN_SHOP.DIA_ZED_02"]}");
+                Display.WriteDialogue($"\t{Display.GetJsonString("GUN_SHOP.DIA_ZED_02")}");
             }
 
             DialogueWithZed();
@@ -119,6 +112,8 @@ namespace Nocturnal.Core.Events.Prologue
             Display.WriteDialogue($"\n\t{Globals.JsonReader!["GUN_SHOP.DIA_ZED_06"]}");
             Thread.Sleep(1000);
             Display.WriteDialogue($"\n\t{Globals.JsonReader!["GUN_SHOP.DIA_ZED_07"]}");
+            Globals.Player.AddItem(Globals.Items["Pistol"]);
+            Globals.Player.Weapon = (Weapon)Globals.Items["Pistol"];
 
             Display.Write($"\n\n\t{Globals.JsonReader!["ITEM_GIVEN"]}");
             Console.ForegroundColor = ConsoleColor.Blue;
@@ -129,6 +124,7 @@ namespace Nocturnal.Core.Events.Prologue
             Display.Write($"{Globals.Items["Pistol"].Name!}\n\n");
             Console.ResetColor();
             Globals.Player.EndQuest(Globals.Quests["ZedAccelerator"], QuestStatus.Success);
+            DialogueWithZed();
         }
 
         public static void ZedTrade()
@@ -169,8 +165,8 @@ namespace Nocturnal.Core.Events.Prologue
             {
                 Console.ResetColor();
                 Display.Write($"\t{Globals.JsonReader!["GUN_SHOP.DIA_ZED_13"]}");
-                DialogueWithZed();
             }
+            DialogueWithZed();
         }
 
         public static void ZedTrade_01()
@@ -182,9 +178,9 @@ namespace Nocturnal.Core.Events.Prologue
 
         public static void BuyPistol()
         {
-            if (Globals.Player.Money != 250.0f)
+            if (Globals.Player.Money <= 250.0f)
             {
-                Display.WriteDialogue($"\n\t{Globals.JsonReader!["GUN_SHOP.DIA_ZED_16"]}");
+                Display.WriteDialogue($"\t{Globals.JsonReader!["GUN_SHOP.DIA_ZED_16"]}");
                 Thread.Sleep(1000);
                 Display.WriteDialogue($" {Globals.JsonReader!["GUN_SHOP.DIA_ZED_17"]}");
                 Thread.Sleep(1500);
@@ -195,6 +191,7 @@ namespace Nocturnal.Core.Events.Prologue
                     Thread.Sleep(1000);
                     Display.WriteDialogue($" {Globals.JsonReader!["GUN_SHOP.DIA_ZED_19"]}");
                     Globals.Player.AddItem(Globals.Items["Pistol"]);
+                    Globals.Player.Weapon = (Weapon)Globals.Items["Pistol"];
 
                     Display.Write($"\n\n\t{Globals.JsonReader!["ITEM_GAINED"]}");
                     Console.ForegroundColor = ConsoleColor.Blue;
@@ -217,12 +214,15 @@ namespace Nocturnal.Core.Events.Prologue
             {
                 Display.WriteDialogue($"\n\t{Globals.JsonReader!["GUN_SHOP.DIA_ZED_24"]}");
                 Globals.Player.AddItem(Globals.Items["Pistol"]);
+                Globals.Player.Money -= 250.0f;
 
                 Display.Write($"\n\n\t{Globals.JsonReader!["ITEM_BOUGHT"]}");
                 Console.ForegroundColor = ConsoleColor.Blue;
-                Display.Write($"{Globals.Items["Pistol"].Name!}\n\n");
+                Display.Write($"{Globals.Items["Pistol"].Name!}");
                 Console.ResetColor();
             }
+
+            DialogueWithZed();
         }
 
         public static void Crossroads()

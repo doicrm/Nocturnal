@@ -57,12 +57,12 @@ public static class DarkAlleyEvents
         Console.ForegroundColor = ConsoleColor.Blue;
         Display.Write(Globals.Items["AD13"].Name!);
         Console.ResetColor();
-        Display.Write($"{Globals.JsonReader!["AND"]}");
+        Display.Write($" {Globals.JsonReader!["AND"]} ");
         Console.ForegroundColor = ConsoleColor.Green;
         Display.Write("5$");
         Console.ResetColor();
 
-        Display.Write($"\n\t{Globals.JsonReader!["INVENTORY.TIP"]}", 15);
+        Display.Write($"\n\t{Globals.JsonReader!["INVENTORY.TIP"]}\n", 15);
         Thread.Sleep(4000);
         Display.WriteNarration($"\n\t{Globals.JsonReader!["DARK_ALLEY.FINDING_ACCELERATOR_03"]}");
         Thread.Sleep(1000);
