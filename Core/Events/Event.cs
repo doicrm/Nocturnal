@@ -12,10 +12,10 @@ public static class Event
         Console.Clear();
         Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine();
-        Display.Write($"{Globals.JsonReader!["YOU_ARE_DEAD"]}");
+        Display.Write($"{Display.GetJsonString("YOU_ARE_DEAD")}");
         Thread.Sleep(1000);
         Console.ResetColor();
-        Display.Write($"{Globals.JsonReader!["BACK_TO_MENU"]}", 25);
+        Display.Write($"{Display.GetJsonString("BACK_TO_MENU")}", 25);
         Console.ReadKey();
         Console.Clear();
         Program.Game!.LoadLogo();
@@ -28,7 +28,7 @@ public static class Event
         Console.Clear();
         Console.ForegroundColor = ConsoleColor.Blue;
         Console.WriteLine();
-        Display.Write($"{Globals.JsonReader!["GAME_OVER"]}", 25);
+        Display.Write($"{Display.GetJsonString("GAME_OVER")}", 25);
         Thread.Sleep(2000);
         Console.ResetColor();
         Console.Clear();
@@ -51,11 +51,11 @@ public static class Event
         Thread.Sleep(500);
         Console.ForegroundColor = ConsoleColor.Blue;
         Console.WriteLine();
-        Display.Write($"{Globals.JsonReader!["GAME_OVER"]}\n\n", 25);
+        Display.Write($"\t{Display.GetJsonString("GAME_OVER")}\n\n", 25);
         Thread.Sleep(2000);
         Console.ResetColor();
-        Display.Write($"{Globals.JsonReader!["THANKS_FOR_PLAYING"]}");
-        Thread.Sleep(3000);
+        Display.Write($"\t{Display.GetJsonString("THANKS_FOR_PLAYING")}");
+        Thread.Sleep(3500);
         Console.Clear();
         Program.Game!.End();
     }
