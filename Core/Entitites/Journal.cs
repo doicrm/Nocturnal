@@ -45,7 +45,7 @@ public class Journal
 
         using StreamWriter output = new(path);
 
-        if (Quests.Any())
+        if (IsEmpty())
         {
             output.WriteLine(Display.GetJsonString("JOURNAL.NO_QUESTS"));
             return;
