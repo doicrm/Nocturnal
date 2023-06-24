@@ -1,4 +1,5 @@
-﻿using Nocturnal.Core.System;
+﻿using Nocturnal.Core.Entitites.Items;
+using Nocturnal.Core.System;
 using Nocturnal.Core.System.Utilities;
 
 namespace Nocturnal.Core.Entitites;
@@ -57,9 +58,24 @@ public class Journal
         }
     }
 
+    public void Show()
+    {
+        if (IsEmpty()) return;
+
+        foreach (var quest in Quests)
+        {
+            Console.WriteLine(quest.Name);
+        }
+    }
+
+    public bool IsEmpty()
+    {
+        return !Quests.Any();
+    }
+
     public void ClearJournal()
     {
-        if (Quests.Any())
+        if (IsEmpty())
         {
             Quests.Clear();
             UpdatedJournalFile();

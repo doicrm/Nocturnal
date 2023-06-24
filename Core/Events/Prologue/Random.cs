@@ -62,15 +62,21 @@ namespace Nocturnal.Core.Events.Prologue
 
         public static void EndHookersMeeting_01()
         {
+            Display.WriteNarration($"\t{Globals.JsonReader!["STREET.HOOKERS_MEETING_08"]}");
+            Display.WriteNarration($"\n\t{Globals.JsonReader!["STREET.HOOKERS_MEETING_09"]}\n");
+            GunShopEvents.Crossroads();
         }
 
         public static void EndHookersMeeting_02()
         {
+            Display.WriteNarration($"\t{Globals.JsonReader!["STREET.HOOKERS_MEETING_09"]}\n");
             GunShopEvents.Crossroads();
         }
 
         public static void EndHookersMeeting_03()
         {
+            Display.WriteNarration($"\t{Globals.JsonReader!["STREET.HOOKERS_MEETING_10"]}\n");
+            
             if (!Globals.Npcs["Caden"].IsKnowHero && !Globals.Npcs["CadensPartner"].IsKnowHero)
             {
                 if (!Globals.Npcs["Bob"].IsKnowHero)

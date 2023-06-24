@@ -160,18 +160,30 @@ public sealed class Game
 
     public static void InitHeroIventory()
     {
-        string path = $"{Directory.GetCurrentDirectory()}\\Inventory.txt";
-        using StreamWriter output = new(path);
-        output.WriteLine($"{Display.GetJsonString("INVENTORY.NO_ITEMS")}");
-        output.Close();
+        if (Globals.Player.Inventory!.IsEmpty())
+        {
+            string path = $"{Directory.GetCurrentDirectory()}\\Inventory.txt";
+            using StreamWriter output = new(path);
+            output.WriteLine($"{Display.GetJsonString("INVENTORY.NO_ITEMS")}");
+            output.Close();
+            return;
+        }
+
+        Globals.Player.Inventory!.UpdateFile();
     }
 
     public static void InitHeroJournal()
     {
-        string path = $"{Directory.GetCurrentDirectory()}\\Journal.txt";
-        using StreamWriter output = new(path);
-        output.WriteLine($"{Display.GetJsonString("JOURNAL.NO_QUESTS")}");
-        output.Close();
+        if (Globals.Player.Journal!.IsEmpty())
+        {
+            string path = $"{Directory.GetCurrentDirectory()}\\Journal.txt";
+            using StreamWriter output = new(path);
+            output.WriteLine($"{Display.GetJsonString("JOURNAL.NO_QUESTS")}");
+            output.Close();
+            return;
+        }
+
+        Globals.Player.Journal!.UpdatedJournalFile();
     }
 
     public static void InitLocations()

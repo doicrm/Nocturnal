@@ -108,12 +108,12 @@ namespace Nocturnal.Core.Events.Prologue
 
         public static void ZedGetsAnAccelerator()
         {
-            Globals.Player.RemoveItem(Globals.Items["AD13"]);
-            Display.WriteDialogue($"\n\t{Globals.JsonReader!["GUN_SHOP.DIA_ZED_06"]}");
+            Display.WriteDialogue($"\t{Globals.JsonReader!["GUN_SHOP.DIA_ZED_06"]}");
             Thread.Sleep(1000);
             Display.WriteDialogue($"\n\t{Globals.JsonReader!["GUN_SHOP.DIA_ZED_07"]}");
-            Globals.Player.AddItem(Globals.Items["Pistol"]);
+            Globals.Player.RemoveItem(Globals.Items["AD13"]);
             Globals.Player.Weapon = (Weapon)Globals.Items["Pistol"];
+            Globals.Player.AddItem(Globals.Items["Pistol"]);
 
             Display.Write($"\n\n\t{Globals.JsonReader!["ITEM_GIVEN"]}");
             Console.ForegroundColor = ConsoleColor.Blue;

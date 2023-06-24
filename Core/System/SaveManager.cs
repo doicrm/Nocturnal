@@ -61,6 +61,7 @@ public class SaveManager
 
     public static void LoadSave(uint nr)
     {
+        Item.InsertInstances();
         string path = $"{Directory.GetCurrentDirectory()}\\Data\\Saves\\Save{nr}.dat";
 
         if (!File.Exists(path))
@@ -110,7 +111,6 @@ public class SaveManager
         foreach (Location location in Globals.Locations.Values)
             location.SetEvent();
 
-        Item.InsertInstances();
         Game.InitHeroIventory();
         Game.InitHeroJournal();
         Console.Clear();

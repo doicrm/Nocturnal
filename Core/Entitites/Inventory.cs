@@ -31,23 +31,28 @@ public class Inventory
 
     public void Show()
     {
-        if (!Items.Any()) return;
+        if (IsEmpty()) return;
 
-        for (int i = 0; i < Items.Count; i++)
+        foreach (var item in Items)
         {
-            Console.WriteLine($"\t{i + 1}. {Items[i].Name}");
+            Console.WriteLine(item.Name);
         }
+    }
+
+    public bool IsEmpty()
+    {
+        return !Items.Any();
     }
 
     public void Clear()
     {
-        if (Items.Any()) Items.Clear();
+        if (IsEmpty()) Items.Clear();
         SaveManager.UpdateSave();
     }
 
     public bool HasItem(Item item)
     {
-        return Items.Contains(item);
+        return Items.Contains(item, new ItemEqualityComparer());
     }
 
     public void UpdateFile()
@@ -72,5 +77,18 @@ public class Inventory
         }
 
         output.Close();
+    }
+}
+
+class ItemEqualityComparer : IEqualityComparer<Item>
+{
+    public bool Equals(Item? item1, Item? item2)
+    {
+        return item1?.ID == item2?.ID && item1?.Name == item2?.Name;
+    }
+
+    public int GetHashCode(Item item)
+    {
+        return HashCode.Combine(item.ID, item.Name);
     }
 }

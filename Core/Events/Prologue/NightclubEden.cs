@@ -13,20 +13,20 @@ namespace Nocturnal.Core.Events.Prologue
 
         public static void EnterClub()
         {
-            Display.WriteNarration($"\n\t{Globals.JsonReader!["NIGHTCLUB_EDEN.ENTER_01"]}");
+            Display.WriteNarration($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.ENTER_01")}");
             Thread.Sleep(1000);
-            Display.WriteNarration($" {Globals.JsonReader!["NIGHTCLUB_EDEN.ENTER_02"]}");
+            Display.WriteNarration($" {Display.GetJsonString("NIGHTCLUB_EDEN.ENTER_02")}");
             Thread.Sleep(1000);
-            Display.WriteNarration($" {Globals.JsonReader!["NIGHTCLUB_EDEN.ENTER_03"]}");
+            Display.WriteNarration($" {Display.GetJsonString("NIGHTCLUB_EDEN.ENTER_03")}");
             Thread.Sleep(1000);
-            Display.WriteNarration($" {Globals.JsonReader!["NIGHTCLUB_EDEN.ENTER_04"]}");
+            Display.WriteNarration($" {Display.GetJsonString("NIGHTCLUB_EDEN.ENTER_04")}");
 
             Menu enterClubMenu = new(new Dictionary<string, Action>()
             {
-                { $"{Globals.JsonReader!["NIGHTCLUB_EDEN.ENTER_MENU.GO_TO_DANCE_FLOOR"]}", ClubDanceFloor },
-                { $"{Globals.JsonReader!["NIGHTCLUB_EDEN.ENTER_MENU.GO_TO_BAR"]}", ClubBar },
-                { $"{Globals.JsonReader!["NIGHTCLUB_EDEN.ENTER_MENU.GO_UPSTAIRS"]}", ClubUpstairs },
-                { $"{Globals.JsonReader!["NIGHTCLUB_EDEN.ENTER_MENU.BACK_ON_STREET"]}", PrologueEvents.VisitStreet },
+                { Display.GetJsonString("NIGHTCLUB_EDEN.ENTER_MENU.GO_TO_DANCE_FLOOR"), ClubDanceFloor },
+                { Display.GetJsonString("NIGHTCLUB_EDEN.ENTER_MENU.GO_TO_BAR"), ClubBar },
+                { Display.GetJsonString("NIGHTCLUB_EDEN.ENTER_MENU.GO_UPSTAIRS"), ClubUpstairs },
+                { Display.GetJsonString("NIGHTCLUB_EDEN.ENTER_MENU.BACK_ON_STREET"), PrologueEvents.VisitStreet },
             });
         }
 
@@ -34,23 +34,23 @@ namespace Nocturnal.Core.Events.Prologue
         {
             if (!Globals.Npcs["Luna"].IsKnowHero)
             {
-                Display.WriteNarration($"\t{Globals.JsonReader!["NIGHTCLUB_EDEN.DANCE_FLOOR_01"]}");
+                Display.WriteNarration($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.DANCE_FLOOR_01")}");
                 Thread.Sleep(1000);
-                Display.WriteNarration($" {Globals.JsonReader!["NIGHTCLUB_EDEN.DANCE_FLOOR_02"]}");
+                Display.WriteNarration($" {Display.GetJsonString("NIGHTCLUB_EDEN.DANCE_FLOOR_02")}");
                 Thread.Sleep(1500);
-                Display.WriteNarration($" {Globals.JsonReader!["NIGHTCLUB_EDEN.DANCE_FLOOR_03"]}");
+                Display.WriteNarration($" {Display.GetJsonString("NIGHTCLUB_EDEN.DANCE_FLOOR_03")}");
                 Thread.Sleep(1500);
-                Display.WriteNarration($"\n\t{Globals.JsonReader!["NIGHTCLUB_EDEN.DANCE_FLOOR_04"]}");
+                Display.WriteNarration($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.DANCE_FLOOR_04")}");
                 Thread.Sleep(1000);
-                Display.WriteNarration($" {Globals.JsonReader!["NIGHTCLUB_EDEN.DANCE_FLOOR_05"]}");
+                Display.WriteNarration($" {Display.GetJsonString("NIGHTCLUB_EDEN.DANCE_FLOOR_05")}");
                 Thread.Sleep(1500);
-                Display.WriteNarration($" {Globals.JsonReader!["NIGHTCLUB_EDEN.DANCE_FLOOR_06"]}");
+                Display.WriteNarration($" {Display.GetJsonString("NIGHTCLUB_EDEN.DANCE_FLOOR_06")}");
 
                 Menu danceWithLunaMenu = new(new Dictionary<string, Action>()
                 {
-                    { $"{Globals.JsonReader!["NIGHTCLUB_EDEN.DANCE_FLOOR_MENU.WHATS_SHE_WANTS"]}", ClubDanceFloor_01 },
-                    { $"{Globals.JsonReader!["NIGHTCLUB_EDEN.DANCE_FLOOR_MENU.HEY_BABY"]}", ClubDanceFloor_02 },
-                    { $"{Globals.JsonReader!["NIGHTCLUB_EDEN.DANCE_FLOOR_MENU.KEEP_DANCING"]}", ClubDanceFloor_03 },
+                    { Display.GetJsonString("NIGHTCLUB_EDEN.DANCE_FLOOR_MENU.WHATS_SHE_WANTS"), ClubDanceFloor_01 },
+                    { Display.GetJsonString("NIGHTCLUB_EDEN.DANCE_FLOOR_MENU.HEY_BABY"), ClubDanceFloor_02 },
+                    { Display.GetJsonString("NIGHTCLUB_EDEN.DANCE_FLOOR_MENU.KEEP_DANCING"), ClubDanceFloor_03 },
                 });
 
                 LunaMeeting();
@@ -142,8 +142,8 @@ namespace Nocturnal.Core.Events.Prologue
 
             Menu lunaMeetingMenu = new(new Dictionary<string, Action>()
             {
-                { $"{Globals.JsonReader!["NIGHTCLUB_EDEN.LUNA_MEETING_MENU.WHATS_IT_ABOUT"]}", LunaMeeting_01 },
-                { $"{Globals.JsonReader!["NIGHTCLUB_EDEN.LUNA_MEETING_MENU.LET_HER_SPEAK"]}", LunaMeeting_02 }
+                { Display.GetJsonString("NIGHTCLUB_EDEN.LUNA_MEETING_MENU.WHATS_IT_ABOUT"), LunaMeeting_01 },
+                { Display.GetJsonString("NIGHTCLUB_EDEN.LUNA_MEETING_MENU.LET_HER_SPEAK"), LunaMeeting_02 }
             });
 
             Display.WriteDialogue($"\t{Globals.JsonReader!["NIGHTCLUB_EDEN.LUNA_MEETING_01"]}");
@@ -168,15 +168,15 @@ namespace Nocturnal.Core.Events.Prologue
                 Display.WriteDialogue($" {Globals.JsonReader!["NIGHTCLUB_EDEN.LUNA_MEETING_08"]}");
                 Globals.Player.Money = 200.0f;
 
-                Display.Write($"\n\n\t{Globals.JsonReader!["ITEM_GAINED"]}");
+                Display.Write($"\n\n\t{Display.GetJsonString("ITEM_GAINED")}");
                 Console.ForegroundColor = ConsoleColor.Green;
                 Display.Write($"200$\n\n");
                 Console.ResetColor();
 
-                Display.WriteDialogue($"\t{Globals.JsonReader!["NIGHTCLUB_EDEN.LUNA_MEETING_09"]}");
-                Display.WriteDialogue($" {Globals.JsonReader!["NIGHTCLUB_EDEN.LUNA_MEETING_10"]}");
+                Display.WriteDialogue($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.LUNA_MEETING_09")}");
+                Display.WriteDialogue($" {Display.GetJsonString("NIGHTCLUB_EDEN.LUNA_MEETING_10")}");
                 Thread.Sleep(1000);
-                Display.WriteDialogue($"\n\t{Globals.JsonReader!["NIGHTCLUB_EDEN.LUNA_MEETING_11"]}");
+                Display.WriteDialogue($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.LUNA_MEETING_11")}");
             }
 
             Crossroads();
@@ -192,19 +192,19 @@ namespace Nocturnal.Core.Events.Prologue
 
         public static void ClubUpstairs()
         {
-            Display.WriteNarration($"\t{Globals.JsonReader!["NIGHTCLUB_EDEN.UPSTAIRS_01"]}");
+            Display.WriteNarration($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.UPSTAIRS_01")}");
 
             Menu clubUpstairsMenu = new(new Dictionary<string, Action>()
             {
-                { $"{Globals.JsonReader!["NIGHTCLUB_EDEN.UPSTAIRS_MENU.COME_CLOSER"]}", ClubUpstairs_01 },
-                { $"{Globals.JsonReader!["NIGHTCLUB_EDEN.UPSTAIRS_MENU.GO_BACK"]}", ClubUpstairs_02 }
+                { Display.GetJsonString("NIGHTCLUB_EDEN.UPSTAIRS_MENU.COME_CLOSER"), ClubUpstairs_01 },
+                { Display.GetJsonString("NIGHTCLUB_EDEN.UPSTAIRS_MENU.GO_BACK"), ClubUpstairs_02 }
             });
         }
 
         public static void ClubUpstairs_01()
         {
-            Display.WriteNarration($"\t{Globals.JsonReader!["NIGHTCLUB_EDEN.UPSTAIRS_02"]}");
-            Display.WriteDialogue($"\n\t{Globals.JsonReader!["NIGHTCLUB_EDEN.UPSTAIRS_03"]}");
+            Display.WriteNarration($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.UPSTAIRS_02")}");
+            Display.WriteDialogue($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.UPSTAIRS_03")}");
             Globals.Npcs["Jet"].IsKnowHero = true;
             DialogueWithJet();
         }
@@ -289,7 +289,6 @@ namespace Nocturnal.Core.Events.Prologue
                 Program.Game!.StoryGlobals.Jet_WarnedPlayer = true;
                 Console.WriteLine();
                 Globals.Npcs["Jet"].SetAttitude(Attitudes.Angry);
-                Console.WriteLine();
                 Display.WriteDialogue($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.DIA_JET_15")}");
                 return;
             }
@@ -300,7 +299,6 @@ namespace Nocturnal.Core.Events.Prologue
                 Program.Game!.StoryGlobals.Jet_Points = 0;
                 Console.WriteLine();
                 Globals.Npcs["Jet"].SetAttitude(Attitudes.Hostile);
-                Console.WriteLine();
                 Display.WriteDialogue($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.DIA_JET_16")}");
                 Display.WriteNarration($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.DIA_JET_17")}");
                 Thread.Sleep(2500);
@@ -363,6 +361,7 @@ namespace Nocturnal.Core.Events.Prologue
             if (!Program.Game!.StoryGlobals.PC_KnowsHexCode)
             {
                 Display.WriteNarration($" {Display.GetJsonString("NIGHTCLUB_EDEN.HEX_HIDEOUT_CODE_02")}");
+                Console.WriteLine();
                 CheckHexDesk();
             }
             else
@@ -377,7 +376,7 @@ namespace Nocturnal.Core.Events.Prologue
 
         public static void RightAccessCode()
         {
-            Display.WriteNarration($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.RIGHT_ACCES_CODE_01")}");
+            Display.WriteNarration($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.RIGHT_ACCES_CODE_01")}");
             Thread.Sleep(2000);
             Display.WriteNarration($" {Display.GetJsonString("NIGHTCLUB_EDEN.RIGHT_ACCES_CODE_02")}");
             HexHideout();
@@ -403,64 +402,60 @@ namespace Nocturnal.Core.Events.Prologue
 
         public static void HexHideout_01()
         {
-            Display.WriteNarration("\tYou lean over Hex and, in a fluid motion without hesitation, pull the stimulation helmet\n\toff his head. You witness the nightclub owner being shaken by a wave of convulsions. Foam\n\tbegins to come out of his mouth and after a moment the man freezes.");
+            Display.WriteNarration($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.HEX_HIDEOUT_05")}");
             Thread.Sleep(1500);
             Globals.Npcs["HexFolstam"].Status = NpcStatus.Dead;
-            Display.WriteNarration(" He's probably dead, just like\n\tLuna wanted.");
+            Display.WriteNarration($" {Display.GetJsonString("NIGHTCLUB_EDEN.HEX_HIDEOUT_06")}");
             LunaAppears();
         }
 
         public static void HexHideout_02()
         {
-            Display.WriteNarration("\tYou are not a coward.");
+            Display.WriteNarration($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.HEX_HIDEOUT_07")}");
             Thread.Sleep(1000);
-            Display.WriteNarration(" You don't stab people in the back. That's not your style. You prefer an\n\topen fight.");
+            Display.WriteNarration($" {Display.GetJsonString("NIGHTCLUB_EDEN.HEX_HIDEOUT_08")}");
             Thread.Sleep(1500);
             Globals.Npcs["HexFolstam"].Status = NpcStatus.Normal;
-            Display.WriteNarration(" After a while, you notice Hex moving slightly in his seat. He opens his eyes -\n\tthey are shining with the excitement of his online adventure.");
+            Display.WriteNarration($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.HEX_HIDEOUT_09")}");
             Thread.Sleep(1000);
-            Display.WriteNarration(" It is only a matter of time before\n\tHex notices your presence. There is no turning back now.");
-            Display.WriteDialogue("\n\t- 'What the fuck are you doing here, dickhead?'");
+            Display.WriteNarration($" {Display.GetJsonString("NIGHTCLUB_EDEN.HEX_HIDEOUT_10")}");
+            Display.WriteDialogue($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.HEX_HIDEOUT_11")}");
             DialogueWithHex();
         }
 
         public static void DialogueWithHex()
         {
-            Console.WriteLine();
-
             Menu dialogueWithHexMenu1 = new(new Dictionary<string, Action>()
             {
-                { $"'Die!'", DialogueWithHex_01 },
-                { $"'I don't want to fight with you.'", DialogueWithHex_02 },
-                { $"'Luna wants you dead.'", DialogueWithHex_03 }
+                { Display.GetJsonString("NIGHTCLUB_EDEN.DIA_HEX_MENU_01.DIE"), DialogueWithHex_01 },
+                { Display.GetJsonString("NIGHTCLUB_EDEN.DIA_HEX_MENU_01.DONT_WANNA_FIGHT"), DialogueWithHex_02 },
+                { Display.GetJsonString("NIGHTCLUB_EDEN.DIA_HEX_MENU_01.LUNA_WANTS_YOU_DEAD"), DialogueWithHex_03 }
             });
 
             Menu dialogueWithHexMenu2 = new(new Dictionary<string, Action>()
             {
-                { $"'It doesn't matter.'", DialogueWithHex_04 },
-                { $"'Your girlfriend, Luna.'", DialogueWithHex_05 }
+                { Display.GetJsonString("NIGHTCLUB_EDEN.DIA_HEX_MENU_02.DOESNT_MATTER"), DialogueWithHex_04 },
+                { Display.GetJsonString("NIGHTCLUB_EDEN.DIA_HEX_MENU_02.LUNA"), DialogueWithHex_05 }
             });
-
-            LunaAppears();
         }
 
         public static void LunaAppears()
         {
-            Display.WriteNarration("\n\tThe passage behind your back is opened.");
+            Display.WriteNarration($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.LUNA_APPEARS_01")}");
             Thread.Sleep(1000);
-            Display.WriteNarration(" You turn around, in front of you is Luna.");
-            Display.WriteDialogue("\n\t- 'Did you do what I asked you to do...'");
+            Display.WriteNarration($" {Display.GetJsonString("NIGHTCLUB_EDEN.LUNA_APPEARS_02")}");
+            Display.WriteDialogue($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.LUNA_APPEARS_03")}");
             Thread.Sleep(1500);
-            Display.WriteNarration("\n\tThe girl's gaze wanders from you to the body of her ex-boyfriend behind you.");
+            Display.WriteNarration($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.LUNA_APPEARS_04")}");
             Thread.Sleep(1000);
-            Display.WriteDialogue("\n\t- 'You did it... You really did it... Is he - is he dead?'");
+            Display.WriteDialogue($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.LUNA_APPEARS_05")}");
             Thread.Sleep(1000);
-            Display.WriteNarration("\n\tLuna walks past you and kneels by the dead man. She starts searching his pockets for something.");
+            Display.WriteNarration($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.LUNA_APPEARS_06")}");
 
             Menu lunaAppearsMenu = new(new Dictionary<string, Action>()
             {
-                { $"Do nothing.", DialogueWithHex_06 },
-                { $"'What is this all about?'", DialogueWithHex_07 }
+                { Display.GetJsonString("NIGHTCLUB_EDEN.LUNA_APPEARS_MENU.DO_NOTHING"), DialogueWithHex_06 },
+                { Display.GetJsonString("NIGHTCLUB_EDEN.LUNA_APPEARS_MENU.WHAT_ITS_ABOUT"), DialogueWithHex_07 }
             });
 
             HexResurrection();
@@ -468,50 +463,50 @@ namespace Nocturnal.Core.Events.Prologue
 
         public static void DialogueWithHex_01()
         {
-            Display.WriteNarration("\n\tWith a shout, you bring out your gun and aim it at Hex's chest.");
-            Display.WriteDialogue("\n\t- 'Are you such a hero?");
+            Display.WriteNarration($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.DIA_HEX_01")}");
+            Display.WriteDialogue($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.DIA_HEX_02")}");
             Thread.Sleep(1000);
-            Display.WriteDialogue(" Would you kill an unarmed man?");
+            Display.WriteDialogue($" {Display.GetJsonString("NIGHTCLUB_EDEN.DIA_HEX_03")}");
             Thread.Sleep(1000);
-            Display.WriteDialogue(" All right, can I at least find out who\n\tsent you? I know you're not working alone. I'm seeing you for the first time in my life.'");
+            Display.WriteDialogue($" {Display.GetJsonString("NIGHTCLUB_EDEN.DIA_HEX_04")}");
         }
 
         public static void DialogueWithHex_02()
         {
-            Display.WriteNarration("\n\tYou are not a coward.");
+            Display.WriteDialogue($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.DIA_HEX_05")}");
             Thread.Sleep(1000);
-            Display.WriteNarration(" You don't stab people in the back. That's not your style. You prefer an\n\topen fight.");
+            HexDeath();
         }
 
         public static void DialogueWithHex_03()
         {
-            Display.WriteNarration("\n\tYou are not a coward. You don't stab people in the back. That's not your style. You prefer an open fight.");
+            DialogueWithHex_05();
         }
 
         public static void DialogueWithHex_04()
         {
-            Display.WriteDialogue("\n\t- 'Ugh, you little prick. I'll get you from beyond the grave. There will be no peace. I won't let that happen!'");
+            Display.WriteDialogue($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.DIA_HEX_06")}");
             Thread.Sleep(1500);
             HexDeath();
         }
 
         public static void DialogueWithHex_05()
         {
-            Display.WriteDialogue("\n\t- 'Traitorous bitch! She'll get her due someday.");
-            Display.WriteDialogue(" All right, shithead, let's get this over with.'");
+            Display.WriteDialogue($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.DIA_HEX_07")}");
+            Display.WriteDialogue($" {Display.GetJsonString("NIGHTCLUB_EDEN.DIA_HEX_08")}");
             HexDeath();
         }
 
         public static void DialogueWithHex_06()
         {
-            Display.WriteNarration("\n\tYou let the girl quietly plunder the corpse. This gives you more time to look at her shapes more closely.");
-            Display.WriteDialogue("\n\t- 'Spare me, if you please.'");
+            Display.WriteNarration($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.DIA_HEX_09")}");
+            Display.WriteDialogue($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.DIA_HEX_10")}");
         }
 
         public static void DialogueWithHex_07()
         {
-            Display.WriteDialogue("\n\t- 'Well, now I think I owe you an explanation.'");
-            Display.WriteNarration("\n\tA girl talks to you without even looking at you.");
+            Display.WriteDialogue($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.DIA_HEX_11")}");
+            Display.WriteNarration($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.DIA_HEX_12")}");
         }
 
         public static void HexDeath()
@@ -525,6 +520,7 @@ namespace Nocturnal.Core.Events.Prologue
             Display.WriteNarration($"\n\t{Globals.JsonReader!["NIGHTCLUB_EDEN.HEX_DEATH_04"]}");
             Thread.Sleep(1000);
             Display.WriteNarration($" {Globals.JsonReader!["NIGHTCLUB_EDEN.HEX_DEATH_05"]}");
+            LunaAppears();
         }
 
         public static void HexResurrection()
@@ -555,10 +551,10 @@ namespace Nocturnal.Core.Events.Prologue
         {
             Menu enterClubMenu = new(new Dictionary<string, Action>()
             {
-                { $"{Globals.JsonReader!["NIGHTCLUB_EDEN.ENTER_MENU.GO_TO_DANCE_FLOOR"]}", ClubDanceFloor },
-                { $"{Globals.JsonReader!["NIGHTCLUB_EDEN.ENTER_MENU.GO_TO_BAR"]}", ClubBar },
-                { $"{Globals.JsonReader!["NIGHTCLUB_EDEN.ENTER_MENU.GO_UPSTAIRS"]}", ClubUpstairs },
-                { $"{Globals.JsonReader!["NIGHTCLUB_EDEN.ENTER_MENU.BACK_ON_STREET"]}", PrologueEvents.VisitStreet },
+                { Display.GetJsonString("NIGHTCLUB_EDEN.ENTER_MENU.GO_TO_DANCE_FLOOR"), ClubDanceFloor },
+                { Display.GetJsonString("NIGHTCLUB_EDEN.ENTER_MENU.GO_TO_BAR"), ClubBar },
+                { Display.GetJsonString("NIGHTCLUB_EDEN.ENTER_MENU.GO_UPSTAIRS"), ClubUpstairs },
+                { Display.GetJsonString("NIGHTCLUB_EDEN.ENTER_MENU.BACK_ON_STREET"), PrologueEvents.VisitStreet },
             });
         }
     }

@@ -51,6 +51,7 @@ public static class DarkAlleyEvents
         Thread.Sleep(1500);
         Display.WriteNarration($" {Globals.JsonReader!["DARK_ALLEY.FINDING_ACCELERATOR_02"]}");
         Thread.Sleep(2000);
+        Globals.Player.Money += 5.0f;
         Globals.Player.AddItem(Globals.Items["AD13"]);
 
         Display.Write($"\n\n\t{Globals.JsonReader!["ITEM_FOUND"]}");
