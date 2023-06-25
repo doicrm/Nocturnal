@@ -1,13 +1,13 @@
-﻿namespace Nocturnal.Core.System;
-
-public static class Constants
+﻿namespace Nocturnal.Core.System
 {
-    // Default game's name and version indentification
-    public const string GAME_NAME       = "NOCTURNAL";
-    public const string GAME_VERSION    = "[Demo Build]";
+    public static class Constants
+    {
+        // Default game's name and version indentification
+        public const string GAME_NAME = "NOCTURNAL";
+        public const string GAME_VERSION = "[Demo Build]";
 
-    // Game logo
-    public static readonly string[] GAME_LOGO = new string[] {
+        // Game logo
+        public static readonly string[] GAME_LOGO = new string[] {
         "\t ****     **   *******     ******  ********** **     ** *******   ****     **     **     **\n",
         "\t/**/**   /**  **/////**   **////**/////**/// /**    /**/**////** /**/**   /**    ****   /**\n",
         "\t/**//**  /** **     //** **    //     /**    /**    /**/**   /** /**//**  /**   **//**  /**\n",
@@ -18,8 +18,9 @@ public static class Constants
         "\t//      ///   ///////     //////      //      ///////  //     // //      /// //      // ////////\n"
     };
 
-    public const int MAX_SAVES          = 100;
+        public const int MAX_SAVES = 100;
 
-    // Default starting values
-    public const int DEFAULT_ATTRIBUTE  = 10;
+        // Default starting values
+        public const int DEFAULT_ATTRIBUTE = 10;
+    }
 }

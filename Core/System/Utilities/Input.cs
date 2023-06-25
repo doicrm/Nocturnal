@@ -1,65 +1,74 @@
-﻿namespace Nocturnal.Core.System.Utilities;
-
-public class Input
+﻿namespace Nocturnal.Core.System.Utilities
 {
-    public static int GetChoice()
+    public class Input
     {
-        int choice = 0;
-        Display.Write("\t> ", 25);
-
-        try
+        public static int GetChoice()
         {
-            choice = int.Parse(Console.ReadLine()!);
-        }
-        catch (FormatException)
-        {
+            int choice = 0;
+            Display.Write("\t> ", 25);
 
-        }
-
-        Console.Out.Flush();
-        return choice;
-    }
-
-    public static string GetString()
-    {
-        string text = "";
-        Display.Write("\t> ", 25);
-
-        try
-        {
-            text = Convert.ToString(Console.ReadLine()!);
-        }
-        catch (FormatException)
-        {
-
-        }
-
-        Console.Out.Flush();
-        return text;
-    }
-
-    public static string ConvertToCamelCase(string input)
-    {
-        string[] words = input.Split(' ');
-
-        for (int i = 0; i < words.Length; i++)
-        {
-            if (i > 0)
+            try
             {
-                words[i] = CapitalizeFirstLetter(words[i]);
+                choice = int.Parse(Console.ReadLine()!);
             }
+            catch (FormatException e)
+            {
+                Logger.WriteLog(e.Message);
+            }
+            catch (Exception e)
+            {
+                Logger.WriteLog(e.Message);
+            }
+
+            Console.Out.Flush();
+            return choice;
         }
 
-        return string.Join("", words);
-    }
+        public static string GetString()
+        {
+            string text = "";
+            Display.Write("\t> ", 25);
 
-    public static string CapitalizeFirstLetter(string word)
-    {
-        if (string.IsNullOrEmpty(word))
-            return word;
+            try
+            {
+                text = Convert.ToString(Console.ReadLine()!);
+            }
+            catch (FormatException e)
+            {
+                Logger.WriteLog(e.Message);
+            }
+            catch (Exception e)
+            {
+                Logger.WriteLog(e.Message);
+            }
 
-        char[] letters = word.ToCharArray();
-        letters[0] = char.ToUpper(letters[0]);
-        return new string(letters);
+            Console.Out.Flush();
+            return text;
+        }
+
+        public static string ConvertToCamelCase(string input)
+        {
+            string[] words = input.Split(' ');
+
+            for (int i = 0; i < words.Length; i++)
+            {
+                if (i > 0)
+                {
+                    words[i] = CapitalizeFirstLetter(words[i]);
+                }
+            }
+
+            return string.Join("", words);
+        }
+
+        public static string CapitalizeFirstLetter(string word)
+        {
+            if (string.IsNullOrEmpty(word))
+                return word;
+
+            char[] letters = word.ToCharArray();
+            letters[0] = char.ToUpper(letters[0]);
+            return new string(letters);
+        }
     }
 }

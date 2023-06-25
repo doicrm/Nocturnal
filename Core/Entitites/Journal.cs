@@ -1,85 +1,85 @@
-﻿using Nocturnal.Core.Entitites.Items;
-using Nocturnal.Core.System;
+﻿using Nocturnal.Core.System;
 using Nocturnal.Core.System.Utilities;
 
-namespace Nocturnal.Core.Entitites;
-
-public class Journal
+namespace Nocturnal.Core.Entitites
 {
-    public IList<Quest> Quests { get; set; }
-
-    public Journal()
+    public class Journal
     {
-        Quests = new List<Quest>();
-    }
+        public IList<Quest> Quests { get; set; }
 
-    public void AddQuest(Quest quest)
-    {
-        if (!quest.IsRunning && !quest.IsCompleted)
+        public Journal()
         {
-            Quests.Add(quest);
+            Quests = new List<Quest>();
+        }
 
-            foreach (Quest q in Quests)
+        public void AddQuest(Quest quest)
+        {
+            if (!quest.IsRunning && !quest.IsCompleted)
             {
-                if (q == quest) quest.Start();
+                Quests.Add(quest);
+
+                foreach (Quest q in Quests)
+                {
+                    if (q == quest) quest.Start();
+                }
+
+                UpdatedJournalFile();
+                SaveManager.UpdateSave();
+            }
+        }
+
+        public void EndQuest(Quest quest, QuestStatus status)
+        {
+            if (!quest.IsCompleted)
+            {
+                quest.End(status);
+                UpdatedJournalFile();
+                SaveManager.UpdateSave();
+            }
+        }
+
+        public void UpdatedJournalFile()
+        {
+            string path = $"{Directory.GetCurrentDirectory()}\\journal.txt";
+
+            using StreamWriter output = new(path);
+
+            if (IsEmpty())
+            {
+                output.WriteLine(Display.GetJsonString("JOURNAL.NO_QUESTS"));
+                return;
             }
 
-            UpdatedJournalFile();
-            SaveManager.UpdateSave();
-        }
-    }
-
-    public void EndQuest(Quest quest, QuestStatus status)
-    {
-        if (!quest.IsCompleted)
-        {
-            quest.End(status);
-            UpdatedJournalFile();
-            SaveManager.UpdateSave();
-        }
-    }
-
-    public void UpdatedJournalFile()
-    {
-        string path = $"{Directory.GetCurrentDirectory()}\\journal.txt";
-
-        using StreamWriter output = new(path);
-
-        if (IsEmpty())
-        {
-            output.WriteLine(Display.GetJsonString("JOURNAL.NO_QUESTS"));
-            return;
+            foreach (Quest quest in Quests)
+            {
+                output.WriteLine(quest.PrintInfo());
+                output.WriteLine("..............................................................................");
+            }
         }
 
-        foreach (Quest quest in Quests)
+        public void Show()
         {
-            output.WriteLine(quest.PrintInfo());
-            output.WriteLine("..............................................................................");
+            if (IsEmpty()) return;
+
+            foreach (var quest in Quests)
+            {
+                Console.WriteLine(quest.Name);
+            }
         }
-    }
 
-    public void Show()
-    {
-        if (IsEmpty()) return;
-
-        foreach (var quest in Quests)
+        public bool IsEmpty()
         {
-            Console.WriteLine(quest.Name);
+            return !Quests.Any();
         }
-    }
 
-    public bool IsEmpty()
-    {
-        return !Quests.Any();
-    }
-
-    public void ClearJournal()
-    {
-        if (IsEmpty())
+        public void ClearJournal()
         {
-            Quests.Clear();
-            UpdatedJournalFile();
-            SaveManager.UpdateSave();
+            if (IsEmpty())
+            {
+                Quests.Clear();
+                UpdatedJournalFile();
+                SaveManager.UpdateSave();
+            }
         }
     }
 }
