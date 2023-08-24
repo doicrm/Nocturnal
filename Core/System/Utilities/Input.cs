@@ -4,45 +4,18 @@
     {
         public static int GetChoice()
         {
-            int choice = 0;
             Display.Write("\t> ", 25);
-
-            try
-            {
-                choice = int.Parse(Console.ReadLine()!);
-            }
-            catch (FormatException e)
-            {
-                Logger.WriteLog(e.Message);
-            }
-            catch (Exception e)
-            {
-                Logger.WriteLog(e.Message);
-            }
-
-            Console.Out.Flush();
-            return choice;
+            bool result = int.TryParse(Console.ReadLine()?.Trim(), out int choice);
+            if (result)
+                return choice;
+            else
+                return -1;
         }
 
         public static string GetString()
         {
-            string text = "";
             Display.Write("\t> ", 25);
-
-            try
-            {
-                text = Convert.ToString(Console.ReadLine()!);
-            }
-            catch (FormatException e)
-            {
-                Logger.WriteLog(e.Message);
-            }
-            catch (Exception e)
-            {
-                Logger.WriteLog(e.Message);
-            }
-
-            Console.Out.Flush();
+            string text = Console.ReadLine()!.Trim();
             return text;
         }
 

@@ -100,7 +100,7 @@ namespace Nocturnal.Core.System
             });
         }
 
-        public void NewGame()
+        public static void NewGame()
         {
             InitAll();
             SaveManager.CreateSave();
