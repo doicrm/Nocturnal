@@ -34,49 +34,47 @@ namespace Nocturnal.Core.System
             ChangeConsoleName();
             Settings = new();
             StoryGlobals = StoryGlobals.Instance;
-            Logger.WriteLog("Game initialized");
+            Logger.WriteLog("Game initialized").GetAwaiter().GetResult(); ;
         }
 
-        public void Run()
+        public async Task Run()
         {
             while (IsPlaying)
             {
-                Welcome();
-                //WriteLogo(); // Disable for testing use
-                LoadLogo();
-                MainMenu();
-                End();
+                await Welcome();
+                //await WriteLogo(); // Disable for testing use
+                await LoadLogo();
+                await MainMenu();
+                await End();
             }
         }
 
         public static void ChangeConsoleName()
             => Console.Title = $"{Constants.GAME_NAME} {Constants.GAME_VERSION}";
 
-        public static void Pause()
+        public static async Task Pause()
         {
-            Console.Write($"\t{Display.GetJsonString("PRESS_ANY_KEY")}");
-            Console.ReadKey();
+            await Display.Write($"\t{Display.GetJsonString("PRESS_ANY_KEY")}", 25);
+            await Task.Run(() => Console.ReadKey());
         }
 
-        public static void Welcome()
+        public static async Task Welcome()
         {
             Console.Clear();
-            Thread.Sleep(500);
-            Display.Write($"\n\t{Display.GetJsonString("AUTHOR_PRESENTS")}", 40);
-            Thread.Sleep(2000);
+            await Task.Delay(500);
+            await Display.Write($"\n\t{Display.GetJsonString("AUTHOR_PRESENTS")}", 40);
+            await Task.Delay(2000);
             Console.Clear();
         }
 
-        public static void WriteLogo()
+        public static async Task WriteLogo()
         {
-            Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine();
             foreach (var s in Constants.GAME_LOGO)
-                Display.Write(s, 1);
-            Console.ResetColor();
+                await Display.WriteColoredText(s, ConsoleColor.Blue, 1);
         }
 
-        public void LoadLogo()
+        public async Task LoadLogo()
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Blue;
@@ -84,70 +82,76 @@ namespace Nocturnal.Core.System
             foreach (var s in Constants.GAME_LOGO)
                 Console.Write(s);
             Console.ResetColor();
-            MainMenu();
+            await MainMenu();
         }
 
-        public void MainMenu()
+        public async Task MainMenu()
         {
-            Console.ResetColor();
-            Console.WriteLine();
-            Menu mainMenu = new(new Dictionary<string, Action>()
+            await Task.Run(() =>
             {
-                { Display.GetJsonString("MAIN_MENU.NEW_GAME"), NewGame },
-                { Display.GetJsonString("MAIN_MENU.LOAD_GAME"), LoadGame },
-                { Display.GetJsonString("MAIN_MENU.CHANGE_LANG"), ChangeLanguage },
-                { Display.GetJsonString("MAIN_MENU.QUIT_GAME"), EndGame }
+                Console.ResetColor();
+                Console.WriteLine();
+                _ = new Menu(new Dictionary<string, Func<Task>>()
+                {
+                    { Display.GetJsonString("MAIN_MENU.NEW_GAME"), NewGame },
+                    { Display.GetJsonString("MAIN_MENU.LOAD_GAME"), LoadGame },
+                    { Display.GetJsonString("MAIN_MENU.CHANGE_LANG"), ChangeLanguage },
+                    { Display.GetJsonString("MAIN_MENU.QUIT_GAME"), EndGame }
+                });
             });
         }
 
-        public static void NewGame()
+        public static async Task NewGame()
         {
             InitAll();
-            SaveManager.CreateSave();
+            await SaveManager.CreateSave();
             Console.Clear();
-            PrologueEvents.Prologue();
+            await PrologueEvents.Prologue();
         }
 
-        public static void LoadGame()
+        public static async Task LoadGame()
         {
             Console.Clear();
-            Console.Write($"\n\t{Display.GetJsonString("MAIN_MENU.LOAD_GAME").ToUpper()}");
+            await Display.Write($"\n\t{Display.GetJsonString("MAIN_MENU.LOAD_GAME").ToUpper()}", 25);
             Console.ResetColor();
-            SaveManager.SearchForSaves();
+            await SaveManager.SearchForSaves();
         }
 
-        public void ChangeLanguage()
+        public async Task ChangeLanguage()
         {
-            GameSettings.CreateConfigFile();
-            GameSettings.LoadDataFromFile(GameSettings.Lang);
-            LoadLogo();
+            await GameSettings.CreateConfigFile();
+            await GameSettings.LoadDataFromFile(GameSettings.Lang);
+            await LoadLogo();
         }
 
-        public void EndGame()
+        public async Task EndGame()
         {
             Console.Clear();
-            Display.Write($"\n\t{Display.GetJsonString("QUIT_GAME")}", 25);
-            Menu quitMenu = new(new Dictionary<string, Action>()
+            await Display.Write($"\n\t{Display.GetJsonString("QUIT_GAME")}", 25);
+            _ = new Menu(new Dictionary<string, Func<Task>>()
             {
                 { Display.GetJsonString("YES"), End },
                 { Display.GetJsonString("NO"), LoadLogo }
             });
         }
 
-        public void End()
+        public async Task End()
         {
-            IsPlaying = false;
-            Console.Clear();
-            Environment.Exit(1);
+            await Task.Run(() =>
+            {
+                IsPlaying = false;
+                Console.Clear();
+                Environment.Exit(1);
+            });
         }
 
-        public void SetCurrentLocation(Location location)
+        public async Task SetCurrentLocation(Location location)
         {
             if (CurrentLocation != null)
             {
                 CurrentLocation.IsVisited = true;
                 Globals.Locations[CurrentLocation.ID].IsVisited = true;
-                SaveManager.UpdateSave();
+                await SaveManager.UpdateSave();
             }
 
             if (CurrentLocation == null && !Globals.Locations["DarkAlley"].IsVisited)
@@ -158,35 +162,33 @@ namespace Nocturnal.Core.System
             if (!Globals.Locations.ContainsKey(location.ID)) return;
 
             CurrentLocation = location;
-            CurrentLocation!.Events!.Invoke();
+            await CurrentLocation.Events!.Invoke();
         }
 
-        public static void InitHeroIventory()
+        public static async Task InitHeroInventory()
         {
             if (Globals.Player.Inventory!.IsEmpty())
             {
-                string path = $"{Directory.GetCurrentDirectory()}\\Inventory.txt";
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "Inventory.txt");
                 using StreamWriter output = new(path);
-                output.WriteLine(Display.GetJsonString("INVENTORY.NO_ITEMS"));
-                output.Close();
+                await output.WriteLineAsync(Display.GetJsonString("INVENTORY.NO_ITEMS"));
                 return;
             }
 
-            Globals.Player.Inventory!.UpdateFile();
+            await Globals.Player.Inventory!.UpdateFile();
         }
 
-        public static void InitHeroJournal()
+        public static async Task InitHeroJournal()
         {
             if (Globals.Player.Journal!.IsEmpty())
             {
-                string path = $"{Directory.GetCurrentDirectory()}\\Journal.txt";
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "Journal.txt");
                 using StreamWriter output = new(path);
-                output.WriteLine(Display.GetJsonString("JOURNAL.NO_QUESTS"));
-                output.Close();
+                await output.WriteLineAsync(Display.GetJsonString("JOURNAL.NO_QUESTS"));
                 return;
             }
 
-            Globals.Player.Journal!.UpdatedJournalFile();
+            await Globals.Player.Journal!.UpdatedJournalFile();
         }
 
         public static void InitLocations()
@@ -204,8 +206,8 @@ namespace Nocturnal.Core.System
 
         public static void InitAll()
         {
-            InitHeroIventory();
-            InitHeroJournal();
+            InitHeroInventory().GetAwaiter().GetResult();
+            InitHeroJournal().GetAwaiter().GetResult();
             Npc.InsertInstances();
             Item.InsertInstances();
             Fraction.InsertInstances();

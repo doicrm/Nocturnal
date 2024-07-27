@@ -5,59 +5,62 @@ namespace Nocturnal.Core.Events
 {
     public static class Event
     {
-        public static void HeroDeath()
+        public static async Task HeroDeath()
         {
-            ClearInstances();
+            await ClearInstances();
             Thread.Sleep(500);
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine();
-            Display.Write($"{Display.GetJsonString("YOU_ARE_DEAD")}");
+            await Display.Write($"{Display.GetJsonString("YOU_ARE_DEAD")}");
             Thread.Sleep(1000);
             Console.ResetColor();
-            Display.Write($"{Display.GetJsonString("BACK_TO_MENU")}", 25);
+            await Display.Write($"{Display.GetJsonString("BACK_TO_MENU")}", 25);
             Console.ReadKey();
             Console.Clear();
-            Program.Game!.LoadLogo();
+            await Program.Game!.LoadLogo();
         }
 
-        public static void GameOver()
+        public static async Task GameOver()
         {
-            ClearInstances();
+            await ClearInstances();
             Thread.Sleep(500);
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine();
-            Display.Write($"{Display.GetJsonString("GAME_OVER")}", 25);
+            await Display.Write($"{Display.GetJsonString("GAME_OVER")}", 25);
             Thread.Sleep(2000);
             Console.ResetColor();
             Console.Clear();
-            Program.Game!.LoadLogo();
+            await Program.Game!.LoadLogo();
         }
 
-        public static void ClearInstances()
+        public static async Task ClearInstances()
         {
-            Globals.Items.Clear();
-            Globals.Npcs.Clear();
-            Globals.Locations.Clear();
-            Globals.Fractions.Clear();
-            Globals.Quests.Clear();
+            await Task.Run(() =>
+            {
+                Globals.Items.Clear();
+                Globals.Npcs.Clear();
+                Globals.Locations.Clear();
+                Globals.Fractions.Clear();
+                Globals.Quests.Clear();
+            });
         }
 
-        public static void EndGame()
+        public static async Task EndGame()
         {
-            ClearInstances();
+            await ClearInstances();
             Console.Clear();
             Thread.Sleep(500);
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine();
-            Display.Write($"\t{Display.GetJsonString("GAME_OVER")}\n\n", 25);
+            await Display.Write($"\t{Display.GetJsonString("GAME_OVER")}\n\n", 25);
             Thread.Sleep(2000);
             Console.ResetColor();
-            Display.Write($"\t{Display.GetJsonString("THANKS_FOR_PLAYING")}");
+            await Display.Write($"\t{Display.GetJsonString("THANKS_FOR_PLAYING")}");
             Thread.Sleep(3500);
             Console.Clear();
-            Program.Game!.End();
+            await Program.Game!.End();
         }
     }
 }

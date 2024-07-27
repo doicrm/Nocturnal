@@ -7,7 +7,7 @@ namespace Nocturnal.Core.Entitites
         public string ID { get; set; }
         public string Name { get; set; }
         public Fraction? Occupation { get; set; }
-        public Action? Events { get; set; }
+        public Func<Task>? Events { get; set; }
         public bool IsVisited { get; set; }
         public string? EventName { get; set; }
         public string? EventType { get; set; }
@@ -23,7 +23,7 @@ namespace Nocturnal.Core.Entitites
             EventType = "";
         }
 
-        public Location(string id, string name, Fraction occupation, Action events)
+        public Location(string id, string name, Fraction occupation, Func<Task> events)
         {
             ID = id;
             Name = name;
@@ -35,7 +35,7 @@ namespace Nocturnal.Core.Entitites
             SetEventNameAndType();
         }
 
-        public Location(string id, string name, Fraction occupation, Action events, bool isVisited)
+        public Location(string id, string name, Fraction occupation, Func<Task> events, bool isVisited)
         {
             ID = id;
             Name = name;
@@ -50,36 +50,33 @@ namespace Nocturnal.Core.Entitites
 
         public void SetEventNameAndType()
         {
-            if (Events != null)
-            {
-                MethodInfo methodInfo = Events.GetMethodInfo();
-                string methodName = methodInfo.Name;
-                EventName = methodName;
+            if (Events == null) return;
 
-                if (methodInfo != null)
-                {
-                    Type declaringType = methodInfo.DeclaringType!;
-                    string typeName = declaringType.Namespace!;
-                    typeName += "." + declaringType.Name;
-                    EventType = typeName;
-                }
-            }
+            MethodInfo methodInfo = Events.GetMethodInfo();
+            string methodName = methodInfo.Name;
+            EventName = methodName;
+
+            if (methodInfo == null) return;
+
+            Type declaringType = methodInfo.DeclaringType!;
+            string typeName = declaringType.Namespace!;
+            typeName += "." + declaringType.Name;
+            EventType = typeName;
         }
 
         public void SetEvent()
         {
-            if (EventType != null)
+            if (EventType == null) return;
+
+            Type type = Type.GetType(EventType)!;
+
+            if (type != null && EventName != null)
             {
-                Type type = Type.GetType(EventType)!;
+                MethodInfo? methodInfo = type.GetMethod(EventName!);
 
-                if (type != null && EventName != null)
+                if (methodInfo != null)
                 {
-                    MethodInfo? methodInfo = type.GetMethod(EventName!);
-
-                    if (methodInfo != null)
-                    {
-                        Events = (Action)Delegate.CreateDelegate(typeof(Action), methodInfo);
-                    }
+                    Events = (Func<Task>)Delegate.CreateDelegate(typeof(Func<Task>), methodInfo);
                 }
             }
         }

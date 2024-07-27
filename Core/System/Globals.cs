@@ -16,59 +16,65 @@ namespace Nocturnal.Core.System
         public static IDictionary<string, Location> Locations { get; set; } = new Dictionary<string, Location>();
         public static IDictionary<string, Quest> Quests { get; set; } = new Dictionary<string, Quest>();
 
-        public static dynamic LocationsToJson()
+        public static async ValueTask<dynamic> LocationsToJson()
         {
-            Dictionary<string, dynamic> TempLocations = new();
+            var tempLocations = new Dictionary<string, dynamic>();
 
             foreach (var location in Locations)
             {
-                dynamic TempLocation = location.Value.ToJson();
-                TempLocations.Add(location.Key, TempLocation);
+                dynamic tempLocation = await Task.Run(() => location.Value.ToJson());
+                tempLocations.Add(location.Key, tempLocation);
             }
 
-            return TempLocations;
+            return tempLocations;
         }
 
-        public static dynamic LocationsFromJson(dynamic locations)
+        public static async ValueTask<dynamic> LocationsFromJson(dynamic locations)
         {
-            Dictionary<string, dynamic> TempLocations = new();
-
-            foreach (var location in locations)
+            return await Task.Run(() =>
             {
-                Type type = Type.GetType(location.Value.EventType)!;
+                var tempLocations = new Dictionary<string, dynamic>();
+
+                foreach (var location in locations)
+                {
+                    Type type = Type.GetType(location.Value.EventType)!;
+
+                    if (type != null)
+                    {
+                        object instance = Activator.CreateInstance(type)!;
+                        MethodInfo method = type.GetMethod(location.Value.EventName)!;
+
+                        if (method != null)
+                        {
+                            location.Value.Events = (Action)instance;
+                            tempLocations.Add(location.Key, location.Value);
+                        }
+                    }
+                }
+                return tempLocations;
+            });
+        }
+
+        public static async ValueTask<Location> LocationFromJson(Location loc)
+        {
+            return await Task.Run(() =>
+            {
+                Location tempLocation = new();
+                Console.WriteLine(loc.EventType + "." + loc.EventName);
+                Type type = Type.GetType(loc.EventType!)!;
 
                 if (type != null)
                 {
-                    object instance = Activator.CreateInstance(type)!;
-                    MethodInfo method = type.GetMethod(location.Value.EventName)!;
+                    MethodInfo method = type.GetMethod(loc.EventName!, BindingFlags.Static | BindingFlags.Public)!;
 
                     if (method != null)
                     {
-                        location.Value.Events = (Action)instance;
-                        TempLocations.Add(location.Key, location.Value);
+                        loc.Events = (Func<Task>)Delegate.CreateDelegate(typeof(Action), method);
+                        tempLocation = loc;
                     }
                 }
-            }
-            return TempLocations;
-        }
-
-        public static Location LocationFromJson(Location loc)
-        {
-            Location TempLocation = new();
-            Console.WriteLine(loc.EventType + "." + loc.EventName);
-            Type type = Type.GetType(loc.EventType!)!;
-
-            if (type != null)
-            {
-                MethodInfo method = type.GetMethod(loc.EventName!, BindingFlags.Static | BindingFlags.Public)!;
-
-                if (method != null)
-                {
-                    loc.Events = (Action)Delegate.CreateDelegate(typeof(Action), method);
-                    TempLocation = loc;
-                }
-            }
-            return TempLocation;
+                return tempLocation;
+            });
         }
     }
 }

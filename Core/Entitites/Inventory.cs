@@ -13,20 +13,20 @@ namespace Nocturnal.Core.Entitites
             Items = new List<Item>();
         }
 
-        public void AddItem(Item item)
+        public async Task AddItem(Item item)
         {
             Items.Add(item);
-            UpdateFile();
-            SaveManager.UpdateSave();
+            await UpdateFile();
+            await SaveManager.UpdateSave();
         }
 
-        public void RemoveItem(Item item)
+        public async Task RemoveItem(Item item)
         {
             if (!HasItem(item)) return;
 
             Items.Remove(item);
-            UpdateFile();
-            SaveManager.UpdateSave();
+            await UpdateFile();
+            await SaveManager.UpdateSave();
         }
 
         public void Show()
@@ -44,10 +44,13 @@ namespace Nocturnal.Core.Entitites
             return !Items.Any();
         }
 
-        public void Clear()
+        public async Task Clear()
         {
-            if (IsEmpty()) Items.Clear();
-            SaveManager.UpdateSave();
+            if (IsEmpty()) return;
+
+            Items.Clear();
+            await UpdateFile();
+            await SaveManager.UpdateSave();
         }
 
         public bool HasItem(Item item)
@@ -55,28 +58,27 @@ namespace Nocturnal.Core.Entitites
             return Items.Contains(item, new ItemEqualityComparer());
         }
 
-        public void UpdateFile()
+        public async Task UpdateFile()
         {
-            string path = $"{Directory.GetCurrentDirectory()}\\Inventory.txt";
-            using StreamWriter output = new(path);
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "Inventory.txt");
 
-            if (Items.Count <= 0)
+            using (StreamWriter output = new StreamWriter(path))
             {
-                output.WriteLine($"{Display.GetJsonString("INVENTORY.NO_ITEMS")}");
-                output.Close();
-                return;
-            }
+                if (Items.Count <= 0)
+                {
+                    await output.WriteLineAsync(Display.GetJsonString("INVENTORY.NO_ITEMS"));
+                    return;
+                }
 
-            foreach (Item Item in Items)
-            {
-                output.WriteLine($"{Display.GetJsonString("NAME")}: {Item.Name}");
-                output.WriteLine($"{Display.GetJsonString("TYPE")}: {Item.Type}");
-                output.WriteLine($"{Display.GetJsonString("DESCRIPTION")}: {Item.Description}");
-                output.WriteLine($"{Display.GetJsonString("VALUE")}: {Item.Value}$");
-                output.WriteLine("...........................................................................");
+                foreach (Item item in Items)
+                {
+                    await output.WriteLineAsync($"{Display.GetJsonString("NAME")}: {item.Name}");
+                    await output.WriteLineAsync($"{Display.GetJsonString("TYPE")}: {item.Type}");
+                    await output.WriteLineAsync($"{Display.GetJsonString("DESCRIPTION")}: {item.Description}");
+                    await output.WriteLineAsync($"{Display.GetJsonString("VALUE")}: {item.Value}$");
+                    await output.WriteLineAsync("...........................................................................");
+                }
             }
-
-            output.Close();
         }
     }
 

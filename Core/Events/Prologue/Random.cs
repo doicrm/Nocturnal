@@ -6,53 +6,53 @@ namespace Nocturnal.Core.Events.Prologue
 {
     public static class RandomEvents
     {
-        public static void StartRaining()
+        public static async Task StartRaining()
         {
             Program.Game!.Weather = Weather.Rainy;
 
             if (Program.Game!.Weather == Weather.Rainy)
             {
-                Display.WriteNarration($"\n\t{Globals.JsonReader!["STREET.START_RAINING_01"]}");
-                Thread.Sleep(1000);
-                Display.WriteNarration($" {Globals.JsonReader!["STREET.START_RAINING_02"]}");
-                Thread.Sleep(500);
-                Display.WriteNarration($" {Globals.JsonReader!["STREET.START_RAINING_03"]}");
+                await Display.WriteNarration($"\n\t{Globals.JsonReader!["STREET.START_RAINING_01"]}");
+                await Task.Delay(1000);
+                await Display.WriteNarration($" {Globals.JsonReader!["STREET.START_RAINING_02"]}");
+                await Task.Delay(500);
+                await Display.WriteNarration($" {Globals.JsonReader!["STREET.START_RAINING_03"]}");
             }
         }
 
-        public static void NickHandDiscovered()
+        public static async Task NickHandDiscovered()
         {
-            Display.WriteNarration($"\n\t{Globals.JsonReader!["STREET.NICK_HAND_DISCOVERED_01"]}");
-            Thread.Sleep(500);
-            Display.WriteNarration($" {Globals.JsonReader!["STREET.NICK_HAND_DISCOVERED_02"]}");
-            Thread.Sleep(1000);
-            Display.WriteNarration($" {Globals.JsonReader!["STREET.NICK_HAND_DISCOVERED_03"]}");
-            Thread.Sleep(500);
-            Display.WriteNarration($" {Globals.JsonReader!["STREET.NICK_HAND_DISCOVERED_04"]}");
-            Thread.Sleep(250);
-            Display.WriteNarration($"\n\t{Globals.JsonReader!["STREET.NICK_HAND_DISCOVERED_05"]}");
-            Thread.Sleep(500);
-            Display.WriteNarration($" {Globals.JsonReader!["STREET.NICK_HAND_DISCOVERED_06"]}");
-            Thread.Sleep(250);
-            Display.WriteNarration($" {Globals.JsonReader!["STREET.NICK_HAND_DISCOVERED_07"]}");
+            await Display.WriteNarration($"\n\t{Globals.JsonReader!["STREET.NICK_HAND_DISCOVERED_01"]}");
+            await Task.Delay(500);
+            await Display.WriteNarration($" {Globals.JsonReader!["STREET.NICK_HAND_DISCOVERED_02"]}");
+            await Task.Delay(1000);
+            await Display.WriteNarration($" {Globals.JsonReader!["STREET.NICK_HAND_DISCOVERED_03"]}");
+            await Task.Delay(500);
+            await Display.WriteNarration($" {Globals.JsonReader!["STREET.NICK_HAND_DISCOVERED_04"]}");
+            await Task.Delay(250);
+            await Display.WriteNarration($"\n\t{Globals.JsonReader!["STREET.NICK_HAND_DISCOVERED_05"]}");
+            await Task.Delay(500);
+            await Display.WriteNarration($" {Globals.JsonReader!["STREET.NICK_HAND_DISCOVERED_06"]}");
+            await Task.Delay(250);
+            await Display.WriteNarration($" {Globals.JsonReader!["STREET.NICK_HAND_DISCOVERED_07"]}");
         }
 
-        public static void HookersMeeting()
+        public static async Task HookersMeeting()
         {
-            Display.WriteNarration($"\n\t{Globals.JsonReader!["STREET.HOOKERS_MEETING_01"]}");
-            Thread.Sleep(500);
-            Display.WriteNarration($" {Globals.JsonReader!["STREET.HOOKERS_MEETING_02"]}");
-            Thread.Sleep(650);
-            Display.WriteNarration($" {Globals.JsonReader!["STREET.HOOKERS_MEETING_03"]}");
-            Thread.Sleep(500);
-            Display.WriteNarration($" {Globals.JsonReader!["STREET.HOOKERS_MEETING_04"]}");
-            Thread.Sleep(800);
-            Display.WriteNarration($" {Globals.JsonReader!["STREET.HOOKERS_MEETING_05"]}");
-            Thread.Sleep(1000);
-            Display.WriteDialogue($"{Globals.JsonReader!["STREET.HOOKERS_MEETING_06"]}");
-            Display.WriteNarration($"\n\t{Globals.JsonReader!["STREET.HOOKERS_MEETING_07"]}\n");
+            await Display.WriteNarration($"\n\t{Globals.JsonReader!["STREET.HOOKERS_MEETING_01"]}");
+            await Task.Delay(500);
+            await Display.WriteNarration($" {Globals.JsonReader!["STREET.HOOKERS_MEETING_02"]}");
+            await Task.Delay(650);
+            await Display.WriteNarration($" {Globals.JsonReader!["STREET.HOOKERS_MEETING_03"]}");
+            await Task.Delay(500);
+            await Display.WriteNarration($" {Globals.JsonReader!["STREET.HOOKERS_MEETING_04"]}");
+            await Task.Delay(800);
+            await Display.WriteNarration($" {Globals.JsonReader!["STREET.HOOKERS_MEETING_05"]}");
+            await Task.Delay(1000);
+            await Display.WriteDialogue($"{Globals.JsonReader!["STREET.HOOKERS_MEETING_06"]}");
+            await Display.WriteNarration($"\n\t{Globals.JsonReader!["STREET.HOOKERS_MEETING_07"]}\n");
 
-            Menu hookersMeetingMenu = new(new Dictionary<string, Action>()
+            _ = new Menu(new Dictionary<string, Func<Task>>
             {
                 { $"{Globals.JsonReader!["STREET.HOOKERS_MEETING_MENU.I_DONT_HAVE_ANYTHING"]}", EndHookersMeeting_01 },
                 { $"{Globals.JsonReader!["STREET.HOOKERS_MEETING_MENU.GO_TO_SHOP"]}", EndHookersMeeting_02 },
@@ -60,48 +60,48 @@ namespace Nocturnal.Core.Events.Prologue
             });
         }
 
-        public static void EndHookersMeeting_01()
+        public static async Task EndHookersMeeting_01()
         {
-            Display.WriteNarration($"\t{Globals.JsonReader!["STREET.HOOKERS_MEETING_08"]}");
-            Display.WriteNarration($"\n\t{Globals.JsonReader!["STREET.HOOKERS_MEETING_09"]}\n");
-            GunShopEvents.Crossroads();
+            await Display.WriteNarration($"\t{Globals.JsonReader!["STREET.HOOKERS_MEETING_08"]}");
+            await Display.WriteNarration($"\n\t{Globals.JsonReader!["STREET.HOOKERS_MEETING_09"]}\n");
+            await GunShopEvents.Crossroads();
         }
 
-        public static void EndHookersMeeting_02()
+        public static async Task EndHookersMeeting_02()
         {
-            Display.WriteNarration($"\t{Globals.JsonReader!["STREET.HOOKERS_MEETING_09"]}\n");
-            GunShopEvents.Crossroads();
+            await Display.WriteNarration($"\t{Globals.JsonReader!["STREET.HOOKERS_MEETING_09"]}\n");
+            await GunShopEvents.Crossroads();
         }
 
-        public static void EndHookersMeeting_03()
+        public static async Task EndHookersMeeting_03()
         {
-            Display.WriteNarration($"\t{Globals.JsonReader!["STREET.HOOKERS_MEETING_10"]}\n");
+            await Display.WriteNarration($"\t{Globals.JsonReader!["STREET.HOOKERS_MEETING_10"]}\n");
             
             if (!Globals.Npcs["Caden"].IsKnowHero && !Globals.Npcs["CadensPartner"].IsKnowHero)
             {
                 if (!Globals.Npcs["Bob"].IsKnowHero)
                 {
-                    StreetEvents.MeetingWithSecurityGuards();
-                    StreetEvents.MeetingWithPolicemans();
+                    await StreetEvents.MeetingWithSecurityGuards();
+                    await StreetEvents.MeetingWithPolicemans();
                 }
                 else
-                    StreetEvents.MeetingWithPolicemans();
+                    await StreetEvents.MeetingWithPolicemans();
             }
             else
             {
-                Program.Game!.SetCurrentLocation(Globals.Locations["NightclubEden"]);
+                await Program.Game!.SetCurrentLocation(Globals.Locations["NightclubEden"]);
             }        
         }
 
-        //public static void PunksAmbush()
+        //public static async Task PunksAmbush()
         //{
-        //    Display.WriteNarration($"\n\t{Globals.JsonReader!["STREET.PUNKS_AMBUSH_01"]}");
-        //    Display.WriteNarration("");
+        //    await Display.WriteNarration($"\n\t{Globals.JsonReader!["STREET.PUNKS_AMBUSH_01"]}");
+        //    await Display.WriteNarration("");
         //}
 
-        //public static void ClubOverdose()
+        //public static async Task ClubOverdose()
         //{
-        //    Display.WriteNarration($"{Globals.JsonReader!["NIGHTCLUB_EDEN.CLUB_OVERDOSE_01"]}");
+        //    await Display.WriteNarration($"{Globals.JsonReader!["NIGHTCLUB_EDEN.CLUB_OVERDOSE_01"]}");
         //}
     }
 }

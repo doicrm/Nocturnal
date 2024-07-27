@@ -28,9 +28,9 @@ namespace Nocturnal.Core.Entitites.Characters
             Journal = journal;
         }
 
-        public static void Kill() => Event.HeroDeath();
+        public static async Task Kill() => await Event.HeroDeath();
         public new bool IsDead() { return Attributes.Stamina < 0; }
-        public void AddQuest(Quest quest) => Journal!.AddQuest(quest);
-        public void EndQuest(Quest quest, QuestStatus status) => Journal!.EndQuest(quest, status);
+        public async Task AddQuest(Quest quest) => await Journal!.AddQuest(quest);
+        public async Task EndQuest(Quest quest, QuestStatus status) => await Journal!.EndQuest(quest, status);
     }
 }

@@ -24,7 +24,7 @@ namespace Nocturnal.Core.System
     {
         private static uint CurrentSaveNr = 0;
 
-        public static void CreateSave()
+        public static async Task CreateSave()
         {
             if (!Directory.Exists("Data\\Saves"))
                 Directory.CreateDirectory("Data\\Saves");
@@ -42,7 +42,7 @@ namespace Nocturnal.Core.System
                         Timestamp = Logger.GetFormattedTimestamp(),
                         Player = Globals.Player,
                         Npcs = Globals.Npcs,
-                        Locations = Globals.LocationsToJson(),
+                        Locations = await Globals.LocationsToJson(),
                         Fractions = Globals.Fractions,
                         Quests = Globals.Quests,
                         Chapter = Globals.Chapter,
@@ -52,37 +52,27 @@ namespace Nocturnal.Core.System
                     };
 
                     var serializedObject = JsonConvert.SerializeObject(save, Formatting.Indented);
-                    newSave.Write(serializedObject);
-                    newSave.Close();
+                    await newSave.WriteAsync(serializedObject);
                     break;
                 }
             }
         }
 
-        public static void LoadSave(uint nr)
+        public static async Task LoadSave(uint nr)
         {
             Item.InsertInstances();
-            string path = $"{Directory.GetCurrentDirectory()}\\Data\\Saves\\Save{nr}.dat";
+            string path = Path.Combine(Directory.GetCurrentDirectory(), $"Data\\Saves\\Save{nr}.dat");
 
             if (!File.Exists(path))
             {
-                Program.Game!.LoadLogo();
+                await Program.Game!.LoadLogo();
                 return;
             }
 
             CurrentSaveNr = nr;
 
-            using StreamReader saveFile = File.OpenText(path);
-            string? content = null;
-            string? s = null;
-
-            while ((s = saveFile.ReadLine()!) != null)
-            {
-                content += s;
-            }
-
-            saveFile.Close();
-            var saveInfo = JsonConvert.DeserializeObject<SaveData>(content!);
+            string content = await File.ReadAllTextAsync(path);
+            var saveInfo = JsonConvert.DeserializeObject<SaveData>(content);
 
             Globals.Player = saveInfo.Player;
             Dictionary<string, Npc> npcs = saveInfo.Npcs.ToObject<Dictionary<string, Npc>>();
@@ -101,7 +91,7 @@ namespace Nocturnal.Core.System
             Location currentLocation;
 
             if (saveInfo.CurrentLocation != null)
-                currentLocation = saveInfo.CurrentLocation.ToObject<Location>();
+                currentLocation = await saveInfo.CurrentLocation.ToObject<Location>();
             else
                 currentLocation = locations["DarkAlley"];
 
@@ -111,27 +101,27 @@ namespace Nocturnal.Core.System
             foreach (Location location in Globals.Locations.Values)
                 location.SetEvent();
 
-            Game.InitHeroIventory();
-            Game.InitHeroJournal();
+            await Game.InitHeroInventory();
+            await Game.InitHeroJournal();
             Console.Clear();
 
-            Program.Game!.SetCurrentLocation(Globals.Locations[currentLocation.ID]);
+            await Program.Game!.SetCurrentLocation(Globals.Locations[currentLocation.ID]);
         }
 
-        public static void UpdateSave()
+        public static async Task UpdateSave()
         {
             if (!Directory.Exists("Data\\Saves"))
                 Directory.CreateDirectory("Data\\Saves");
 
-            string path = $"{Directory.GetCurrentDirectory()}\\Data\\Saves\\Save{CurrentSaveNr}.dat";
+            string path = Path.Combine(Directory.GetCurrentDirectory(), $"Data\\Saves\\Save{CurrentSaveNr}.dat");
 
-            using StreamWriter saveFile = File.CreateText(path);
+            using StreamWriter saveFile = new(path);
             SaveData save = new()
             {
                 Timestamp = Logger.GetFormattedTimestamp(),
                 Player = Globals.Player,
                 Npcs = Globals.Npcs,
-                Locations = Globals.LocationsToJson(),
+                Locations = await Globals.LocationsToJson(),
                 Fractions = Globals.Fractions,
                 Quests = Globals.Quests,
                 Chapter = Globals.Chapter,
@@ -141,8 +131,7 @@ namespace Nocturnal.Core.System
             };
 
             var serializedObject = JsonConvert.SerializeObject(save, Formatting.Indented);
-            saveFile.Write(serializedObject);
-            saveFile.Close();
+            await saveFile.WriteAsync(serializedObject);
         }
 
         public static string PrintSex(uint sex)
@@ -151,7 +140,7 @@ namespace Nocturnal.Core.System
             {
                 return $"{Globals.JsonReader!["SEX.MALE"]}";
             }
-            else if (sex == Convert.ToInt32(Genders.Female))
+            if (sex == Convert.ToInt32(Genders.Female))
             {
                 return $"{Globals.JsonReader!["SEX.FEMALE"]}";
             }
@@ -169,7 +158,7 @@ namespace Nocturnal.Core.System
             {
                 return $"{Globals.JsonReader!["PROLOGUE"]}";
             }
-            else if (chapter == 1 || chapter == 2 || chapter == 3)
+            if (chapter == 1 || chapter == 2 || chapter == 3)
             {
                 return $"{Globals.JsonReader!["CHAPTER"]} {chapter}";
             }
@@ -182,42 +171,33 @@ namespace Nocturnal.Core.System
             {
                 return $": {Globals.JsonReader!["LOCATION.DARK_ALLEY"]}";
             }
-            else if (location.ID == "Street")
+            if (location.ID == "Street")
             {
                 return $": {Globals.JsonReader!["LOCATION.STREET"]}";
             }
-            else if (location.ID == "GunShop")
+            if (location.ID == "GunShop")
             {
                 return $": {Globals.JsonReader!["LOCATION.GUN_SHOP"]}";
             }
-            else if (location.ID == "NightclubEden")
+            if (location.ID == "NightclubEden")
             {
                 return $": {Globals.JsonReader!["LOCATION.NIGHTCLUB_EDEN"]}";
             }
             return "";
         }
 
-        private static string LoadSaveInfo(string saveToLoad)
+        private static async ValueTask<string> LoadSaveInfo(string saveToLoad)
         {
             if (!File.Exists(saveToLoad))
                 return string.Empty;
 
-            using StreamReader oldSave = File.OpenText(saveToLoad);
-            string? content = null;
-            string? s = null;
-
-            while ((s = oldSave.ReadLine()!) != null)
-            {
-                content += s;
-            }
-
-            oldSave.Close();
-            var saveInfo = JsonConvert.DeserializeObject<SaveData>(content!);
+            string content = await File.ReadAllTextAsync(saveToLoad);
+            var saveInfo = JsonConvert.DeserializeObject<SaveData>(content);
 
             Location currentLocation;
 
             if (saveInfo.CurrentLocation != null)
-                currentLocation = saveInfo.CurrentLocation.ToObject<Location>();
+                currentLocation = await saveInfo.CurrentLocation.ToObject<Location>();
             else
             {
                 Dictionary<string, Location> locations = saveInfo.Locations.ToObject<Dictionary<string, Location>>();
@@ -227,11 +207,11 @@ namespace Nocturnal.Core.System
             return $"{PrintName(saveInfo.Player.Name)}, {PrintSex((uint)saveInfo.Player.Sex).ToLower()} | {GetChapterToString(saveInfo.Chapter)}{GetLocationName(currentLocation)} | {saveInfo.Timestamp}";
         }
 
-        public static void SearchForSaves()
+        public static async Task SearchForSaves()
         {
-            string path = $"{Directory.GetCurrentDirectory()}\\Data\\Saves";
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "Data\\Saves");
 
-            if (Directory.Exists("Data\\Saves"))
+            if (Directory.Exists(path))
             {
                 var files = Directory.GetFiles(path, "Save*", SearchOption.AllDirectories)
                     .Where(s => s.EndsWith(".dat"));
@@ -240,41 +220,40 @@ namespace Nocturnal.Core.System
                 {
                     Menu savesMenu = new();
                     savesMenu.ClearOptions();
-                    Dictionary<string, Action> options = new();
+                    Dictionary<string, Func<Task>> options = new();
                     uint i = 0;
 
-                    foreach (dynamic file in files)
+                    foreach (string file in files)
                     {
                         uint currentIndex = i;
-                        void action() => LoadSave(currentIndex);
-                        options.Add(LoadSaveInfo(file), (Action)action);
+                        options.Add(await LoadSaveInfo(file), async () => await LoadSave(currentIndex));
                         i++;
                     }
 
                     i = 0;
                     options.Add($"{Display.GetJsonString("BACK_TO_MAIN_MENU")}", BackToMainMenu);
                     savesMenu.AddOptions(options);
-                    savesMenu.ShowOptions(0);
-                    savesMenu.InputChoice();
+                    await savesMenu.ShowOptions(0);
+                    await savesMenu.InputChoice();
                     return;
                 }
             }
 
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine($"\n\n\t{Display.GetJsonString("LOAD_GAME.NO_SAVES_FOUND")}");
-            Thread.Sleep(2000);
+            await Task.Delay(2000);
             Console.ResetColor();
             Console.Clear();
-            Program.Game!.LoadLogo();
-            Program.Game!.MainMenu();
+            await Program.Game!.LoadLogo();
+            await Program.Game!.MainMenu();
         }
 
-        public static void BackToMainMenu()
+        public static async Task BackToMainMenu()
         {
             Console.ResetColor();
             Console.Clear();
-            Program.Game!.LoadLogo();
-            Program.Game!.MainMenu();
+            await Program.Game!.LoadLogo();
+            await Program.Game!.MainMenu();
         }
     }
 }

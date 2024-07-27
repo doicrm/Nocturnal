@@ -2,21 +2,18 @@
 {
     public class Input
     {
-        public static int GetChoice()
+        public static async ValueTask<int> GetChoice()
         {
-            Display.Write("\t> ", 25);
-            bool result = int.TryParse(Console.ReadLine()?.Trim(), out int choice);
-            if (result)
-                return choice;
-            else
-                return -1;
+            await Display.Write("\t> ", 25);
+            string input = await Task.Run(() => Console.ReadLine()?.Trim());
+            bool result = int.TryParse(input, out int choice);
+            return result ? choice : -1;
         }
 
-        public static string GetString()
+        public static async ValueTask<string> GetString()
         {
-            Display.Write("\t> ", 25);
-            string text = Console.ReadLine()!.Trim();
-            return text;
+            await Display.Write("\t> ", 25);
+            return await Task.Run(() => Console.ReadLine()!.Trim());
         }
 
         public static string ConvertToCamelCase(string input)

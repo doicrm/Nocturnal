@@ -18,10 +18,10 @@ namespace Nocturnal.Core.System
 
         public GameSettings() { Lang = 0; }
 
-        public static bool LoadConfigFile()
+        public static async ValueTask<bool> LoadConfigFile()
         {
             if (!File.Exists("config.json"))
-                CreateConfigFile();
+                await CreateConfigFile();
             else
             {
                 string jsonString;
@@ -42,12 +42,12 @@ namespace Nocturnal.Core.System
                 Lang = configFileData.Language;
             }
 
-            return LoadDataFromFile(Lang);
+            return await LoadDataFromFile(Lang);
         }
 
-        public static void CreateConfigFile()
+        public static async Task CreateConfigFile()
         {
-            Lang = SelectLanguage();
+            Lang = await SelectLanguage();
 
             var configFileData = new ConfigFileData
             {
@@ -62,15 +62,15 @@ namespace Nocturnal.Core.System
             }
             catch (JsonException e)
             {
-                Logger.WriteLog(e.Message);
+                await Logger.WriteLog(e.Message);
             }
             catch (Exception e)
             {
-                Logger.WriteLog(e.Message);
+                await Logger.WriteLog(e.Message);
             }
         }
 
-        public static bool LoadDataFromFile(int lang)
+        public static async ValueTask<bool> LoadDataFromFile(int lang)
         {
             try
             {
@@ -81,12 +81,12 @@ namespace Nocturnal.Core.System
             }
             catch (Exception e)
             {
-                Logger.WriteLog(e.Message);
+                await Logger.WriteLog(e.Message);
                 return false;
             }
         }
 
-        public static int SelectLanguage()
+        public static async ValueTask<int> SelectLanguage()
         {
             int choice;
             while (true)
@@ -96,12 +96,10 @@ namespace Nocturnal.Core.System
                 Console.WriteLine();
                 Console.WriteLine("\t[1] EN");
                 Console.WriteLine("\t[2] PL");
-                choice = Input.GetChoice();
+                choice = await Input.GetChoice();
 
-                if (choice is (int)GameLanguages.EN
-                    or (int)GameLanguages.PL)
+                if (choice == (int)GameLanguages.EN || choice == (int)GameLanguages.PL)
                     break;
-                else continue;
             }
             return choice;
         }

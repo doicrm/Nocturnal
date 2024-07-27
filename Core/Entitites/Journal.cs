@@ -12,7 +12,7 @@ namespace Nocturnal.Core.Entitites
             Quests = new List<Quest>();
         }
 
-        public void AddQuest(Quest quest)
+        public async Task AddQuest(Quest quest)
         {
             if (!quest.IsRunning && !quest.IsCompleted)
             {
@@ -23,37 +23,37 @@ namespace Nocturnal.Core.Entitites
                     if (q == quest) quest.Start();
                 }
 
-                UpdatedJournalFile();
-                SaveManager.UpdateSave();
+                await UpdatedJournalFile();
+                await SaveManager.UpdateSave();
             }
         }
 
-        public void EndQuest(Quest quest, QuestStatus status)
+        public async Task EndQuest(Quest quest, QuestStatus status)
         {
-            if (!quest.IsCompleted)
-            {
-                quest.End(status);
-                UpdatedJournalFile();
-                SaveManager.UpdateSave();
-            }
+            if (quest.IsCompleted) return;
+
+            quest.End(status);
+            await UpdatedJournalFile();
+            await SaveManager.UpdateSave();
         }
 
-        public void UpdatedJournalFile()
+        public async Task UpdatedJournalFile()
         {
-            string path = $"{Directory.GetCurrentDirectory()}\\journal.txt";
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "journal.txt");
 
-            using StreamWriter output = new(path);
-
-            if (IsEmpty())
+            using (StreamWriter output = new StreamWriter(path))
             {
-                output.WriteLine(Display.GetJsonString("JOURNAL.NO_QUESTS"));
-                return;
-            }
+                if (IsEmpty())
+                {
+                    await output.WriteLineAsync(Display.GetJsonString("JOURNAL.NO_QUESTS"));
+                    return;
+                }
 
-            foreach (Quest quest in Quests)
-            {
-                output.WriteLine(quest.PrintInfo());
-                output.WriteLine("..............................................................................");
+                foreach (Quest quest in Quests)
+                {
+                    await output.WriteLineAsync(quest.PrintInfo());
+                    await output.WriteLineAsync("..............................................................................");
+                }
             }
         }
 
@@ -72,14 +72,13 @@ namespace Nocturnal.Core.Entitites
             return !Quests.Any();
         }
 
-        public void ClearJournal()
+        public async Task ClearJournal()
         {
-            if (IsEmpty())
-            {
-                Quests.Clear();
-                UpdatedJournalFile();
-                SaveManager.UpdateSave();
-            }
+            if (IsEmpty()) return;
+          
+            Quests.Clear();
+            await UpdatedJournalFile();
+            await SaveManager.UpdateSave();
         }
     }
 }

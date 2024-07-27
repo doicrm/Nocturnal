@@ -6,25 +6,24 @@ namespace Nocturnal.Core.Entitites
     {
         public int OptionNr { get; set; }
         public int Choice { get; set; }
-        public IDictionary<int, KeyValuePair<string, Action>> Options { get; set; }
+        public IDictionary<int, KeyValuePair<string, Func<Task>>> Options { get; private set; }
 
         public Menu()
         {
-            Options = new Dictionary<int, KeyValuePair<string, Action>>();
+            Options = new Dictionary<int, KeyValuePair<string, Func<Task>>>();
             ClearOptions();
         }
 
-        public Menu(Dictionary<string, Action> options)
+        public Menu(Dictionary<string, Func<Task>> options)
         {
-            Options = new Dictionary<int, KeyValuePair<string, Action>>();
-            ClearOptions();
+            Options = new Dictionary<int, KeyValuePair<string, Func<Task>>>();
             AddOptions(options);
-            ShowOptions();
-            InputChoice();
+            ShowOptions().GetAwaiter().GetResult();
+            InputChoice().GetAwaiter().GetResult();
         }
 
-        public static void ActionOption(int nr, string text, int seconds = 25)
-            => Display.Write($"\n\t[{Convert.ToString(nr)}] {text}", seconds);
+        public static async Task ActionOption(int nr, string text, int seconds = 25)
+            => await Display.Write($"\n\t[{nr}] {text}", seconds);
 
         public void ShowHeroChoice()
         {
@@ -34,65 +33,82 @@ namespace Nocturnal.Core.Entitites
 
         public void ClearOptions()
         {
-            Options?.Clear();
+            Options.Clear();
             OptionNr = 1;
             Choice = 0;
         }
 
-        public void AddOptions(Dictionary<string, Action> options)
+        public void AddOptions(Dictionary<string, Func<Task>> options)
         {
             ClearOptions();
 
-            foreach (dynamic option in options)
+            foreach (var option in options)
             {
-                Options.Add(OptionNr, new KeyValuePair<string, Action>(option.Key, option.Value));
+                Options.Add(OptionNr, new KeyValuePair<string, Func<Task>>(option.Key, option.Value));
                 OptionNr += 1;
             }
         }
 
-        public void ShowOptions(int seconds = 25)
+        public async Task ShowOptions(int seconds = 25)
         {
             if (Options.Count == 0) return;
 
             Console.ResetColor();
             Console.WriteLine();
 
-            foreach (dynamic option in Options)
+            foreach (var option in Options)
             {
-                ActionOption(option.Key, option.Value.Key, seconds);
+                await ActionOption(option.Key, option.Value.Key, seconds);
             }
         }
 
-        public void InputChoice()
+        public async Task InputChoice()
         {
-            Console.WriteLine();
+            //Console.WriteLine();
 
+            //while (true)
+            //{
+            //    Choice = Input.GetChoice();
+
+            //    if (Choice <= Options.Count && Choice > 0)
+            //    {
+            //        ExecuteSelectedAction();
+            //        break;
+            //    }
+
+            //    continue;
+            //}
+
+            Console.WriteLine();
             while (true)
             {
-                Choice = Input.GetChoice();
-
-                if (Choice <= Options.Count && Choice > 0)
+                Choice = await Input.GetChoice();
+                if (Options.ContainsKey(Choice))
                 {
-                    CallFunction();
+                    await ExecuteSelectedAction();
                     break;
                 }
-
-                continue;
+                Console.WriteLine("Invalid choice. Please select a valid option.");
             }
         }
 
-        public int GetInputChoice()
+        public async ValueTask<int> GetInputChoice()
         {
-            Choice = Input.GetChoice();
+            Choice = await Input.GetChoice();
             return Choice;
         }
 
-        public void CallFunction()
+        public async Task ExecuteSelectedAction()
         {
-            Action func = Options[Choice].Value;
+            //Action selectedAction = Options[Choice].Value;
+            //Console.Clear();
+            //ShowHeroChoice();
+            //selectedAction.Invoke();
+
+            Func<Task> selectedAction = Options[Choice].Value;
             Console.Clear();
             ShowHeroChoice();
-            func.Invoke();
+            await selectedAction();
         }
     }
 }

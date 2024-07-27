@@ -1,6 +1,5 @@
 ﻿using Nocturnal.Core.System;
 using Nocturnal.Core.System.Utilities;
-using static Nocturnal.Core.System.Utilities.Logger;
 
 namespace Nocturnal.Core.Entitites
 {
@@ -47,15 +46,14 @@ namespace Nocturnal.Core.Entitites
 
         public void Start()
         {
-            if (Status != QuestStatus.Running)
-            {
-                IsCompleted = false;
-                IsRunning = true;
-                Status = QuestStatus.Running;
+            if (Status == QuestStatus.Running) return;
 
-                Console.ResetColor();
-                Console.WriteLine($"\n\n\t{Display.GetJsonString("NEW_QUEST")}: {Name}");
-            }
+            IsCompleted = false;
+            IsRunning = true;
+            Status = QuestStatus.Running;
+
+            Console.ResetColor();
+            Console.WriteLine($"\n\n\t{Display.GetJsonString("NEW_QUEST")}: {Name}");
         }
 
         public void End(QuestStatus status)
@@ -71,15 +69,15 @@ namespace Nocturnal.Core.Entitites
             {
                 return Display.GetJsonString("QUEST_STATUS.RUNNING").ToLower();
             }
-            else if (Status is QuestStatus.Success)
+            if (Status is QuestStatus.Success)
             {
                 return Display.GetJsonString("QUEST_STATUS.SUCCESS").ToLower();
             }
-            else if (Status is QuestStatus.Failed)
+            if (Status is QuestStatus.Failed)
             {
                 return Display.GetJsonString("QUEST_STATUS.FAILED").ToLower();
             }
-            else if (Status is QuestStatus.Obsolete)
+            if (Status is QuestStatus.Obsolete)
             {
                 return Display.GetJsonString("QUEST_STATUS.OBSOLETE").ToLower();
             }

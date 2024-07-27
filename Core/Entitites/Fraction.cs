@@ -35,9 +35,9 @@ namespace Nocturnal.Core.Entitites
         {
             if (Attitude is Attitudes.Angry)
                 return Display.GetJsonString("ATTITUDE.ANGRY").ToLower();
-            else if (Attitude is Attitudes.Hostile)
+            if (Attitude is Attitudes.Hostile)
                 return Display.GetJsonString("ATTITUDE.HOSTILE").ToLower();
-            else if (Attitude is Attitudes.Friendly)
+            if (Attitude is Attitudes.Friendly)
                 return Display.GetJsonString("ATTITUDE.FRIENDLY").ToLower();
             return Display.GetJsonString("ATTITUDE.NEUTRAL").ToLower();
         }

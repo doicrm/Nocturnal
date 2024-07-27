@@ -6,15 +6,12 @@ namespace Nocturnal.Core.System
     {
         public static Game? Game { get; private set; }
 
-        static void Main()
+        static async Task Main()
         {
-            Logger.WriteLog("Program runs");
+            await Logger.WriteLog("Program runs");
             Game = Game.Instance;
-
-            if (GameSettings.LoadConfigFile())
-            {
-                Game.Run();
-            }
+            if (!await GameSettings.LoadConfigFile()) return;
+            await Game.Run();
         }
     }
 }

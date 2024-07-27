@@ -92,14 +92,14 @@ namespace Nocturnal.Core.Entitites.Characters
             }
         }
 
-        public void SetAttitude(Attitudes attitude)
+        public async Task SetAttitude(Attitudes attitude)
         {
             if (Attitude == attitude) return;
             Attitude = attitude;
-            PrintAttitude();
+            await PrintAttitude();
         }
 
-        public void PrintAttitude()
+        public async Task PrintAttitude()
         {
             string attitude;
 
@@ -125,18 +125,18 @@ namespace Nocturnal.Core.Entitites.Characters
             }
 
             if (GameSettings.Lang == (int)GameLanguages.EN)
-                Display.Write($"\t{Name} is {attitude} now.\n");
+                await Display.Write($"\t{Name} is {attitude} now.\n");
             else
-                Display.Write($"\t{Name} jest teraz {attitude}.\n");
+                await Display.Write($"\t{Name} jest teraz {attitude}.\n");
             Console.ResetColor();
         }
 
         public bool IsDead() { return Status == NpcStatus.Dead; }
 
-        public void AddItem(Item item) => Inventory!.AddItem(item);
-        public void RemoveItem(Item item) => Inventory!.RemoveItem(item);
+        public async Task AddItem(Item item) => await Inventory!.AddItem(item);
+        public async Task RemoveItem(Item item) => await Inventory!.RemoveItem(item);
         public void ShowInventory() => Inventory!.Show();
-        public void ClearInventory() => Inventory!.Clear();
+        public async Task ClearInventory() => await Inventory!.Clear();
         public bool HasItem(Item item) { return Inventory!.HasItem(item); }
 
         public static void InsertInstances()
