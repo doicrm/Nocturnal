@@ -14,11 +14,11 @@ namespace Nocturnal.Core.Events.Prologue
         public static async Task EnterClub()
         {
             await Display.WriteNarration($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.ENTER_01")}");
-            Thread.Sleep(1000);
+            await Task.Delay(1000);
             await Display.WriteNarration($" {Display.GetJsonString("NIGHTCLUB_EDEN.ENTER_02")}");
-            Thread.Sleep(1000);
+            await Task.Delay(1000);
             await Display.WriteNarration($" {Display.GetJsonString("NIGHTCLUB_EDEN.ENTER_03")}");
-            Thread.Sleep(1000);
+            await Task.Delay(1000);
             await Display.WriteNarration($" {Display.GetJsonString("NIGHTCLUB_EDEN.ENTER_04")}");
 
             _ = new InteractiveMenu(new Dictionary<string, Func<Task>>
@@ -35,15 +35,15 @@ namespace Nocturnal.Core.Events.Prologue
             if (!Globals.Npcs["Luna"].IsKnowHero)
             {
                 await Display.WriteNarration($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.DANCE_FLOOR_01")}");
-                Thread.Sleep(1000);
+                await Task.Delay(1000);
                 await Display.WriteNarration($" {Display.GetJsonString("NIGHTCLUB_EDEN.DANCE_FLOOR_02")}");
-                Thread.Sleep(1500);
+                await Task.Delay(1500);
                 await Display.WriteNarration($" {Display.GetJsonString("NIGHTCLUB_EDEN.DANCE_FLOOR_03")}");
-                Thread.Sleep(1500);
+                await Task.Delay(1500);
                 await Display.WriteNarration($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.DANCE_FLOOR_04")}");
-                Thread.Sleep(1000);
+                await Task.Delay(1000);
                 await Display.WriteNarration($" {Display.GetJsonString("NIGHTCLUB_EDEN.DANCE_FLOOR_05")}");
-                Thread.Sleep(1500);
+                await Task.Delay(1500);
                 await Display.WriteNarration($" {Display.GetJsonString("NIGHTCLUB_EDEN.DANCE_FLOOR_06")}");
 
                 _ = new InteractiveMenu(new Dictionary<string, Func<Task>>
@@ -57,32 +57,32 @@ namespace Nocturnal.Core.Events.Prologue
             }
             else
             {
-                await Display.WriteNarration($"\t{Globals.JsonReader!["NIGHTCLUB_EDEN.DANCE_FLOOR_01"]}");
-                Thread.Sleep(1000);
-                await Display.WriteNarration($" {Globals.JsonReader!["NIGHTCLUB_EDEN.DANCE_FLOOR_07"]}");
-                Thread.Sleep(1500);
+                await Display.WriteNarration($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.DANCE_FLOOR_01")}");
+                await Task.Delay(1000);
+                await Display.WriteNarration($" {Display.GetJsonString("NIGHTCLUB_EDEN.DANCE_FLOOR_07")}");
+                await Task.Delay(1500);
                 await Crossroads();
             }
         }
 
         public static async Task ClubDanceFloor_01()
         {
-            await Display.WriteNarration($"\t{Globals.JsonReader!["NIGHTCLUB_EDEN.DANCE_FLOOR_08"]}");
-            await Display.WriteDialogue($"\n\t{Globals.JsonReader!["NIGHTCLUB_EDEN.DANCE_FLOOR_09"]}");
+            await Display.WriteNarration($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.DANCE_FLOOR_08")}");
+            await Display.WriteDialogue($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.DANCE_FLOOR_09")}");
         }
 
         public static async Task ClubDanceFloor_02()
         {
-            await Display.WriteNarration($"\t{Globals.JsonReader!["NIGHTCLUB_EDEN.DANCE_FLOOR_08"]}");
-            await Display.WriteDialogue($"\n\t{Globals.JsonReader!["NIGHTCLUB_EDEN.DANCE_FLOOR_10"]}");
-            await Display.WriteNarration($"\n\t{Globals.JsonReader!["NIGHTCLUB_EDEN.DANCE_FLOOR_11"]}");
-            await Display.WriteDialogue($"\n\t{Globals.JsonReader!["NIGHTCLUB_EDEN.DANCE_FLOOR_12"]}");
+            await Display.WriteNarration($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.DANCE_FLOOR_08")}");
+            await Display.WriteDialogue($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.DANCE_FLOOR_10")}");
+            await Display.WriteNarration($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.DANCE_FLOOR_11")}");
+            await Display.WriteDialogue($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.DANCE_FLOOR_12")}");
         }
 
         public static async Task ClubDanceFloor_03()
         {
-            await Display.WriteNarration($"\t{Globals.JsonReader!["NIGHTCLUB_EDEN.DANCE_FLOOR_08"]}");
-            await Display.WriteDialogue($"\n\t{Globals.JsonReader!["NIGHTCLUB_EDEN.DANCE_FLOOR_13"]}");
+            await Display.WriteNarration($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.DANCE_FLOOR_08")}");
+            await Display.WriteDialogue($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.DANCE_FLOOR_13")}");
         }
 
         public static async Task ClubBar()
@@ -90,8 +90,8 @@ namespace Nocturnal.Core.Events.Prologue
             if (!Program.Game!.StoryGlobals.PC_IsAtBar)
             {
                 Program.Game!.StoryGlobals.PC_IsAtBar = true;
-                await Display.WriteNarration($"\t{Globals.JsonReader!["NIGHTCLUB_EDEN.BAR_01"]}");
-                await Display.WriteDialogue($"\n\t{Globals.JsonReader!["NIGHTCLUB_EDEN.BAR_02"]}");
+                await Display.WriteNarration($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.BAR_01")}");
+                await Display.WriteDialogue($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.BAR_02")}");
             };
 
             _ = new InteractiveMenu(new Dictionary<string, Func<Task>>
@@ -104,34 +104,34 @@ namespace Nocturnal.Core.Events.Prologue
 
         public static async Task ClubBar_01()
         {
-            await Display.WriteDialogue($"\t{Globals.JsonReader!["NIGHTCLUB_EDEN.BAR_03"]}");
-            Thread.Sleep(1000);
-            await Display.WriteDialogue($" {Globals.JsonReader!["NIGHTCLUB_EDEN.BAR_04"]}");
-            Thread.Sleep(1500);
-            await Display.WriteNarration($"\n\t{Globals.JsonReader!["NIGHTCLUB_EDEN.BAR_05"]}");
-            Thread.Sleep(1500);
-            await Display.WriteNarration($"\n\t{Globals.JsonReader!["NIGHTCLUB_EDEN.BAR_06"]}");
-            Thread.Sleep(1000);
-            await Display.WriteNarration($" {Globals.JsonReader!["NIGHTCLUB_EDEN.BAR_07"]}.");
-            await Display.WriteDialogue($"\n\t{Globals.JsonReader!["NIGHTCLUB_EDEN.BAR_08"]}");
+            await Display.WriteDialogue($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.BAR_03")}");
+            await Task.Delay(1000);
+            await Display.WriteDialogue($" {Display.GetJsonString("NIGHTCLUB_EDEN.BAR_04")}");
+            await Task.Delay(1500);
+            await Display.WriteNarration($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.BAR_05")}");
+            await Task.Delay(1500);
+            await Display.WriteNarration($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.BAR_06")}");
+            await Task.Delay(1000);
+            await Display.WriteNarration($" {Display.GetJsonString("NIGHTCLUB_EDEN.BAR_07")}.");
+            await Display.WriteDialogue($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.BAR_08")}");
             await ClubBar();
         }
 
         public static async Task ClubBar_02()
         {
-            await Display.WriteNarration($"\t{Globals.JsonReader!["NIGHTCLUB_EDEN.BAR_09"]}");
-            await Display.WriteDialogue($"\n\t{Globals.JsonReader!["NIGHTCLUB_EDEN.BAR_10"]}");
-            Thread.Sleep(1500);
-            await Display.WriteDialogue($" {Globals.JsonReader!["NIGHTCLUB_EDEN.BAR_11"]}");
-            Thread.Sleep(1000);
-            await Display.WriteDialogue($" {Globals.JsonReader!["NIGHTCLUB_EDEN.BAR_12"]}");
+            await Display.WriteNarration($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.BAR_09")}");
+            await Display.WriteDialogue($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.BAR_10")}");
+            await Task.Delay(1500);
+            await Display.WriteDialogue($" {Display.GetJsonString("NIGHTCLUB_EDEN.BAR_11")}");
+            await Task.Delay(1000);
+            await Display.WriteDialogue($" {Display.GetJsonString("NIGHTCLUB_EDEN.BAR_12")}");
             await ClubBar();
         }
 
         public static async Task ClubBar_03()
         {
-            await Display.WriteNarration($"\t{Globals.JsonReader!["NIGHTCLUB_EDEN.BAR_13"]}");
-            await Display.WriteDialogue($"\n\t{Globals.JsonReader!["NIGHTCLUB_EDEN.BAR_14"]}\n");
+            await Display.WriteNarration($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.BAR_13")}");
+            await Display.WriteDialogue($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.BAR_14")}\n");
             Program.Game!.StoryGlobals.PC_IsAtBar = false;
             await Crossroads();
         }
@@ -147,24 +147,24 @@ namespace Nocturnal.Core.Events.Prologue
             });
 
             await Display.WriteDialogue($"\t{Globals.JsonReader!["NIGHTCLUB_EDEN.LUNA_MEETING_01"]}");
-            Thread.Sleep(1000);
+            await Task.Delay(1000);
             await Display.WriteDialogue($" {Globals.JsonReader!["NIGHTCLUB_EDEN.LUNA_MEETING_02"]}");
             await Globals.Player.AddQuest(Globals.Quests["KillHex"]);
             Console.WriteLine();
-            Thread.Sleep(1500);
+            await Task.Delay(1500);
             await Display.WriteNarration($"\t{Globals.JsonReader!["NIGHTCLUB_EDEN.LUNA_MEETING_03"]}");
             await Display.WriteDialogue($"\n\t{Globals.JsonReader!["NIGHTCLUB_EDEN.LUNA_MEETING_04"]}");
 
             if (Globals.Player.HasItem(Globals.Items["Pistol"]))
             {
                 await Display.WriteDialogue($"\n\t{Globals.JsonReader!["NIGHTCLUB_EDEN.LUNA_MEETING_05"]}");
-                Thread.Sleep(1000);
+                await Task.Delay(1000);
                 await Display.WriteDialogue($" {Globals.JsonReader!["NIGHTCLUB_EDEN.LUNA_MEETING_06"]}");
             }
             else
             {
                 await Display.WriteDialogue($"\n\t{Globals.JsonReader!["NIGHTCLUB_EDEN.LUNA_MEETING_07"]}");
-                Thread.Sleep(1000);
+                await Task.Delay(1000);
                 await Display.WriteDialogue($" {Globals.JsonReader!["NIGHTCLUB_EDEN.LUNA_MEETING_08"]}");
                 Globals.Player.Money = 200.0f;
 
@@ -174,7 +174,7 @@ namespace Nocturnal.Core.Events.Prologue
 
                 await Display.WriteDialogue($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.LUNA_MEETING_09")}");
                 await Display.WriteDialogue($" {Display.GetJsonString("NIGHTCLUB_EDEN.LUNA_MEETING_10")}");
-                Thread.Sleep(1000);
+                await Task.Delay(1000);
                 await Display.WriteDialogue($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.LUNA_MEETING_11")}");
             }
 
@@ -302,9 +302,9 @@ namespace Nocturnal.Core.Events.Prologue
                 await Globals.Npcs["Jet"].SetAttitude(Attitudes.Hostile);
                 await Display.WriteDialogue($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.DIA_JET_16")}");
                 await Display.WriteNarration($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.DIA_JET_17")}");
-                Thread.Sleep(2500);
+                await Task.Delay(2500);
                 Console.Clear();
-                Thread.Sleep(2500);
+                await Task.Delay(2500);
                 await WakeUpAfterMeetingWithJet();
             }
         }
@@ -312,17 +312,17 @@ namespace Nocturnal.Core.Events.Prologue
         public static async Task WakeUpAfterMeetingWithJet()
         {
             await Display.WriteNarration($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.GET_STUNNED_01")}", 65);
-            Thread.Sleep(1000);
+            await Task.Delay(1000);
             await Display.WriteNarration($" {Display.GetJsonString("NIGHTCLUB_EDEN.GET_STUNNED_02")}", 60);
-            Thread.Sleep(1500);
+            await Task.Delay(1500);
             await Display.WriteNarration(Display.GetJsonString("NIGHTCLUB_EDEN.GET_STUNNED_03"));
-            Thread.Sleep(1500);
+            await Task.Delay(1500);
             await Display.WriteNarration($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.GET_STUNNED_04")}");
-            Thread.Sleep(1000);
+            await Task.Delay(1000);
             await Display.WriteNarration($" {Display.GetJsonString("NIGHTCLUB_EDEN.GET_STUNNED_05")}");
-            Thread.Sleep(500);
+            await Task.Delay(500);
             await Display.WriteNarration($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.GET_STUNNED_06")}");
-            Thread.Sleep(1000);
+            await Task.Delay(1000);
             await Display.WriteNarration($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.GET_STUNNED_07")}");
 
             Random rnd = new(); int rand = rnd.Next(0, 10);
@@ -355,7 +355,7 @@ namespace Nocturnal.Core.Events.Prologue
         public static async Task HexHideoutCode()
         {
             await Display.WriteNarration($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.HEX_HIDEOUT_CODE_01")}");
-            Thread.Sleep(1500);
+            await Task.Delay(1500);
 
             if (!Program.Game!.StoryGlobals.PC_KnowsHexCode)
             {
@@ -375,7 +375,7 @@ namespace Nocturnal.Core.Events.Prologue
         public static async Task RightAccessCode()
         {
             await Display.WriteNarration($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.RIGHT_ACCES_CODE_01")}");
-            Thread.Sleep(2000);
+            await Task.Delay(2000);
             await Display.WriteNarration($" {Display.GetJsonString("NIGHTCLUB_EDEN.RIGHT_ACCES_CODE_02")}");
             await HexHideout();
         }
@@ -384,11 +384,11 @@ namespace Nocturnal.Core.Events.Prologue
         {
             Globals.Npcs["HexFolstam"].Status = NpcStatus.Unconscious;
             await Display.WriteNarration($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.HEX_HIDEOUT_01")}");
-            Thread.Sleep(2000);
+            await Task.Delay(2000);
             await Display.WriteNarration($" {Display.GetJsonString("NIGHTCLUB_EDEN.HEX_HIDEOUT_02")}");
-            Thread.Sleep(1500);
+            await Task.Delay(1500);
             await Display.WriteNarration($" {Display.GetJsonString("NIGHTCLUB_EDEN.HEX_HIDEOUT_03")}");
-            Thread.Sleep(2000);
+            await Task.Delay(2000);
             await Display.WriteNarration($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.HEX_HIDEOUT_04")}");
 
             _ = new InteractiveMenu(new Dictionary<string, Func<Task>>
@@ -401,7 +401,7 @@ namespace Nocturnal.Core.Events.Prologue
         public static async Task HexHideout_01()
         {
             await Display.WriteNarration($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.HEX_HIDEOUT_05")}");
-            Thread.Sleep(1500);
+            await Task.Delay(1500);
             Globals.Npcs["HexFolstam"].Status = NpcStatus.Dead;
             await Display.WriteNarration($" {Display.GetJsonString("NIGHTCLUB_EDEN.HEX_HIDEOUT_06")}");
             await LunaAppears();
@@ -410,12 +410,12 @@ namespace Nocturnal.Core.Events.Prologue
         public static async Task HexHideout_02()
         {
             await Display.WriteNarration($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.HEX_HIDEOUT_07")}");
-            Thread.Sleep(1000);
+            await Task.Delay(1000);
             await Display.WriteNarration($" {Display.GetJsonString("NIGHTCLUB_EDEN.HEX_HIDEOUT_08")}");
-            Thread.Sleep(1500);
+            await Task.Delay(1500);
             Globals.Npcs["HexFolstam"].Status = NpcStatus.Normal;
             await Display.WriteNarration($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.HEX_HIDEOUT_09")}");
-            Thread.Sleep(1000);
+            await Task.Delay(1000);
             await Display.WriteNarration($" {Display.GetJsonString("NIGHTCLUB_EDEN.HEX_HIDEOUT_10")}");
             await Display.WriteDialogue($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.HEX_HIDEOUT_11")}");
             await DialogueWithHex();
@@ -443,14 +443,14 @@ namespace Nocturnal.Core.Events.Prologue
         public static async Task LunaAppears()
         {
             await Display.WriteNarration($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.LUNA_APPEARS_01")}");
-            Thread.Sleep(1000);
+            await Task.Delay(1000);
             await Display.WriteNarration($" {Display.GetJsonString("NIGHTCLUB_EDEN.LUNA_APPEARS_02")}");
             await Display.WriteDialogue($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.LUNA_APPEARS_03")}");
-            Thread.Sleep(1500);
+            await Task.Delay(1500);
             await Display.WriteNarration($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.LUNA_APPEARS_04")}");
-            Thread.Sleep(1000);
+            await Task.Delay(1000);
             await Display.WriteDialogue($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.LUNA_APPEARS_05")}");
-            Thread.Sleep(1000);
+            await Task.Delay(1000);
             await Display.WriteNarration($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.LUNA_APPEARS_06")}");
 
             _ = new InteractiveMenu(new Dictionary<string, Func<Task>>
@@ -466,16 +466,16 @@ namespace Nocturnal.Core.Events.Prologue
         {
             await Display.WriteNarration($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.DIA_HEX_01")}");
             await Display.WriteDialogue($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.DIA_HEX_02")}");
-            Thread.Sleep(1000);
+            await Task.Delay(1000);
             await Display.WriteDialogue($" {Display.GetJsonString("NIGHTCLUB_EDEN.DIA_HEX_03")}");
-            Thread.Sleep(1000);
+            await Task.Delay(1000);
             await Display.WriteDialogue($" {Display.GetJsonString("NIGHTCLUB_EDEN.DIA_HEX_04")}");
         }
 
         public static async Task DialogueWithHex_02()
         {
             await Display.WriteDialogue($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.DIA_HEX_05")}");
-            Thread.Sleep(1000);
+            await Task.Delay(1000);
             await HexDeath();
         }
 
@@ -487,7 +487,7 @@ namespace Nocturnal.Core.Events.Prologue
         public static async Task DialogueWithHex_04()
         {
             await Display.WriteDialogue($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.DIA_HEX_06")}");
-            Thread.Sleep(1500);
+            await Task.Delay(1500);
             await HexDeath();
         }
 
@@ -512,39 +512,39 @@ namespace Nocturnal.Core.Events.Prologue
 
         public static async Task HexDeath()
         {
-            await Display.WriteNarration($"\n\t{Globals.JsonReader!["NIGHTCLUB_EDEN.HEX_DEATH_01"]}");
-            Thread.Sleep(1000);
-            await Display.WriteNarration($" {Globals.JsonReader!["NIGHTCLUB_EDEN.HEX_DEATH_02"]}");
-            Thread.Sleep(1500);
-            await Display.WriteNarration($" {Globals.JsonReader!["NIGHTCLUB_EDEN.HEX_DEATH_03"]}");
+            await Display.WriteNarration($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.HEX_DEATH_01")}");
+            await Task.Delay(1000);
+            await Display.WriteNarration($" {Display.GetJsonString("NIGHTCLUB_EDEN.HEX_DEATH_02")}");
+            await Task.Delay(1500);
+            await Display.WriteNarration($" {Display.GetJsonString("NIGHTCLUB_EDEN.HEX_DEATH_03")}");
             Globals.Npcs["HexFolstam"].Status = NpcStatus.Dead;
-            await Display.WriteNarration($"\n\t{Globals.JsonReader!["NIGHTCLUB_EDEN.HEX_DEATH_04"]}");
-            Thread.Sleep(1000);
-            await Display.WriteNarration($" {Globals.JsonReader!["NIGHTCLUB_EDEN.HEX_DEATH_05"]}");
+            await Display.WriteNarration($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.HEX_DEATH_04")}");
+            await Task.Delay(1000);
+            await Display.WriteNarration($" {Display.GetJsonString("NIGHTCLUB_EDEN.HEX_DEATH_05")}");
             await LunaAppears();
         }
 
         public static async Task HexResurrection()
         {
-            await Display.WriteNarration($"\n\t{Globals.JsonReader!["NIGHTCLUB_EDEN.HEX_RESSURECTION_01"]}");
-            Thread.Sleep(1000);
-            await Display.WriteNarration($" {Globals.JsonReader!["NIGHTCLUB_EDEN.HEX_RESSURECTION_02"]}");
+            await Display.WriteNarration($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.HEX_RESSURECTION_01")}");
+            await Task.Delay(1000);
+            await Display.WriteNarration($" {Display.GetJsonString("NIGHTCLUB_EDEN.HEX_RESSURECTION_02")}");
             Console.ForegroundColor = ConsoleColor.Blue;
-            await Display.Write($"\n\t{Globals.JsonReader!["NIGHTCLUB_EDEN.HEX_RESSURECTION_03"]}");
-            Thread.Sleep(1000);
-            await Display.Write($" {Globals.JsonReader!["NIGHTCLUB_EDEN.HEX_RESSURECTION_04"]}");
-            Thread.Sleep(1000);
-            await Display.Write($" {Globals.JsonReader!["NIGHTCLUB_EDEN.HEX_RESSURECTION_05"]}");
-            await Display.WriteNarration($"\n\t{Globals.JsonReader!["NIGHTCLUB_EDEN.HEX_RESSURECTION_06"]}");
-            await Display.WriteDialogue($"\n\t{Globals.JsonReader!["NIGHTCLUB_EDEN.HEX_RESSURECTION_07"]}");
+            await Display.Write($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.HEX_RESSURECTION_03")}");
+            await Task.Delay(1000);
+            await Display.Write($" {Display.GetJsonString("NIGHTCLUB_EDEN.HEX_RESSURECTION_04")}");
+            await Task.Delay(1000);
+            await Display.Write($" {Display.GetJsonString("NIGHTCLUB_EDEN.HEX_RESSURECTION_05")}");
+            await Display.WriteNarration($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.HEX_RESSURECTION_06")}");
+            await Display.WriteDialogue($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.HEX_RESSURECTION_07")}");
             Console.ForegroundColor = ConsoleColor.Blue;
-            await Display.Write($"\n\t{Globals.JsonReader!["NIGHTCLUB_EDEN.HEX_RESSURECTION_08"]}");
-            Thread.Sleep(1500);
+            await Display.Write($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.HEX_RESSURECTION_08")}");
+            await Task.Delay(1500);
             Console.ForegroundColor = ConsoleColor.Blue;
-            await Display.Write($" {Globals.JsonReader!["NIGHTCLUB_EDEN.HEX_RESSURECTION_09"]}");
-            Thread.Sleep(1000);
-            await Display.Write($" {Globals.JsonReader!["NIGHTCLUB_EDEN.HEX_RESSURECTION_10"]}");
-            Thread.Sleep(3000);
+            await Display.Write($" {Display.GetJsonString("NIGHTCLUB_EDEN.HEX_RESSURECTION_09")}");
+            await Task.Delay(1000);
+            await Display.Write($" {Display.GetJsonString("NIGHTCLUB_EDEN.HEX_RESSURECTION_10")}");
+            await Task.Delay(3000);
             await Event.EndGame();
         }
 

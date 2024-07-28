@@ -310,7 +310,7 @@ namespace Nocturnal.Core.Events.Prologue
         {
             await AcceleratorFinding();
             await Display.WriteNarration($"{Display.GetJsonString("DARK_ALLEY.CROSSROADS_04")}");
-            Thread.Sleep(1500);
+            await Task.Delay(1500);
             Console.Clear();
             await Program.Game!.SetCurrentLocation(Globals.Locations["Street"]);
         }

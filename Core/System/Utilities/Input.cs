@@ -38,7 +38,7 @@
 
             char[] letters = word.ToCharArray();
             letters[0] = char.ToUpper(letters[0]);
-            return new string(letters);
+            return $"{letters}";
         }
     }
 }

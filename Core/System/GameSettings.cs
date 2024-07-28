@@ -30,7 +30,7 @@ namespace Nocturnal.Core.System
 
                 try
                 {
-                    jsonString = File.ReadAllText("config.json");
+                    jsonString = await File.ReadAllTextAsync("config.json");
                     configFileData = JsonConvert.DeserializeObject<ConfigFileData>(jsonString)!;
                 }
                 catch (Exception e)
@@ -48,7 +48,7 @@ namespace Nocturnal.Core.System
 
         public static async Task CreateConfigFile()
         {
-            Lang = await SelectLanguage();
+            Lang = SelectLanguage();
 
             var configFileData = new ConfigFileData
             {
@@ -59,7 +59,7 @@ namespace Nocturnal.Core.System
             try
             {
                 string jsonString = JsonConvert.SerializeObject(configFileData, Formatting.Indented);
-                File.WriteAllText("config.json", jsonString);
+                await File.WriteAllTextAsync("config.json", jsonString);
             }
             catch (JsonException e)
             {
@@ -76,7 +76,7 @@ namespace Nocturnal.Core.System
             try
             {
                 string path = Path.Combine(Directory.GetCurrentDirectory(), "Data\\Lang\\" + GetFileName(lang) + ".json");
-                string jsonString = File.ReadAllText(path);
+                string jsonString = await File.ReadAllTextAsync(path);
                 Globals.JsonReader = JObject.Parse(jsonString);
                 return true;
             }
@@ -87,7 +87,7 @@ namespace Nocturnal.Core.System
             }
         }
 
-        public static async ValueTask<int> SelectLanguage()
+        public static int SelectLanguage()
         {
             int choice = 0;
 

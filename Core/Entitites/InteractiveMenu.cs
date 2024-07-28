@@ -21,7 +21,7 @@
             InputChoice().GetAwaiter().GetResult();
         }
 
-        public async Task ActionOption(int nr, string text)
+        public void ActionOption(int nr, string text)
         {
             if ((Choice+1) != nr)
             {
@@ -62,7 +62,7 @@
                 .ForEach(x => Options.Add(x.OptionNr, new KeyValuePair<string, Func<Task>>(x.Key, x.Value)));
         }
 
-        public async Task ShowOptions()
+        public void ShowOptions()
         {
             if (Options.Count == 0) return;
 
@@ -70,7 +70,7 @@
             Console.WriteLine();
 
             foreach (var option in Options)
-                await ActionOption(option.Key, option.Value.Key);
+                ActionOption(option.Key, option.Value.Key);
         }
 
         public async Task InputChoice()
@@ -83,7 +83,7 @@
             {
                 Console.SetCursorPosition(left, top);
 
-                await ShowOptions();
+                ShowOptions();
 
                 Key = Console.ReadKey(true);
 

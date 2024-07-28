@@ -31,7 +31,7 @@ namespace Nocturnal.Core.System
 
             for (int i = 0; i < Constants.MAX_SAVES; i++)
             {
-                string path = $"{Directory.GetCurrentDirectory()}\\Data\\Saves\\Save{i}.dat";
+                string path = Path.Combine(Directory.GetCurrentDirectory(), $"Data\\Saves\\Save{i}.dat");
 
                 if (!File.Exists(path))
                 {
@@ -138,50 +138,50 @@ namespace Nocturnal.Core.System
         {
             if (sex == Convert.ToInt32(Genders.Male))
             {
-                return $"{Globals.JsonReader!["SEX.MALE"]}";
+                return Display.GetJsonString("SEX.MALE");
             }
             if (sex == Convert.ToInt32(Genders.Female))
             {
-                return $"{Globals.JsonReader!["SEX.FEMALE"]}";
+                return Display.GetJsonString("SEX.FEMALE");
             }
-            return $"{Globals.JsonReader!["SEX.UNDEFINED"]}";
+            return Display.GetJsonString("SEX.UNDEFINED");
         }
 
         private static string PrintName(string name)
         {
-            return name == "" ? Globals.JsonReader!["UNKNOWN"] : name;
+            return name != "" ? name : Display.GetJsonString("UNKNOWN");
         }
 
         private static string GetChapterToString(uint chapter)
         {
             if (chapter == 0 || chapter < 0)
             {
-                return $"{Globals.JsonReader!["PROLOGUE"]}";
+                return Display.GetJsonString("PROLOGUE");
             }
             if (chapter == 1 || chapter == 2 || chapter == 3)
             {
-                return $"{Globals.JsonReader!["CHAPTER"]} {chapter}";
+                return $"{Display.GetJsonString("CHAPTER")} {chapter}";
             }
-            return $"{Globals.JsonReader!["EPILOGUE"]}";
+            return Display.GetJsonString("EPILOGUE");
         }
 
         private static string GetLocationName(Location location)
         {
             if (location.ID == "DarkAlley")
             {
-                return $": {Globals.JsonReader!["LOCATION.DARK_ALLEY"]}";
+                return $": {Display.GetJsonString("LOCATION.DARK_ALLEY")}";
             }
             if (location.ID == "Street")
             {
-                return $": {Globals.JsonReader!["LOCATION.STREET"]}";
+                return $": {Display.GetJsonString("LOCATION.STREET")}";
             }
             if (location.ID == "GunShop")
             {
-                return $": {Globals.JsonReader!["LOCATION.GUN_SHOP"]}";
+                return $": {Display.GetJsonString("LOCATION.GUN_SHOP")}";
             }
             if (location.ID == "NightclubEden")
             {
-                return $": {Globals.JsonReader!["LOCATION.NIGHTCLUB_EDEN"]}";
+                return $": {Display.GetJsonString("LOCATION.NIGHTCLUB_EDEN")}";
             }
             return "";
         }

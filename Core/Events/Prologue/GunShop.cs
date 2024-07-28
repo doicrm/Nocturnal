@@ -56,7 +56,7 @@ namespace Nocturnal.Core.Events.Prologue
 
             options.Add(Display.GetJsonString("GUN_SHOP.DIA_ZED_MENU.05"), DialogueWithZed_05);
             dialogueWithZedMenu.AddOptions(options);
-            await dialogueWithZedMenu.ShowOptions();
+            dialogueWithZedMenu.ShowOptions();
             await dialogueWithZedMenu.InputChoice();
         }
 
