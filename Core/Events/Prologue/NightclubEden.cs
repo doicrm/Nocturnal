@@ -21,7 +21,7 @@ namespace Nocturnal.Core.Events.Prologue
             Thread.Sleep(1000);
             await Display.WriteNarration($" {Display.GetJsonString("NIGHTCLUB_EDEN.ENTER_04")}");
 
-            _ = new Menu(new Dictionary<string, Func<Task>>
+            _ = new InteractiveMenu(new Dictionary<string, Func<Task>>
             {
                 { Display.GetJsonString("NIGHTCLUB_EDEN.ENTER_MENU.GO_TO_DANCE_FLOOR"), ClubDanceFloor },
                 { Display.GetJsonString("NIGHTCLUB_EDEN.ENTER_MENU.GO_TO_BAR"), ClubBar },
@@ -46,7 +46,7 @@ namespace Nocturnal.Core.Events.Prologue
                 Thread.Sleep(1500);
                 await Display.WriteNarration($" {Display.GetJsonString("NIGHTCLUB_EDEN.DANCE_FLOOR_06")}");
 
-                _ = new Menu(new Dictionary<string, Func<Task>>
+                _ = new InteractiveMenu(new Dictionary<string, Func<Task>>
                 {
                     { Display.GetJsonString("NIGHTCLUB_EDEN.DANCE_FLOOR_MENU.WHATS_SHE_WANTS"), ClubDanceFloor_01 },
                     { Display.GetJsonString("NIGHTCLUB_EDEN.DANCE_FLOOR_MENU.HEY_BABY"), ClubDanceFloor_02 },
@@ -94,7 +94,7 @@ namespace Nocturnal.Core.Events.Prologue
                 await Display.WriteDialogue($"\n\t{Globals.JsonReader!["NIGHTCLUB_EDEN.BAR_02"]}");
             };
 
-            _ = new Menu(new Dictionary<string, Func<Task>>
+            _ = new InteractiveMenu(new Dictionary<string, Func<Task>>
             {
                 { Display.GetJsonString("NIGHTCLUB_EDEN.BAR_MENU.GIVE_ANYTHING"), ClubBar_01 },
                 { Display.GetJsonString("NIGHTCLUB_EDEN.BAR_MENU.WHO_RULES"), ClubBar_02 },
@@ -140,7 +140,7 @@ namespace Nocturnal.Core.Events.Prologue
         {
             Console.WriteLine();
 
-            _ = new Menu(new Dictionary<string, Func<Task>>
+            _ = new InteractiveMenu(new Dictionary<string, Func<Task>>
             {
                 { Display.GetJsonString("NIGHTCLUB_EDEN.LUNA_MEETING_MENU.WHATS_IT_ABOUT"), LunaMeeting_01 },
                 { Display.GetJsonString("NIGHTCLUB_EDEN.LUNA_MEETING_MENU.LET_HER_SPEAK"), LunaMeeting_02 }
@@ -195,7 +195,7 @@ namespace Nocturnal.Core.Events.Prologue
         {
             await Display.WriteNarration($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.UPSTAIRS_01")}");
 
-            _ = new Menu(new Dictionary<string, Func<Task>>
+            _ = new InteractiveMenu(new Dictionary<string, Func<Task>>
             {
                 { Display.GetJsonString("NIGHTCLUB_EDEN.UPSTAIRS_MENU.COME_CLOSER"), ClubUpstairs_01 },
                 { Display.GetJsonString("NIGHTCLUB_EDEN.UPSTAIRS_MENU.GO_BACK"), ClubUpstairs_02 }
@@ -328,9 +328,7 @@ namespace Nocturnal.Core.Events.Prologue
             Random rnd = new(); int rand = rnd.Next(0, 10);
 
             if (rand > 5 && rand <= 10)
-            {
                 await RandomEvents.NickHandDiscovered();
-            }
 
             await Program.Game!.SetCurrentLocation(Globals.Locations["Street"]);
         }
@@ -339,7 +337,7 @@ namespace Nocturnal.Core.Events.Prologue
         {
             await Display.WriteNarration($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.HEX_OFFICE")}");
 
-            _ = new Menu(new Dictionary<string, Func<Task>>
+            _ = new InteractiveMenu(new Dictionary<string, Func<Task>>
             {
                 { Display.GetJsonString("NIGHTCLUB_EDEN.HEX_OFFICE_MENU.GO_TO_OTHER_ROOM"), HexHideoutCode },
                 { Display.GetJsonString("NIGHTCLUB_EDEN.HEX_OFFICE_MENU.STAY_AND_SEARCH"), CheckHexDesk }
@@ -364,15 +362,14 @@ namespace Nocturnal.Core.Events.Prologue
                 await Display.WriteNarration($" {Display.GetJsonString("NIGHTCLUB_EDEN.HEX_HIDEOUT_CODE_02")}");
                 Console.WriteLine();
                 await CheckHexDesk();
+                return;
             }
-            else
+
+            _ = new InteractiveMenu(new Dictionary<string, Func<Task>>
             {
-                _ = new Menu(new Dictionary<string, Func<Task>>
-                {
-                    { Display.GetJsonString("NIGHTCLUB_EDEN.HEX_HIDEOUT_CODE_MENU.USE_CODE"), RightAccessCode },
-                    { Display.GetJsonString("NIGHTCLUB_EDEN.HEX_HIDEOUT_CODE_MENU.SEARCH_OFFICE"), CheckHexDesk }
-                });
-            }
+                { Display.GetJsonString("NIGHTCLUB_EDEN.HEX_HIDEOUT_CODE_MENU.USE_CODE"), RightAccessCode },
+                { Display.GetJsonString("NIGHTCLUB_EDEN.HEX_HIDEOUT_CODE_MENU.SEARCH_OFFICE"), CheckHexDesk }
+            });
         }
 
         public static async Task RightAccessCode()
@@ -394,7 +391,7 @@ namespace Nocturnal.Core.Events.Prologue
             Thread.Sleep(2000);
             await Display.WriteNarration($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.HEX_HIDEOUT_04")}");
 
-            _ = new Menu(new Dictionary<string, Func<Task>>
+            _ = new InteractiveMenu(new Dictionary<string, Func<Task>>
             {
                 { Display.GetJsonString("NIGHTCLUB_EDEN.HEX_HIDEOUT_MENU.KILL"), HexHideout_01 },
                 { Display.GetJsonString("NIGHTCLUB_EDEN.HEX_HIDEOUT_MENU.WAIT"), HexHideout_02 }
@@ -428,14 +425,14 @@ namespace Nocturnal.Core.Events.Prologue
         {
             await Task.Run(() =>
             {
-                _ = new Menu(new Dictionary<string, Func<Task>>
+                _ = new InteractiveMenu(new Dictionary<string, Func<Task>>
                 {
                     { Display.GetJsonString("NIGHTCLUB_EDEN.DIA_HEX_MENU_01.DIE"), DialogueWithHex_01 },
                     { Display.GetJsonString("NIGHTCLUB_EDEN.DIA_HEX_MENU_01.DONT_WANNA_FIGHT"), DialogueWithHex_02 },
                     { Display.GetJsonString("NIGHTCLUB_EDEN.DIA_HEX_MENU_01.LUNA_WANTS_YOU_DEAD"), DialogueWithHex_03 }
                 });
 
-                _ = new Menu(new Dictionary<string, Func<Task>>
+                _ = new InteractiveMenu(new Dictionary<string, Func<Task>>
                 {
                     { Display.GetJsonString("NIGHTCLUB_EDEN.DIA_HEX_MENU_02.DOESNT_MATTER"), DialogueWithHex_04 },
                     { Display.GetJsonString("NIGHTCLUB_EDEN.DIA_HEX_MENU_02.LUNA"), DialogueWithHex_05 }
@@ -456,7 +453,7 @@ namespace Nocturnal.Core.Events.Prologue
             Thread.Sleep(1000);
             await Display.WriteNarration($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.LUNA_APPEARS_06")}");
 
-            _ = new Menu(new Dictionary<string, Func<Task>>
+            _ = new InteractiveMenu(new Dictionary<string, Func<Task>>
             {
                 { Display.GetJsonString("NIGHTCLUB_EDEN.LUNA_APPEARS_MENU.DO_NOTHING"), DialogueWithHex_06 },
                 { Display.GetJsonString("NIGHTCLUB_EDEN.LUNA_APPEARS_MENU.WHAT_ITS_ABOUT"), DialogueWithHex_07 }
@@ -555,7 +552,7 @@ namespace Nocturnal.Core.Events.Prologue
         {
             await Task.Run(() =>
             {
-                _ = new Menu(new Dictionary<string, Func<Task>>
+                _ = new InteractiveMenu(new Dictionary<string, Func<Task>>
                 {
                     { Display.GetJsonString("NIGHTCLUB_EDEN.ENTER_MENU.GO_TO_DANCE_FLOOR"), ClubDanceFloor },
                     { Display.GetJsonString("NIGHTCLUB_EDEN.ENTER_MENU.GO_TO_BAR"), ClubBar },

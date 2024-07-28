@@ -8,12 +8,12 @@ namespace Nocturnal.Core.Events
         public static async Task HeroDeath()
         {
             await ClearInstances();
-            Thread.Sleep(500);
+            await Task.Delay(500);
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine();
             await Display.Write($"{Display.GetJsonString("YOU_ARE_DEAD")}");
-            Thread.Sleep(1000);
+            await Task.Delay(1000);
             Console.ResetColor();
             await Display.Write($"{Display.GetJsonString("BACK_TO_MENU")}", 25);
             Console.ReadKey();
@@ -24,12 +24,12 @@ namespace Nocturnal.Core.Events
         public static async Task GameOver()
         {
             await ClearInstances();
-            Thread.Sleep(500);
+            await Task.Delay(500);
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine();
             await Display.Write($"{Display.GetJsonString("GAME_OVER")}", 25);
-            Thread.Sleep(2000);
+            await Task.Delay(2000);
             Console.ResetColor();
             Console.Clear();
             await Program.Game!.LoadLogo();
@@ -51,14 +51,14 @@ namespace Nocturnal.Core.Events
         {
             await ClearInstances();
             Console.Clear();
-            Thread.Sleep(500);
+            await Task.Delay(500);
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine();
             await Display.Write($"\t{Display.GetJsonString("GAME_OVER")}\n\n", 25);
-            Thread.Sleep(2000);
+            await Task.Delay(2000);
             Console.ResetColor();
             await Display.Write($"\t{Display.GetJsonString("THANKS_FOR_PLAYING")}");
-            Thread.Sleep(3500);
+            await Task.Delay(3500);
             Console.Clear();
             await Program.Game!.End();
         }

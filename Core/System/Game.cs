@@ -34,7 +34,7 @@ namespace Nocturnal.Core.System
             ChangeConsoleName();
             Settings = new();
             StoryGlobals = StoryGlobals.Instance;
-            Logger.WriteLog("Game initialized").GetAwaiter().GetResult(); ;
+            Logger.WriteLog("Game initialized").GetAwaiter().GetResult();
         }
 
         public async Task Run()
@@ -91,7 +91,7 @@ namespace Nocturnal.Core.System
             {
                 Console.ResetColor();
                 Console.WriteLine();
-                _ = new Menu(new Dictionary<string, Func<Task>>()
+                _ = new InteractiveMenu(new Dictionary<string, Func<Task>>()
                 {
                     { Display.GetJsonString("MAIN_MENU.NEW_GAME"), NewGame },
                     { Display.GetJsonString("MAIN_MENU.LOAD_GAME"), LoadGame },
@@ -128,7 +128,7 @@ namespace Nocturnal.Core.System
         {
             Console.Clear();
             await Display.Write($"\n\t{Display.GetJsonString("QUIT_GAME")}", 25);
-            _ = new Menu(new Dictionary<string, Func<Task>>()
+            _ = new InteractiveMenu(new Dictionary<string, Func<Task>>()
             {
                 { Display.GetJsonString("YES"), End },
                 { Display.GetJsonString("NO"), LoadLogo }
@@ -154,8 +154,7 @@ namespace Nocturnal.Core.System
                 await SaveManager.UpdateSave();
             }
 
-            if (CurrentLocation == null && !Globals.Locations["DarkAlley"].IsVisited)
-            {
+            if (CurrentLocation == null && !Globals.Locations["DarkAlley"].IsVisited) {
                 location = Globals.Locations["DarkAlley"];
             }
 
@@ -167,28 +166,28 @@ namespace Nocturnal.Core.System
 
         public static async Task InitHeroInventory()
         {
-            if (Globals.Player.Inventory!.IsEmpty())
+            if (!Globals.Player.Inventory!.IsEmpty())
             {
-                string path = Path.Combine(Directory.GetCurrentDirectory(), "Inventory.txt");
-                using StreamWriter output = new(path);
-                await output.WriteLineAsync(Display.GetJsonString("INVENTORY.NO_ITEMS"));
+                await Globals.Player.Inventory!.UpdateFile();
                 return;
             }
 
-            await Globals.Player.Inventory!.UpdateFile();
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "Inventory.txt");
+            using StreamWriter output = new(path);
+            await output.WriteLineAsync(Display.GetJsonString("INVENTORY.NO_ITEMS"));
         }
 
         public static async Task InitHeroJournal()
         {
-            if (Globals.Player.Journal!.IsEmpty())
+            if (!Globals.Player.Journal!.IsEmpty())
             {
-                string path = Path.Combine(Directory.GetCurrentDirectory(), "Journal.txt");
-                using StreamWriter output = new(path);
-                await output.WriteLineAsync(Display.GetJsonString("JOURNAL.NO_QUESTS"));
+                await Globals.Player.Journal!.UpdatedJournalFile();
                 return;
             }
 
-            await Globals.Player.Journal!.UpdatedJournalFile();
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "Journal.txt");
+            using StreamWriter output = new(path);
+            await output.WriteLineAsync(Display.GetJsonString("JOURNAL.NO_QUESTS"));
         }
 
         public static void InitLocations()

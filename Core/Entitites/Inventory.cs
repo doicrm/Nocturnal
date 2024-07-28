@@ -46,7 +46,7 @@ namespace Nocturnal.Core.Entitites
 
         public async Task Clear()
         {
-            if (IsEmpty()) return;
+            if (!IsEmpty()) return;
 
             Items.Clear();
             await UpdateFile();

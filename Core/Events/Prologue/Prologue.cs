@@ -8,9 +8,9 @@ namespace Nocturnal.Core.Events.Prologue
         public static async Task Prologue()
         {
             Globals.Chapter = 0;
-            await Display.Write($"\n\t{Globals.JsonReader!["PROLOGUE"]}");
+            await Display.Write($"\n\t{Display.GetJsonString("PROLOGUE")}");
             await Task.Delay(2000);
-            await Display.Write($"\n\n\t{Globals.JsonReader!["PARADISE_LOST"]}");
+            await Display.Write($"\n\n\t{Display.GetJsonString("PARADISE_LOST")}");
             await Task.Delay(5000);
             Console.Clear();
             await StoryIntroduction();
@@ -18,18 +18,18 @@ namespace Nocturnal.Core.Events.Prologue
 
         public static async Task StoryIntroduction()
         {
-            await Display.Write($"\n\t{Globals.JsonReader!["INTRO_01"]}");
+            await Display.Write($"\n\t{Display.GetJsonString("INTRO_01")}");
             await Task.Delay(1000);
-            await Display.Write($" {Globals.JsonReader!["INTRO_02"]}\n\n", 20);
+            await Display.Write($" {Display.GetJsonString("INTRO_02")}\n\n", 20);
             await Game.Pause();
             Console.Clear();
             Console.WriteLine();
             await Task.Delay(2500);
-            await Display.WriteNarration($"\t{Globals.JsonReader!["INTRO_03"]}", 75);
+            await Display.WriteNarration($"\t{Display.GetJsonString("INTRO_03")}", 75);
             await Task.Delay(2500);
-            await Display.WriteNarration($"\n\t{Globals.JsonReader!["INTRO_04"]}", 75);
+            await Display.WriteNarration($"\n\t{Display.GetJsonString("INTRO_04")}", 75);
             await Task.Delay(2500);
-            await Display.WriteNarration($"\n\t{Globals.JsonReader!["INTRO_05"]}", 75);
+            await Display.WriteNarration($"\n\t{Display.GetJsonString("INTRO_05")}", 75);
             await Task.Delay(3000);
             Console.Clear();
 
@@ -114,7 +114,7 @@ namespace Nocturnal.Core.Events.Prologue
 
         public static async Task VisitGunShop()
         {
-            await Display.WriteNarration($"\n\t{Globals.JsonReader!["NIGHTCLUB_EDEN.VISIT_CLUB"]}");
+            await Display.WriteNarration($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.VISIT_CLUB")}");
             await Program.Game!.SetCurrentLocation(Globals.Locations["GunShop"]);
         }
     }

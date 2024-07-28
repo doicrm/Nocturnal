@@ -28,7 +28,10 @@ namespace Nocturnal.Core.Entitites
         public void ShowHeroChoice()
         {
             Console.ResetColor();
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.BackgroundColor = ConsoleColor.White;
             Console.WriteLine($"\n\t> {Options[Choice].Key}\n");
+            Console.ResetColor();
         }
 
         public void ClearOptions()
@@ -42,11 +45,10 @@ namespace Nocturnal.Core.Entitites
         {
             ClearOptions();
 
-            foreach (var option in options)
-            {
-                Options.Add(OptionNr, new KeyValuePair<string, Func<Task>>(option.Key, option.Value));
-                OptionNr += 1;
-            }
+            options
+                .Select((option, index) => new { OptionNr = index+1, option.Key, option.Value })
+                .ToList()
+                .ForEach(x => Options.Add(x.OptionNr, new KeyValuePair<string, Func<Task>>(x.Key, x.Value)));
         }
 
         public async Task ShowOptions(int seconds = 25)
@@ -57,9 +59,7 @@ namespace Nocturnal.Core.Entitites
             Console.WriteLine();
 
             foreach (var option in Options)
-            {
                 await ActionOption(option.Key, option.Value.Key, seconds);
-            }
         }
 
         public async Task InputChoice()

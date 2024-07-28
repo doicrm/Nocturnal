@@ -13,18 +13,18 @@ namespace Nocturnal.Core.System.Utilities
             }
         }
 
-        public static async Task WriteNarration(string text, int speed = 50)
-            => await WriteColoredText(text, ConsoleColor.Gray, speed);
-
-        public static async Task WriteDialogue(string text, int speed = 50)
-            => await WriteColoredText(text, ConsoleColor.White, speed);
-
         public static async Task WriteColoredText(string text, ConsoleColor color, int speed = 50)
         {
             Console.ForegroundColor = color;
             await Write(text, speed);
             Console.ResetColor();
         }
+
+        public static async Task WriteNarration(string text, int speed = 50)
+            => await WriteColoredText(text, ConsoleColor.Gray, speed);
+
+        public static async Task WriteDialogue(string text, int speed = 50)
+            => await WriteColoredText(text, ConsoleColor.White, speed);
 
         public static async Task<string> GetJsonStringAsync(string stringName)
         {

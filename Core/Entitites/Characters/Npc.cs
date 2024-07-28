@@ -124,7 +124,7 @@ namespace Nocturnal.Core.Entitites.Characters
                 Console.ResetColor();
             }
 
-            if (GameSettings.Lang == (int)GameLanguages.EN)
+            if (GameSettings.IsSetLanguage(GameLanguages.EN))
                 await Display.Write($"\t{Name} is {attitude} now.\n");
             else
                 await Display.Write($"\t{Name} jest teraz {attitude}.\n");

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Nocturnal.Core.Entitites;
 using Nocturnal.Core.System.Utilities;
 
 namespace Nocturnal.Core.System
@@ -74,7 +75,7 @@ namespace Nocturnal.Core.System
         {
             try
             {
-                string path = Directory.GetCurrentDirectory() + "\\Data\\Lang\\" + GetFileName(lang) + ".json";
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "Data\\Lang\\" + GetFileName(lang) + ".json");
                 string jsonString = File.ReadAllText(path);
                 Globals.JsonReader = JObject.Parse(jsonString);
                 return true;
@@ -88,25 +89,28 @@ namespace Nocturnal.Core.System
 
         public static async ValueTask<int> SelectLanguage()
         {
-            int choice;
-            while (true)
-            {
-                Console.ResetColor();
-                Console.Clear();
-                Console.WriteLine();
-                Console.WriteLine("\t[1] EN");
-                Console.WriteLine("\t[2] PL");
-                choice = await Input.GetChoice();
+            int choice = 0;
 
-                if (choice == (int)GameLanguages.EN || choice == (int)GameLanguages.PL)
-                    break;
-            }
+            Console.ResetColor();
+            Console.Clear();
+
+            _ = new InteractiveMenu(new Dictionary<string, Func<Task>>()
+            {
+                { "English", async () => { choice = (int)GameLanguages.EN; await Task.CompletedTask; } },
+                { "Polski", async () => { choice = (int)GameLanguages.PL; await Task.CompletedTask; } },
+            });
+
             return choice;
+        }
+
+        public static bool IsSetLanguage(GameLanguages lang)
+        {
+            return Lang == (uint)lang;
         }
 
         private static string GetFileName(int lang)
         {
-            return lang is (int)GameLanguages.EN ? "en" : "pl";
+            return lang is (int)GameLanguages.EN ? "EN_en" : "PL_pl";
         }
     }
 }
