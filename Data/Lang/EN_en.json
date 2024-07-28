@@ -287,6 +287,7 @@
     "NIGHTCLUB_EDEN.BAR_06": "You reach for the vessel and empty it.",
     "NIGHTCLUB_EDEN.BAR_07": "You feel a pleasant warmth spreading up your throat and further down your gullet.",
     "NIGHTCLUB_EDEN.BAR_08": "- 'Anything else?'",
+    "NIGHTCLUB_EDEN.BAR_09": "The bartender squints, hearing your question.",
     "NIGHTCLUB_EDEN.BAR_10": "- 'You're not from around here, are you?",
     "NIGHTCLUB_EDEN.BAR_11": "My boss is Hex Folstam.",
     "NIGHTCLUB_EDEN.BAR_12": "He's a tough guy, so you'd better not make trouble, or it could end badly for you.'",
@@ -410,6 +411,5 @@
     "MISC.DOWNLOAD_COMPLETED": "Download completed",
     "MISC.REMEMBER_YOUR_NAME": "Your name... You start wandering your thoughts around what your name is. As if through a fog\n\tit occurs to you that you are:",
     "CHAPTER": "Chapter",
-    "EPILOGUE": "Epilogue",
-    "NIGHTCLUB_EDEN.BAR_09": "The bartender squints, hearing your question."
+    "EPILOGUE": "Epilogue"
 }

@@ -287,6 +287,7 @@
     "NIGHTCLUB_EDEN.BAR_06": "Sięgasz po naczynie i opróżniasz je.",
     "NIGHTCLUB_EDEN.BAR_07": "Czujesz przyjemne ciepło rozchodzące się po gardle i dalej w dół przełyku.",
     "NIGHTCLUB_EDEN.BAR_08": "- Coś jeszcze?",
+    "NIGHTCLUB_EDEN.BAR_09": "Barman mruży oczy, słysząc pytanie.",
     "NIGHTCLUB_EDEN.BAR_10": "- Nie jesteś stąd, co?",
     "NIGHTCLUB_EDEN.BAR_11": "Moim szefem jest Hex Folstam.",
     "NIGHTCLUB_EDEN.BAR_12": "To twardziel, więc lepiej nie sprawiaj kłopotów, bo może się\n\tto dla ciebie źle skończyć.",
@@ -410,6 +411,5 @@
     "MISC.DOWNLOAD_COMPLETED": "Pobieranie zakończone",
     "MISC.REMEMBER_YOUR_NAME": "Twoje imię... Zaczynasz błądzić myślami wokół tego, jak się nazywasz. Jakby przez mgłę dociera\n\tdo ciebie, że jesteś:",
     "CHAPTER": "Rozdział",
-    "EPILOGUE": "Epilog",
-    "NIGHTCLUB_EDEN.BAR_09": "Barman mruży oczy, słysząc pytanie."
+    "EPILOGUE": "Epilog"
 }
