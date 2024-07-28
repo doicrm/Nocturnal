@@ -8,4 +8,4 @@
 
 #
 
-Copyright © 2023 Radosław "Doic" Michalak
+Copyright © 2023-2024 Radosław "Doic" Michalak
