@@ -146,26 +146,26 @@ namespace Nocturnal.src.events.prologue
                 { Display.GetJsonString("NIGHTCLUB_EDEN.LUNA_MEETING_MENU.LET_HER_SPEAK"), LunaMeeting_02 }
             });
 
-            await Display.WriteDialogue($"\t{Globals.JsonReader!["NIGHTCLUB_EDEN.LUNA_MEETING_01"]}");
+            await Display.WriteDialogue($"\t{JsonService.JsonReader!["NIGHTCLUB_EDEN.LUNA_MEETING_01"]}");
             await Task.Delay(1000);
-            await Display.WriteDialogue($" {Globals.JsonReader!["NIGHTCLUB_EDEN.LUNA_MEETING_02"]}");
+            await Display.WriteDialogue($" {JsonService.JsonReader!["NIGHTCLUB_EDEN.LUNA_MEETING_02"]}");
             await Globals.Player.AddQuest(Globals.Quests["KillHex"]);
             Console.WriteLine();
             await Task.Delay(1500);
-            await Display.WriteNarration($"\t{Globals.JsonReader!["NIGHTCLUB_EDEN.LUNA_MEETING_03"]}");
-            await Display.WriteDialogue($"\n\t{Globals.JsonReader!["NIGHTCLUB_EDEN.LUNA_MEETING_04"]}");
+            await Display.WriteNarration($"\t{JsonService.JsonReader!["NIGHTCLUB_EDEN.LUNA_MEETING_03"]}");
+            await Display.WriteDialogue($"\n\t{JsonService.JsonReader!["NIGHTCLUB_EDEN.LUNA_MEETING_04"]}");
 
             if (Globals.Player.HasItem(Globals.Items["Pistol"]))
             {
-                await Display.WriteDialogue($"\n\t{Globals.JsonReader!["NIGHTCLUB_EDEN.LUNA_MEETING_05"]}");
+                await Display.WriteDialogue($"\n\t{JsonService.JsonReader!["NIGHTCLUB_EDEN.LUNA_MEETING_05"]}");
                 await Task.Delay(1000);
-                await Display.WriteDialogue($" {Globals.JsonReader!["NIGHTCLUB_EDEN.LUNA_MEETING_06"]}");
+                await Display.WriteDialogue($" {JsonService.JsonReader!["NIGHTCLUB_EDEN.LUNA_MEETING_06"]}");
             }
             else
             {
-                await Display.WriteDialogue($"\n\t{Globals.JsonReader!["NIGHTCLUB_EDEN.LUNA_MEETING_07"]}");
+                await Display.WriteDialogue($"\n\t{JsonService.JsonReader!["NIGHTCLUB_EDEN.LUNA_MEETING_07"]}");
                 await Task.Delay(1000);
-                await Display.WriteDialogue($" {Globals.JsonReader!["NIGHTCLUB_EDEN.LUNA_MEETING_08"]}");
+                await Display.WriteDialogue($" {JsonService.JsonReader!["NIGHTCLUB_EDEN.LUNA_MEETING_08"]}");
                 Globals.Player.Money = 200.0f;
 
                 await Display.Write($"\n\n\t{Display.GetJsonString("ITEM_GAINED")}");

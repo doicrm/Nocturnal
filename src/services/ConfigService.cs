@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Nocturnal.src.core.utilities;
 using Nocturnal.src.core;
 
@@ -76,9 +75,7 @@ namespace Nocturnal.src.services
         {
             try
             {
-                string path = Path.Combine(Directory.GetCurrentDirectory(), "localization\\" + GetFileName(lang) + ".json");
-                string jsonString = await File.ReadAllTextAsync(path);
-                Globals.JsonReader = JObject.Parse(jsonString);
+                await JsonService.LoadAndParseJsonContent(lang);
                 return true;
             }
             catch (Exception e)
@@ -86,11 +83,6 @@ namespace Nocturnal.src.services
                 await Logger.WriteLog(e.Message);
                 return false;
             }
-        }
-
-        private static string GetFileName(int lang)
-        {
-            return lang is (int)GameLanguages.EN ? "en" : "pl";
         }
     }
 }

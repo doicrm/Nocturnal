@@ -194,7 +194,7 @@ namespace Nocturnal.src.events.prologue
 
         public static async Task Crossroads()
         {
-            await Display.WriteNarration($"\n\t{Globals.JsonReader!["STREET.CROSSROADS_01"]}");
+            await Display.WriteNarration($"\n\t{JsonService.JsonReader!["STREET.CROSSROADS_01"]}");
 
             _ = new InteractiveMenu(new Dictionary<string, Func<Task>>
             {

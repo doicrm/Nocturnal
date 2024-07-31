@@ -187,7 +187,7 @@ namespace Nocturnal.src.events.prologue
             Console.WriteLine();
             await MiscEvents.NamingHero();
             Globals.Npcs["Bob"].IsKnowHero = true;
-            await Display.WriteDialogue($"\t{Display.GetJsonString("DARK_ALLEY.DIA_BOB_05")} {Globals.Player.Name}{Globals.JsonReader!["DARK_ALLEY.DIA_BOB_06"]}");
+            await Display.WriteDialogue($"\t{Display.GetJsonString("DARK_ALLEY.DIA_BOB_05")} {Globals.Player.Name}{Display.GetJsonString("DARK_ALLEY.DIA_BOB_06")}");
             await Task.Delay(1500);
             await Display.WriteDialogue($" {Display.GetJsonString("DARK_ALLEY.DIA_BOB_07")} {Globals.Npcs["Bob"].Name}.");
             await Task.Delay(1500);

@@ -1,4 +1,5 @@
 ﻿using Nocturnal.src.core;
+using Nocturnal.src.ui;
 
 namespace Nocturnal.src.entitites
 {
@@ -21,22 +22,20 @@ namespace Nocturnal.src.entitites
             Value = value;
         }
 
-        public Item()
-        {
-        }
+        public Item() { }
 
         virtual public string PrintInfo()
         {
-            return $"{Globals.JsonReader!["NAME"]}: {Name}\n" +
-                $"{Globals.JsonReader!["DESCRIPTION"]}: {Description}\n" +
-                $"{Globals.JsonReader!["TYPE"]}: {Type}\n" +
-                $"{Globals.JsonReader!["VALUE"]}: {Value}";
+            return $"{Display.GetJsonString("NAME")}: {Name}\n" +
+                $"{Display.GetJsonString("DESCRIPTION")}: {Description}\n" +
+                $"{Display.GetJsonString("TYPE")}: {Type}\n" +
+                $"{Display.GetJsonString("VALUE")}: {Value}";
         }
 
         static public void InsertInstances()
         {
-            Item AD13 = new("AD13", $"{Globals.JsonReader!["ITEM.AD13.NAME"]}", ItemType.Quest, $"{Globals.JsonReader!["ITEM.AD13.DESCRIPTION"]}", 50);
-            Item AccessCard = new("AccessCard", $"{Globals.JsonReader!["ITEM.ACCESS_CARD.NAME"]}", ItemType.Misc, $"{Globals.JsonReader!["ITEM.ACCESS_CARD.DESCRIPTION"]}", 0);
+            Item AD13 = new("AD13", $"{Display.GetJsonString("ITEM.AD13.NAME")}", ItemType.Quest, $"{Display.GetJsonString("ITEM.AD13.DESCRIPTION")}", 50);
+            Item AccessCard = new("AccessCard", $"{Display.GetJsonString("ITEM.ACCESS_CARD.NAME")}", ItemType.Misc, $"{Display.GetJsonString("ITEM.ACCESS_CARD.DESCRIPTION")}", 0);
 
             Globals.Items[AD13.ID] = AD13;
             Globals.Items[AccessCard.ID] = AccessCard;

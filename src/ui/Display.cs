@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-using Nocturnal.src.core;
-using Nocturnal.src.core.utilities;
+﻿using Nocturnal.src.services;
 
 namespace Nocturnal.src.ui
 {
@@ -28,33 +26,9 @@ namespace Nocturnal.src.ui
         public static async Task WriteDialogue(string text, int speed = 50)
             => await WriteColoredText(text, ConsoleColor.White, speed);
 
-        public static async Task<string> GetJsonStringAsync(string stringName)
-        {
-            try
-            {
-                if (Globals.JsonReader == null || !Globals.JsonReader!.ContainsKey(stringName))
-                {
-                    await Logger.WriteLog($"Key '{stringName}' not found in JsonReader.");
-                    return string.Empty;
-                }
-
-                return Globals.JsonReader![stringName].ToString();
-            }
-            catch (JsonException e)
-            {
-                await Logger.WriteLog($"JsonException: {e.Message}");
-                return string.Empty;
-            }
-            catch (Exception e)
-            {
-                await Logger.WriteLog($"Exception: {e.Message}");
-                return string.Empty;
-            }
-        }
-
         public static string GetJsonString(string stringName)
         {
-            return GetJsonStringAsync(stringName).GetAwaiter().GetResult();
+            return JsonService.GetJsonString(stringName);
         }
     }
 }

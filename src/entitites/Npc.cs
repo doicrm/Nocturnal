@@ -1,4 +1,5 @@
 ﻿using Nocturnal.src.core;
+using Nocturnal.src.services;
 using Nocturnal.src.ui;
 using System.Reflection;
 
@@ -103,22 +104,22 @@ namespace Nocturnal.src.entitites
 
             if (Attitude is Attitudes.Angry)
             {
-                attitude = $"{Globals.JsonReader!["ATTITUDE.ANGRY"]!.ToString().ToLower()}";
+                attitude = $"{JsonService.JsonReader!["ATTITUDE.ANGRY"]!.ToString().ToLower()}";
                 Console.ForegroundColor = ConsoleColor.Yellow;
             }
             else if (Attitude is Attitudes.Hostile)
             {
-                attitude = $"{Globals.JsonReader!["ATTITUDE.HOSTILE"]!.ToString().ToLower()}";
+                attitude = $"{JsonService.JsonReader!["ATTITUDE.HOSTILE"]!.ToString().ToLower()}";
                 Console.ForegroundColor = ConsoleColor.Red;
             }
             else if (Attitude is Attitudes.Friendly)
             {
-                attitude = $"{Globals.JsonReader!["ATTITUDE.FRIENDLY"]!.ToString().ToLower()}";
+                attitude = $"{JsonService.JsonReader!["ATTITUDE.FRIENDLY"]!.ToString().ToLower()}";
                 Console.ForegroundColor = ConsoleColor.Green;
             }
             else
             {
-                attitude = $"{Globals.JsonReader!["ATTITUDE.NEUTRAL"]!.ToString().ToLower()}";
+                attitude = $"{JsonService.JsonReader!["ATTITUDE.NEUTRAL"]!.ToString().ToLower()}";
                 Console.ResetColor();
             }
 
@@ -141,7 +142,7 @@ namespace Nocturnal.src.entitites
         {
             Npc Bob = new("Bob", "Bob", Genders.Male, null!);
             Npc Caden = new("Caden", "Caden", Genders.Male, null!);
-            Npc CadensPartner = new("CadensPartner", $"{Globals.JsonReader!["NPC.POLICEMAN"]}", Genders.Male, null!);
+            Npc CadensPartner = new("CadensPartner", $"{JsonService.JsonReader!["NPC.POLICEMAN"]}", Genders.Male, null!);
             Npc Zed = new("Zed", "Zed", Genders.Male, null!);
             Npc Luna = new("Luna", "Luna", Genders.Female, null!);
             Npc Jet = new("Jet", "Jet", Genders.Male, null!);

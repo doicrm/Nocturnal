@@ -6,7 +6,6 @@ namespace Nocturnal.src.core
     public static class Globals
     {
         public static Player Player { get; set; } = new();
-        public static dynamic? JsonReader { get; set; }
         public static uint Chapter { get; set; } = 0;
         public static IDictionary<string, Npc> Npcs { get; set; } = new Dictionary<string, Npc>();
         public static IDictionary<string, Item> Items { get; set; } = new Dictionary<string, Item>();
