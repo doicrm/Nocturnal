@@ -41,7 +41,7 @@ namespace Nocturnal.src.events.prologue
 
             InteractiveMenu dialogueWithZedMenu = new();
             dialogueWithZedMenu.ClearOptions();
-            Dictionary<string, Func<Task>> options = new()
+            var options = new MenuOptions()
             {
                 { Display.GetJsonString("GUN_SHOP.DIA_ZED_MENU.01"), DialogueWithZed_01 },
                 { Display.GetJsonString("GUN_SHOP.DIA_ZED_MENU.02"), DialogueWithZed_02 }
@@ -148,7 +148,7 @@ namespace Nocturnal.src.events.prologue
                 await Task.Delay(1500);
                 await Display.WriteDialogue($" {Display.GetJsonString("GUN_SHOP.DIA_ZED_12")}");
 
-                _ = new InteractiveMenu(new Dictionary<string, Func<Task>>
+                _ = new InteractiveMenu(new MenuOptions
                 {
                     { Display.GetJsonString("GUN_SHOP.BUY_PISTOL_MENU.BUY_IT"), BuyPistol },
                     { Display.GetJsonString("GUN_SHOP.BUY_PISTOL_MENU.MADE_UP_MIND"), ZedTrade_01 }
@@ -160,7 +160,7 @@ namespace Nocturnal.src.events.prologue
 
             Console.WriteLine();
 
-            _ = new InteractiveMenu(new Dictionary<string, Func<Task>>
+            _ = new InteractiveMenu(new MenuOptions
             {
                 { Display.GetJsonString("GUN_SHOP.BUY_PISTOL_MENU.BUY_IT"), BuyPistol },
                 { Display.GetJsonString("GUN_SHOP.BUY_PISTOL_MENU.MADE_UP_MIND"), ZedTrade_01 }

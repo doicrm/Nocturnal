@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Nocturnal.src.core;
-using Nocturnal.src.core.utilities;
+using Nocturnal.src.core.utils;
 using Nocturnal.src.entitites;
 using Nocturnal.src.ui;
 
@@ -18,42 +18,80 @@ namespace Nocturnal.src.services
         public dynamic CurrentLocation;
         public Weather Weather;
         public dynamic StoryGlobals;
+
+        public SaveData(string timestamp, Player player, dynamic npcs, dynamic locations, dynamic fractions, dynamic quests, uint chapter, dynamic currentLocation, Weather weather, dynamic storyGlobals)
+        {
+            Timestamp = timestamp;
+            Player = player;
+            Npcs = npcs;
+            Locations = locations;
+            Fractions = fractions;
+            Quests = quests;
+            Chapter = chapter;
+            CurrentLocation = currentLocation;
+            Weather = weather;
+            StoryGlobals = storyGlobals;
+        }
     };
 
     public class SaveService
     {
+        private static readonly IDictionary<uint, string> genderMap = new Dictionary<uint, string>
+        {
+            { (uint)Genders.Male, "SEX.MALE" },
+            { (uint)Genders.Female, "SEX.FEMALE" }
+        };
+
+        private static readonly IDictionary<string, string> locationNames = new Dictionary<string, string>
+        {
+            { "DarkAlley", "LOCATION.DARK_ALLEY" },
+            { "Street", "LOCATION.STREET" },
+            { "GunShop", "LOCATION.GUN_SHOP" },
+            { "NightclubEden", "LOCATION.NIGHTCLUB_EDEN" }
+        };
+
+
         private static uint CurrentSaveNr = 0;
 
         public static async Task CreateSave()
         {
-            if (!Directory.Exists("data\\saves"))
-                Directory.CreateDirectory("data\\saves");
+            string saveDirectory = Path.Combine(Directory.GetCurrentDirectory(), "data", "saves");
+
+            if (!Directory.Exists(saveDirectory))
+                Directory.CreateDirectory(saveDirectory);
 
             for (int i = 0; i < Constants.MAX_SAVES; i++)
             {
-                string path = Path.Combine(Directory.GetCurrentDirectory(), $"data\\saves\\Save{i}.dat");
+                string path = Path.Combine(saveDirectory, $"Save{i}.dat");
 
                 if (!File.Exists(path))
                 {
-                    using StreamWriter newSave = File.CreateText(path);
-                    CurrentSaveNr = (uint)i;
-                    SaveData save = new()
+                    try
                     {
-                        Timestamp = Logger.GetFormattedTimestamp(),
-                        Player = Globals.Player,
-                        Npcs = Globals.Npcs,
-                        Locations = await Globals.LocationsToJson(),
-                        Fractions = Globals.Fractions,
-                        Quests = Globals.Quests,
-                        Chapter = Globals.Chapter,
-                        CurrentLocation = null!,
-                        Weather = Program.Game!.Weather,
-                        StoryGlobals = Program.Game!.StoryGlobals
-                    };
+                        using var newSave = File.CreateText(path);
+                        CurrentSaveNr = (uint)i;
 
-                    var serializedObject = JsonConvert.SerializeObject(save, Formatting.Indented);
-                    await newSave.WriteAsync(serializedObject);
-                    break;
+                        var save = new SaveData(
+                            TimeFormatter.GetFormattedTimestamp(),
+                            Globals.Player,
+                            Globals.Npcs,
+                            await Globals.LocationsToJson(),
+                            Globals.Fractions,
+                            Globals.Quests,
+                            Globals.Chapter,
+                            null!,
+                            Program.Game!.Weather,
+                            Program.Game!.StoryGlobals
+                        );
+
+                        var serializedObject = JsonConvert.SerializeObject(save, Formatting.Indented);
+                        await newSave.WriteAsync(serializedObject);
+                        break;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error creating save file: {ex.Message}");
+                    }
                 }
             }
         }
@@ -110,64 +148,35 @@ namespace Nocturnal.src.services
 
         public static async Task UpdateSave()
         {
-            if (!Directory.Exists("data\\saves"))
-                Directory.CreateDirectory("data\\saves");
-
-            string path = Path.Combine(Directory.GetCurrentDirectory(), $"data\\saves\\Save{CurrentSaveNr}.dat");
-
-            using StreamWriter saveFile = new(path);
-            SaveData save = new()
+            try
             {
-                Timestamp = Logger.GetFormattedTimestamp(),
-                Player = Globals.Player,
-                Npcs = Globals.Npcs,
-                Locations = await Globals.LocationsToJson(),
-                Fractions = Globals.Fractions,
-                Quests = Globals.Quests,
-                Chapter = Globals.Chapter,
-                CurrentLocation = Program.Game!.CurrentLocation!.ToJson(),
-                Weather = Program.Game!.Weather,
-                StoryGlobals = Program.Game!.StoryGlobals
-            };
+                string saveDirectory = Path.Combine(Directory.GetCurrentDirectory(), "data", "saves");
 
-            var serializedObject = JsonConvert.SerializeObject(save, Formatting.Indented);
-            await saveFile.WriteAsync(serializedObject);
-        }
+                if (!Directory.Exists(saveDirectory))
+                    Directory.CreateDirectory(saveDirectory);
 
-        public static string PrintSex(uint sex)
-        {
-            if (sex == Convert.ToInt32(Genders.Male))
-                return Display.GetJsonString("SEX.MALE");
-            if (sex == Convert.ToInt32(Genders.Female))
-                return Display.GetJsonString("SEX.FEMALE");
-            return Display.GetJsonString("SEX.UNDEFINED");
-        }
+                string path = Path.Combine(saveDirectory, $"Save{CurrentSaveNr}.dat");
 
-        private static string PrintName(string name)
-        {
-            return name != "" ? name : Display.GetJsonString("UNKNOWN");
-        }
+                var save = new SaveData(
+                    TimeFormatter.GetFormattedTimestamp(),
+                    Globals.Player,
+                    Globals.Npcs,
+                    await Globals.LocationsToJson(),
+                    Globals.Fractions,
+                    Globals.Quests,
+                    Globals.Chapter,
+                    Program.Game!.CurrentLocation!.ToJson(),
+                    Program.Game!.Weather,
+                    Program.Game!.StoryGlobals
+                );
 
-        private static string GetChapterToString(uint chapter)
-        {
-            if (chapter == 0 || chapter < 0)
-                return Display.GetJsonString("PROLOGUE");
-            if (chapter == 1 || chapter == 2 || chapter == 3)
-                return $"{Display.GetJsonString("CHAPTER")} {chapter}";
-            return Display.GetJsonString("EPILOGUE");
-        }
-
-        private static string GetLocationName(Location location)
-        {
-            if (location.ID == "DarkAlley")
-                return $": {Display.GetJsonString("LOCATION.DARK_ALLEY")}";
-            if (location.ID == "Street")
-                return $": {Display.GetJsonString("LOCATION.STREET")}";
-            if (location.ID == "GunShop")
-                return $": {Display.GetJsonString("LOCATION.GUN_SHOP")}";
-            if (location.ID == "NightclubEden")
-                return $": {Display.GetJsonString("LOCATION.NIGHTCLUB_EDEN")}";
-            return "";
+                var serializedObject = JsonConvert.SerializeObject(save, Formatting.Indented);
+                await File.WriteAllTextAsync(path, serializedObject);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred during a write update: {ex.Message}");
+            }
         }
 
         private static async ValueTask<string> LoadSaveInfo(string saveToLoad)
@@ -175,68 +184,109 @@ namespace Nocturnal.src.services
             if (!File.Exists(saveToLoad))
                 return string.Empty;
 
-            string content = await File.ReadAllTextAsync(saveToLoad);
-            var saveInfo = JsonConvert.DeserializeObject<SaveData>(content);
-
-            Location currentLocation;
-
-            if (saveInfo.CurrentLocation != null)
-                currentLocation = await saveInfo.CurrentLocation.ToObject<Location>();
-            else
+            try
             {
-                Dictionary<string, Location> locations = saveInfo.Locations.ToObject<Dictionary<string, Location>>();
-                currentLocation = locations["DarkAlley"];
-            }
+                string content = await File.ReadAllTextAsync(saveToLoad);
+                var saveInfo = JsonConvert.DeserializeObject<SaveData>(content);
 
-            return $"{PrintName(saveInfo.Player.Name)}, {PrintSex((uint)saveInfo.Player.Sex).ToLower()} | {GetChapterToString(saveInfo.Chapter)}{GetLocationName(currentLocation)} | {saveInfo.Timestamp}";
+                Location currentLocation;
+
+                if (saveInfo.CurrentLocation != null)
+                    currentLocation = await saveInfo.CurrentLocation.ToObject<Location>();
+                else
+                {
+                    Dictionary<string, Location> locations = saveInfo.Locations.ToObject<Dictionary<string, Location>>();
+                    currentLocation = locations["DarkAlley"];
+                }
+
+                return $"{GetName(saveInfo.Player.Name)}, {GetSex((uint)saveInfo.Player.Sex).ToLower()} | {GetChapterToString(saveInfo.Chapter)}{GetLocationName(currentLocation)} | {saveInfo.Timestamp}";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error during loading of writing information: {ex.Message}");
+                return string.Empty;
+            }
         }
 
-        public static async Task SearchForSaves()
+        public static async Task FindSaves()
         {
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "data\\saves");
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "data", "saves");
 
-            if (Directory.Exists(path))
+            if (!Directory.Exists(path))
             {
-                var files = Directory.GetFiles(path, "Save*", SearchOption.AllDirectories)
-                    .Where(s => s.EndsWith(".dat"));
-
-                if (files.Any())
-                {
-                    InteractiveMenu savesMenu = new();
-                    savesMenu.ClearOptions();
-                    Dictionary<string, Func<Task>> options = new();
-                    uint i = 0;
-
-                    foreach (string file in files)
-                    {
-                        uint currentIndex = i;
-                        options.Add(await LoadSaveInfo(file), async () => await LoadSave(currentIndex));
-                        i++;
-                    }
-
-                    i = 0;
-                    options.Add($"{Display.GetJsonString("BACK_TO_MAIN_MENU")}", BackToMainMenu);
-                    savesMenu.AddOptions(options);
-                    await savesMenu.InputChoice();
-                    return;
-                }
+                await NoSavesFound();
+                return;
             }
 
+            var files = Directory.EnumerateFiles(path, "Save*.dat", SearchOption.TopDirectoryOnly);
+
+            if (!files.Any())
+            {
+                await NoSavesFound();
+                return;
+            }
+
+            var options = await CreateSaveOptions(files);
+            var savesMenu = new InteractiveMenu();
+
+            savesMenu.ClearOptions();
+            savesMenu.AddOptions(options);
+            await savesMenu.InputChoice();
+        }
+
+        private static async Task<MenuOptions> CreateSaveOptions(IEnumerable<string> files)
+        {
+            var options = new MenuOptions();
+            uint i = 0;
+
+            foreach (var file in files)
+            {
+                uint currentIndex = i;
+                var saveInfo = await LoadSaveInfo(file);
+                options.Add(saveInfo, async () => await LoadSave(currentIndex));
+                i++;
+            }
+
+            options.Add($"{Display.GetJsonString("BACK_TO_MAIN_MENU")}", Display.LoadLogo);
+            return options;
+        }
+
+        private static async Task NoSavesFound()
+        {
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine($"\n\n\t{Display.GetJsonString("LOAD_GAME.NO_SAVES_FOUND")}");
             await Task.Delay(2000);
-            Console.ResetColor();
-            Console.Clear();
             await Display.LoadLogo();
-            await Program.Game!.MainMenu();
         }
 
-        public static async Task BackToMainMenu()
+        public static string GetSex(uint sex)
         {
-            Console.ResetColor();
-            Console.Clear();
-            await Display.LoadLogo();
-            await Program.Game!.MainMenu();
+            if (genderMap.TryGetValue(sex, out var genderKey))
+                return Display.GetJsonString(genderKey);
+            return Display.GetJsonString("SEX.UNDEFINED");
+        }
+
+        private static string GetName(string name)
+        {
+            return name != "" ? name : Display.GetJsonString("UNKNOWN");
+        }
+
+        private static string GetChapterToString(uint chapter)
+        {
+            if (chapter == 0)
+                return Display.GetJsonString("PROLOGUE");
+
+            if (chapter >= 1 && chapter <= 3)
+                return $"{Display.GetJsonString("CHAPTER")} {chapter}";
+
+            return Display.GetJsonString("EPILOGUE");
+        }
+
+        private static string GetLocationName(Location location)
+        {
+            if (locationNames.TryGetValue(location.ID, out var locationKey))
+                return $": {Display.GetJsonString(locationKey)}";
+            return string.Empty;
         }
     }
 }

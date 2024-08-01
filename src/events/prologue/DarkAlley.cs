@@ -32,7 +32,7 @@ namespace Nocturnal.src.events.prologue
             await Task.Delay(2500);
             await Display.WriteNarration($"\n\t{Display.GetJsonString("DARK_ALLEY.WAKE_UP_09")}");
 
-            _ = new InteractiveMenu(new Dictionary<string, Func<Task>>
+            _ = new InteractiveMenu(new MenuOptions
             {
                 { Display.GetJsonString("DARK_ALLEY.WAKE_UP_MENU.LOOK_OUT"), SearchGarbage },
                 { Display.GetJsonString("DARK_ALLEY.WAKE_UP_MENU.FIND_EXIT"), OutOfAlley }
@@ -88,7 +88,7 @@ namespace Nocturnal.src.events.prologue
             await Display.WriteNarration($"\n\t{Display.GetJsonString("DARK_ALLEY.OUT_OF_ALLEY_05")}");
             await Display.WriteDialogue($"\n\t{Display.GetJsonString("DARK_ALLEY.DIA_BOB_02")}");
 
-            _ = new InteractiveMenu(new Dictionary<string, Func<Task>>
+            _ = new InteractiveMenu(new MenuOptions
             {
                 { Display.GetJsonString("DARK_ALLEY.OUT_OF_ALLEY_MENU.FIND_OUT"), OutOfAlley_01 },
                 { Display.GetJsonString("DARK_ALLEY.OUT_OF_ALLEY_MENU.IGNORE_STRANGER"), OutOfAlley_02 }
@@ -121,13 +121,13 @@ namespace Nocturnal.src.events.prologue
             && !Globals.Npcs["Caden"].IsKnowHero
             && !Globals.Npcs["CadensPartner"].IsKnowHero)
             {
-                _ = new InteractiveMenu(new Dictionary<string, Func<Task>>
+                _ = new InteractiveMenu(new MenuOptions
                 {
                     { Display.GetJsonString("DARK_ALLEY.HERO_NAME_MENU.INTRODUCE_YOURSELF"), DialogueWithBob_01 },
                     { Display.GetJsonString("DARK_ALLEY.HERO_NAME_MENU.KEEP_YOUR_INDETIFY"), DialogueWithBob_02 }
                 });
 
-                _ = new InteractiveMenu(new Dictionary<string, Func<Task>>
+                _ = new InteractiveMenu(new MenuOptions
                 {
                     { Display.GetJsonString("DARK_ALLEY.DIA_BOB_MENU_01.DONT_WANT_TROUBLE"), DialogueWithBob_03 },
                     { Display.GetJsonString("DARK_ALLEY.DIA_BOB_MENU_01.LUST_LOOKING_AROUND"), DialogueWithBob_04 },
@@ -239,7 +239,7 @@ namespace Nocturnal.src.events.prologue
             {
                 Console.WriteLine();
 
-                _ = new InteractiveMenu(new Dictionary<string, Func<Task>>
+                _ = new InteractiveMenu(new MenuOptions
                 {
                     { Display.GetJsonString("DARK_ALLEY.PARADISE_LOST_MENU.TELL_ME_MORE"), AboutParadiseLost_01 },
                     { Display.GetJsonString("DARK_ALLEY.PARADISE_LOST_MENU.REMEMBER_SOMETHING"), AboutParadiseLost_02 }
@@ -274,7 +274,7 @@ namespace Nocturnal.src.events.prologue
                 await Display.WriteNarration($"\n\t{Display.GetJsonString("DARK_ALLEY.CROSSROADS_01")}");
                 await Display.WriteDialogue($"\n\t{Display.GetJsonString("DARK_ALLEY.CROSSROADS_02")}");
 
-                _ = new InteractiveMenu(new Dictionary<string, Func<Task>>
+                _ = new InteractiveMenu(new MenuOptions
                 {
                     { Display.GetJsonString("DARK_ALLEY.OUT_OF_ALLEY_MENU.FIND_OUT_FINALLY"), OutOfAlley_01 },
                     { Display.GetJsonString("DARK_ALLEY.OUT_OF_ALLEY_MENU.IGNORE_STRANGER"), OutOfAlley_02 }
@@ -292,7 +292,7 @@ namespace Nocturnal.src.events.prologue
                 await Task.Delay(1500);
                 await Display.WriteNarration($" {Display.GetJsonString("DARK_ALLEY.WAKE_UP_09")}");
 
-                _ = new InteractiveMenu(new Dictionary<string, Func<Task>>
+                _ = new InteractiveMenu(new MenuOptions
                 {
                     { Display.GetJsonString("DARK_ALLEY.OUT_OF_ALLEY_MENU.FIND_OUT_FINALLY"), Crossroads_01 },
                     { Display.GetJsonString("DARK_ALLEY.OUT_OF_ALLEY_MENU.IGNORE_STRANGER"), Crossroads_02 }

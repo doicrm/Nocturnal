@@ -1,4 +1,5 @@
 ﻿using Nocturnal.src.core;
+using Nocturnal.src.ui;
 
 namespace Nocturnal.src.services
 {
@@ -10,9 +11,9 @@ namespace Nocturnal.src.services
             { "pl", ("Polski", GameLanguages.PL) }
         };
 
-        public static Dictionary<string, Func<Task>> GetLocalizationOptions()
+        public static MenuOptions GetLocalizationOptions()
         {
-            var options = new Dictionary<string, Func<Task>>();
+            var options = new MenuOptions();
 
             var localizationFiles = FindLocalizationFiles();
 

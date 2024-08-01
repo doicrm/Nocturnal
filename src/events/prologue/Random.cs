@@ -51,7 +51,7 @@ namespace Nocturnal.src.events.prologue
             await Display.WriteDialogue($"{Display.GetJsonString("STREET.HOOKERS_MEETING_06")}");
             await Display.WriteNarration($"\n\t{Display.GetJsonString("STREET.HOOKERS_MEETING_07")}\n");
 
-            _ = new InteractiveMenu(new Dictionary<string, Func<Task>>
+            _ = new InteractiveMenu(new MenuOptions
             {
                 { Display.GetJsonString("STREET.HOOKERS_MEETING_MENU.I_DONT_HAVE_ANYTHING"), EndHookersMeeting_01 },
                 { Display.GetJsonString("STREET.HOOKERS_MEETING_MENU.GO_TO_SHOP"), EndHookersMeeting_02 },

@@ -28,7 +28,7 @@ namespace Nocturnal.src.events.prologue
                 await Display.WriteNarration($" {Display.GetJsonString("STREET.LOOK_AT_EDEN_06")}");
             }
 
-            _ = new InteractiveMenu(new Dictionary<string, Func<Task>>
+            _ = new InteractiveMenu(new MenuOptions
             {
                 { Display.GetJsonString("STREET.LOOK_AT_EDEN_MENU.COME_CLOSER"), LookAtEden_01 },
                 { Display.GetJsonString("STREET.LOOK_AT_EDEN_MENU.SEARCH_AREA"), LookAtEden_02 }
@@ -65,7 +65,7 @@ namespace Nocturnal.src.events.prologue
             //    RandomEvents.PunksAmbush();
             //}
 
-            _ = new InteractiveMenu(new Dictionary<string, Func<Task>>
+            _ = new InteractiveMenu(new MenuOptions
             {
                 { Display.GetJsonString("STREET.ENCOUNTER_GUN_STORE_MENU.ENTER_SHOP"), EncounterGunStore_01 },
                 { Display.GetJsonString("STREET.ENCOUNTER_GUN_STORE_MENU.LEAVE"), EncounterGunStore_02 }
@@ -175,7 +175,7 @@ namespace Nocturnal.src.events.prologue
             await Display.WriteDialogue($"\n\t{Display.GetJsonString("STREET.MEETING_WITH_POLICEMANS_21")}");
             await Display.WriteNarration($"\n\t{Display.GetJsonString("STREET.MEETING_WITH_POLICEMANS_22")}");
 
-            _ = new InteractiveMenu(new Dictionary<string, Func<Task>>
+            _ = new InteractiveMenu(new MenuOptions
             {
                 { Display.GetJsonString("STREET.MEETING_WITH_POLICEMANS_MENU.ENTER_CLUB"), MeetingWithPolicemans_01 },
                 { Display.GetJsonString("STREET.MEETING_WITH_POLICEMANS_MENU.GO_TO_STORE"), MeetingWithPolicemans_02 }
@@ -196,7 +196,7 @@ namespace Nocturnal.src.events.prologue
         {
             await Display.WriteNarration($"\n\t{JsonService.JsonReader!["STREET.CROSSROADS_01"]}");
 
-            _ = new InteractiveMenu(new Dictionary<string, Func<Task>>
+            _ = new InteractiveMenu(new MenuOptions
             {
                 { $"{Display.GetJsonString("VISIT")}: {Globals.Locations["DarkAlley"].Name}", PrologueEvents.VisitDarkAlley },
                 { $"{Display.GetJsonString("VISIT")}: {Globals.Locations["NightclubEden"].Name}", PrologueEvents.VisitNightclubEden },

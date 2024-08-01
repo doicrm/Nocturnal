@@ -2,6 +2,8 @@
 
 namespace Nocturnal.src.ui
 {
+    public class MenuOptions : Dictionary<string, Func<Task>> { }
+
     public class Menu
     {
         public int OptionNr { get; set; }

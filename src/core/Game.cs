@@ -70,7 +70,7 @@ namespace Nocturnal.src.core
             {
                 Console.ResetColor();
                 Console.WriteLine();
-                _ = new InteractiveMenu(new Dictionary<string, Func<Task>>()
+                _ = new InteractiveMenu(new MenuOptions
                 {
                     { Display.GetJsonString("MAIN_MENU.NEW_GAME"), NewGame },
                     { Display.GetJsonString("MAIN_MENU.LOAD_GAME"), LoadGame },
@@ -93,7 +93,7 @@ namespace Nocturnal.src.core
             Console.Clear();
             await Display.Write($"\n\t{Display.GetJsonString("MAIN_MENU.LOAD_GAME").ToUpper()}", 25);
             Console.ResetColor();
-            await SaveService.SearchForSaves();
+            await SaveService.FindSaves();
         }
 
         public async Task ChangeLanguage()
@@ -108,7 +108,7 @@ namespace Nocturnal.src.core
         {
             Console.Clear();
             await Display.Write($"\n\t{Display.GetJsonString("QUIT_GAME")}", 25);
-            _ = new InteractiveMenu(new Dictionary<string, Func<Task>>()
+            _ = new InteractiveMenu(new MenuOptions
             {
                 { Display.GetJsonString("YES"), End },
                 { Display.GetJsonString("NO"), Display.LoadLogo }
