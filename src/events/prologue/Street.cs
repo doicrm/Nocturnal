@@ -6,9 +6,9 @@ namespace Nocturnal.src.events.prologue
 {
     public static class StreetEvents
     {
-        // ************************************************************
-        // 		STREET in front of the nightclub 'Eden'
-        // ************************************************************
+        ///////////////////////////////////////////////////////////////////////
+        //	STREET in front of the nightclub 'Eden'
+        ///////////////////////////////////////////////////////////////////////
 
         public static async Task LookAtEden()
         {
@@ -134,7 +134,7 @@ namespace Nocturnal.src.events.prologue
 
             if (!Globals.Npcs["Bob"].IsKnowHero)
             {
-                if (GameSettings.Lang == (int)GameLanguages.EN)
+                if (Game.Instance.Settings.Language.IsSetLanguage(GameLanguages.EN))
                     await Display.WriteDialogue("'\n");
                 else
                     await Display.WriteDialogue("\n");
@@ -142,7 +142,7 @@ namespace Nocturnal.src.events.prologue
                 await MiscEvents.NamingHero();
                 await Task.Delay(1500);
 
-                if (GameSettings.Lang == (int)GameLanguages.EN)
+                if (Game.Instance.Settings.Language.IsSetLanguage(GameLanguages.EN))
                     await Display.WriteDialogue($"\t- '{Globals.Player.Name}...");
                 else
                     await Display.WriteDialogue($"\t- {Globals.Player.Name}...");

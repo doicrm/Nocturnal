@@ -14,10 +14,10 @@ namespace Nocturnal.src.events.prologue
             await Display.Write($"\n\n\t{Display.GetJsonString("PARADISE_LOST")}");
             await Task.Delay(5000);
             Console.Clear();
-            await StoryIntroduction();
+            await Intro();
         }
 
-        public static async Task StoryIntroduction()
+        public static async Task Intro()
         {
             await Display.Write($"\n\t{Display.GetJsonString("INTRO_01")}");
             await Task.Delay(1000);
@@ -55,7 +55,7 @@ namespace Nocturnal.src.events.prologue
         {
             if (Program.Game!.Weather != Weather.Rainy)
             {
-                Random rnd = new(); int rand = rnd.Next(0, 10);
+                int rand = new Random().Next(0, 10);
                 if (rand > 5 && rand <= 10)
                     await RandomEvents.StartRaining();
             }

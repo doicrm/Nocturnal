@@ -7,7 +7,7 @@ namespace Nocturnal.src.services
     public struct ConfigFileData
     {
         public string? Username { get; set; }
-        public int Language { get; set; }
+        public GameLanguages Language { get; set; }
     }
 
     public class ConfigService
@@ -37,10 +37,10 @@ namespace Nocturnal.src.services
                     return false;
                 }
 
-                GameSettings.SetLanguage((GameLanguages)configFileData.Language);
+                Game.Instance.Settings.SetLanguage(configFileData.Language);
             }
 
-            return await LoadDataFromFile(GameSettings.Lang);
+            return await LoadDataFromFile(Game.Instance.Settings.GetLanguage());
         }
 
         public static async Task CreateConfigFile(string filePath)
@@ -48,12 +48,12 @@ namespace Nocturnal.src.services
             if (!Directory.Exists("data\\config"))
                 Directory.CreateDirectory("data\\config");
 
-            GameSettings.SetLanguage((GameLanguages)GameSettings.SelectLanguage());
+            Game.Instance.Settings.Language.SelectLanguage();
 
             var configFileData = new ConfigFileData
             {
                 Username = Environment.UserName,
-                Language = GameSettings.Lang
+                Language = Game.Instance.Settings.GetLanguage()
             };
 
             try
@@ -71,11 +71,11 @@ namespace Nocturnal.src.services
             }
         }
 
-        public static async ValueTask<bool> LoadDataFromFile(int lang)
+        public static async ValueTask<bool> LoadDataFromFile(GameLanguages lang)
         {
             try
             {
-                await JsonService.LoadAndParseJsonContent(lang);
+                await JsonService.LoadAndParseLocalizationFile(lang);
                 return true;
             }
             catch (Exception e)

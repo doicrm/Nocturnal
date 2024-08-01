@@ -8,7 +8,7 @@ namespace Nocturnal.src.core
 {
     public enum Weather { Sunny, Cloudy, Stormy, Rainy, Snowfall }
 
-    public sealed class Game
+    public class Game
     {
         public bool IsPlaying { get; set; }
         public Location? CurrentLocation { get; set; }
@@ -31,7 +31,7 @@ namespace Nocturnal.src.core
         {
             IsPlaying = true;
             CurrentLocation = null;
-            ChangeConsoleName();
+            ConsoleService.ChangeConsoleName();
             Settings = new();
             StoryGlobals = StoryGlobals.Instance;
             Logger.WriteLog("Game initialized").GetAwaiter().GetResult();
@@ -43,14 +43,11 @@ namespace Nocturnal.src.core
             {
                 await Welcome();
                 //await WriteLogo(); // Disable for testing use
-                await LoadLogo();
+                await Display.LoadLogo();
                 await MainMenu();
                 await End();
             }
         }
-
-        public static void ChangeConsoleName()
-            => Console.Title = $"{Constants.GAME_NAME} {Constants.GAME_VERSION}";
 
         public static async Task Pause()
         {
@@ -65,24 +62,6 @@ namespace Nocturnal.src.core
             await Display.Write($"\n\t{Display.GetJsonString("AUTHOR_PRESENTS")}", 40);
             await Task.Delay(2000);
             Console.Clear();
-        }
-
-        public static async Task WriteLogo()
-        {
-            Console.WriteLine();
-            foreach (var s in Constants.GAME_LOGO)
-                await Display.WriteColoredText(s, ConsoleColor.Blue, 1);
-        }
-
-        public async Task LoadLogo()
-        {
-            Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Blue;
-            Console.WriteLine();
-            foreach (var s in Constants.GAME_LOGO)
-                Console.Write(s);
-            Console.ResetColor();
-            await MainMenu();
         }
 
         public async Task MainMenu()
@@ -121,8 +100,8 @@ namespace Nocturnal.src.core
         {
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), ConfigService.configFilePath);
             await ConfigService.CreateConfigFile(filePath);
-            await ConfigService.LoadDataFromFile(GameSettings.Lang);
-            await LoadLogo();
+            await ConfigService.LoadDataFromFile(Settings.GetLanguage());
+            await Display.LoadLogo();
         }
 
         public async Task EndGame()
@@ -132,7 +111,7 @@ namespace Nocturnal.src.core
             _ = new InteractiveMenu(new Dictionary<string, Func<Task>>()
             {
                 { Display.GetJsonString("YES"), End },
-                { Display.GetJsonString("NO"), LoadLogo }
+                { Display.GetJsonString("NO"), Display.LoadLogo }
             });
         }
 

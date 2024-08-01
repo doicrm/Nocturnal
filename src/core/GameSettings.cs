@@ -1,39 +1,19 @@
-﻿using Nocturnal.src.ui;
-
-namespace Nocturnal.src.core
+﻿namespace Nocturnal.src.core
 {
-    public enum GameLanguages { EN = 1, PL = 2 }
-
     public class GameSettings
     {
-        public static int Lang { get; private set; }
+        public GameLanguage Language { get; private set; }
 
-        public GameSettings() { Lang = 0; }
+        public GameSettings() { Language = new GameLanguage(); }
 
-        public static int SelectLanguage()
+        public GameLanguages GetLanguage()
         {
-            int choice = 0;
-
-            Console.ResetColor();
-            Console.Clear();
-
-            _ = new InteractiveMenu(new Dictionary<string, Func<Task>>()
-            {
-                { "English", async () => { choice = (int)GameLanguages.EN; await Task.CompletedTask; } },
-                { "Polski", async () => { choice = (int)GameLanguages.PL; await Task.CompletedTask; } },
-            });
-
-            return choice;
+            return Language.GetLanguage();
         }
 
-        public static void SetLanguage(GameLanguages lang)
+        public void SetLanguage(GameLanguages newLanguage)
         {
-            Lang = (int)lang;
-        }
-
-        public static bool IsSetLanguage(GameLanguages lang)
-        {
-            return Lang == (uint)lang;
+            Language.SetLanguage(newLanguage);
         }
     }
 }

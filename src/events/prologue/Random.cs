@@ -10,14 +10,13 @@ namespace Nocturnal.src.events.prologue
         {
             Program.Game!.Weather = Weather.Rainy;
 
-            if (Program.Game!.Weather == Weather.Rainy)
-            {
-                await Display.WriteNarration($"\n\t{Display.GetJsonString("STREET.START_RAINING_01")}");
-                await Task.Delay(1000);
-                await Display.WriteNarration($" {Display.GetJsonString("STREET.START_RAINING_02")}");
-                await Task.Delay(500);
-                await Display.WriteNarration($" {Display.GetJsonString("STREET.START_RAINING_03")}");
-            }
+            if (Program.Game!.Weather != Weather.Rainy) return;
+
+            await Display.WriteNarration($"\n\t{Display.GetJsonString("STREET.START_RAINING_01")}");
+            await Task.Delay(1000);
+            await Display.WriteNarration($" {Display.GetJsonString("STREET.START_RAINING_02")}");
+            await Task.Delay(500);
+            await Display.WriteNarration($" {Display.GetJsonString("STREET.START_RAINING_03")}");
         }
 
         public static async Task NickHandDiscovered()

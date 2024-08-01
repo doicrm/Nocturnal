@@ -2,6 +2,10 @@
 {
     public class StoryGlobals
     {
+        ///////////////////////////////////////////////////////////////////////
+        //	PROLOGUE
+        ///////////////////////////////////////////////////////////////////////
+
         public bool Bob_RecommendsZed;
         public bool PC_IsOnDanceFloor;
         public bool PC_IsAtBar;
@@ -12,6 +16,7 @@
         public int Jet_Points;
         public bool Jet_WarnedPlayer;
         public bool Jet_BeatedPlayer;
+
 
         private static StoryGlobals? instance = null;
 

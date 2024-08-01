@@ -123,7 +123,7 @@ namespace Nocturnal.src.entitites
                 Console.ResetColor();
             }
 
-            if (GameSettings.IsSetLanguage(GameLanguages.EN))
+            if (Game.Instance.Settings.Language.IsSetLanguage(GameLanguages.EN))
                 await Display.Write($"\t{Name} is {attitude} now.\n");
             else
                 await Display.Write($"\t{Name} jest teraz {attitude}.\n");

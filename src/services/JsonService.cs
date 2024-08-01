@@ -9,11 +9,11 @@ namespace Nocturnal.src.services
     {
         public static dynamic? JsonReader { get; set; }
 
-        public static async ValueTask<bool> LoadAndParseJsonContent(int lang)
+        public static async ValueTask<bool> LoadAndParseLocalizationFile(GameLanguages lang)
         {
             try
             {
-                string path = Path.Combine(Directory.GetCurrentDirectory(), "localization\\" + GetLocalizationFileName(lang) + ".json");
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "localization\\" + GameLanguage.GetLocalizationFileName(lang) + ".json");
                 string jsonString = await File.ReadAllTextAsync(path);
                 JsonReader = JObject.Parse(jsonString);
                 return true;
@@ -23,11 +23,6 @@ namespace Nocturnal.src.services
                 await Logger.WriteLog(e.Message);
                 return false;
             }
-        }
-
-        private static string GetLocalizationFileName(int lang)
-        {
-            return lang is (int)GameLanguages.EN ? "en" : "pl";
         }
 
         public static async Task<string> GetJsonStringAsync(string stringName)

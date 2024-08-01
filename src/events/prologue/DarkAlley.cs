@@ -7,9 +7,9 @@ namespace Nocturnal.src.events.prologue
 {
     public static class DarkAlleyEvents
     {
-        // ************************************************************
-        // 		DARK ALLEY in 'Eden' nigthclub area
-        // ************************************************************
+        ///////////////////////////////////////////////////////////////////////
+        //	DARK ALLEY in 'Eden' nigthclub area
+        ///////////////////////////////////////////////////////////////////////
 
         public static async Task WakeUp()
         {

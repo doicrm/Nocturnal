@@ -18,7 +18,7 @@ namespace Nocturnal.src.events
             await Display.Write($"{Display.GetJsonString("BACK_TO_MENU")}", 25);
             Console.ReadKey();
             Console.Clear();
-            await Program.Game!.LoadLogo();
+            await Display.LoadLogo();
         }
 
         public static async Task GameOver()
@@ -32,7 +32,7 @@ namespace Nocturnal.src.events
             await Task.Delay(2000);
             Console.ResetColor();
             Console.Clear();
-            await Program.Game!.LoadLogo();
+            await Display.LoadLogo();
         }
 
         public static async Task ClearInstances()

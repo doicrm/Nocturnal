@@ -65,7 +65,7 @@ namespace Nocturnal.src.services
 
             if (!File.Exists(path))
             {
-                await Program.Game!.LoadLogo();
+                await Display.LoadLogo();
                 return;
             }
 
@@ -227,7 +227,7 @@ namespace Nocturnal.src.services
             await Task.Delay(2000);
             Console.ResetColor();
             Console.Clear();
-            await Program.Game!.LoadLogo();
+            await Display.LoadLogo();
             await Program.Game!.MainMenu();
         }
 
@@ -235,7 +235,7 @@ namespace Nocturnal.src.services
         {
             Console.ResetColor();
             Console.Clear();
-            await Program.Game!.LoadLogo();
+            await Display.LoadLogo();
             await Program.Game!.MainMenu();
         }
     }

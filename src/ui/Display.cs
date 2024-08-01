@@ -1,4 +1,5 @@
-﻿using Nocturnal.src.services;
+﻿using Nocturnal.src.core;
+using Nocturnal.src.services;
 
 namespace Nocturnal.src.ui
 {
@@ -29,6 +30,24 @@ namespace Nocturnal.src.ui
         public static string GetJsonString(string stringName)
         {
             return JsonService.GetJsonString(stringName);
+        }
+
+        public static async Task WriteLogo()
+        {
+            Console.WriteLine();
+            foreach (var s in Constants.GAME_LOGO)
+                await WriteColoredText(s, ConsoleColor.Blue, 1);
+        }
+
+        public static async Task LoadLogo()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine();
+            foreach (var s in Constants.GAME_LOGO)
+                Console.Write(s);
+            Console.ResetColor();
+            await Game.Instance.MainMenu();
         }
     }
 }
