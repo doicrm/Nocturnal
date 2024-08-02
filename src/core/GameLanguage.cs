@@ -25,7 +25,7 @@ namespace Nocturnal.src.core
         public void SetLanguage(GameLanguages language)
             => Language = language;
 
-        public void SelectLanguage()
+        public static void SelectLanguage()
         {
             Console.ResetColor();
             Console.Clear();

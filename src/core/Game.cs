@@ -98,9 +98,8 @@ namespace Nocturnal.src.core
 
         public async Task ChangeLanguage()
         {
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), ConfigService.configFilePath);
-            await ConfigService.CreateConfigFile(filePath);
-            await ConfigService.LoadDataFromFile(Settings.GetLanguage());
+            await ConfigService.CreateConfigFile();
+            await JsonService.LoadAndParseLocalizationFile(Settings.GetLanguage());
             await Display.LoadLogo();
         }
 

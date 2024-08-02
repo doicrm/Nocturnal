@@ -6,43 +6,29 @@ using Nocturnal.src.ui;
 
 namespace Nocturnal.src.services
 {
-    public struct SaveData
+    public struct SaveData(string timestamp, Player player, dynamic npcs, dynamic locations, dynamic fractions, dynamic quests, uint chapter, dynamic currentLocation, Weather weather, dynamic storyGlobals)
     {
-        public string Timestamp;
-        public Player Player;
-        public dynamic Npcs;
-        public dynamic Locations;
-        public dynamic Fractions;
-        public dynamic Quests;
-        public uint Chapter;
-        public dynamic CurrentLocation;
-        public Weather Weather;
-        public dynamic StoryGlobals;
-
-        public SaveData(string timestamp, Player player, dynamic npcs, dynamic locations, dynamic fractions, dynamic quests, uint chapter, dynamic currentLocation, Weather weather, dynamic storyGlobals)
-        {
-            Timestamp = timestamp;
-            Player = player;
-            Npcs = npcs;
-            Locations = locations;
-            Fractions = fractions;
-            Quests = quests;
-            Chapter = chapter;
-            CurrentLocation = currentLocation;
-            Weather = weather;
-            StoryGlobals = storyGlobals;
-        }
+        public string Timestamp = timestamp;
+        public Player Player = player;
+        public dynamic Npcs = npcs;
+        public dynamic Locations = locations;
+        public dynamic Fractions = fractions;
+        public dynamic Quests = quests;
+        public uint Chapter = chapter;
+        public dynamic CurrentLocation = currentLocation;
+        public Weather Weather = weather;
+        public dynamic StoryGlobals = storyGlobals;
     };
 
     public class SaveService
     {
-        private static readonly IDictionary<uint, string> genderMap = new Dictionary<uint, string>
+        private static readonly Dictionary<uint, string> genderMap = new()
         {
             { (uint)Genders.Male, "SEX.MALE" },
             { (uint)Genders.Female, "SEX.FEMALE" }
         };
 
-        private static readonly IDictionary<string, string> locationNames = new Dictionary<string, string>
+        private static readonly Dictionary<string, string> locationNames = new()
         {
             { "DarkAlley", "LOCATION.DARK_ALLEY" },
             { "Street", "LOCATION.STREET" },
@@ -75,7 +61,7 @@ namespace Nocturnal.src.services
                             TimeFormatter.GetFormattedTimestamp(),
                             Globals.Player,
                             Globals.Npcs,
-                            await Globals.LocationsToJson(),
+                            await JsonService.LocationsToJson(),
                             Globals.Fractions,
                             Globals.Quests,
                             Globals.Chapter,
@@ -173,7 +159,7 @@ namespace Nocturnal.src.services
                     TimeFormatter.GetFormattedTimestamp(),
                     Globals.Player,
                     Globals.Npcs,
-                    await Globals.LocationsToJson(),
+                    await JsonService.LocationsToJson(),
                     Globals.Fractions,
                     Globals.Quests,
                     Globals.Chapter,

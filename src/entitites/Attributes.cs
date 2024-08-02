@@ -20,7 +20,7 @@ namespace Nocturnal.src.entitites
                 Technical = Constants.DEFAULT_ATTRIBUTE,
                 Empathy = Constants.DEFAULT_ATTRIBUTE,
                 Luck = Constants.DEFAULT_ATTRIBUTE,
-                Stamina = Constants.DEFAULT_ATTRIBUTE * 6
+                Stamina = (Constants.DEFAULT_ATTRIBUTE * 6)
             };
         }
     }

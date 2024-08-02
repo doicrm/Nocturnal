@@ -1,6 +1,5 @@
 ﻿using Nocturnal.src.entitites;
 using Nocturnal.src.core;
-using Nocturnal.src.services;
 using Nocturnal.src.ui;
 
 namespace Nocturnal.src.events.prologue

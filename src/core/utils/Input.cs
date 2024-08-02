@@ -2,7 +2,7 @@
 
 namespace Nocturnal.src.core.utils
 {
-    public class Input
+    public static class Input
     {
         public static async ValueTask<int> GetChoice()
         {

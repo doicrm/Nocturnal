@@ -10,7 +10,7 @@ namespace Nocturnal.src.entitites
 
         public Inventory()
         {
-            Items = new List<Item>();
+            Items = [];
         }
 
         public async Task AddItem(Item item)

@@ -10,7 +10,7 @@ namespace Nocturnal.src.entitites
 
         public Journal()
         {
-            Quests = new List<Quest>();
+            Quests = [];
         }
 
         public async Task AddQuest(Quest quest)

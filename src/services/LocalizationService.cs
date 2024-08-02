@@ -45,7 +45,7 @@ namespace Nocturnal.src.services
                 return new List<string>(Directory.GetFiles(localizationDirectory, "*.json"));
 
             Console.WriteLine("The 'localization' directory does not exist.");
-            return new List<string>();
+            return [];
         }
     }
 }

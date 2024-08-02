@@ -1,60 +1,32 @@
 ﻿using Newtonsoft.Json;
 using Nocturnal.src.core.utilities;
 using Nocturnal.src.core;
+using Nocturnal.src.interfaces;
 
 namespace Nocturnal.src.services
 {
-    public struct ConfigFileData
+    public struct ConfigFileData(string? username, GameLanguages language)
     {
-        public string? Username { get; set; }
-        public GameLanguages Language { get; set; }
-
-        public ConfigFileData(string? username, GameLanguages language)
-        {
-            Username = username;
-            Language = language;
-        }
+        public string? Username { get; set; } = username;
+        public GameLanguages Language { get; set; } = language;
     }
 
-    public class ConfigService
+    public class ConfigService : IConfigCreator, IConfigLoader
     {
         public const string configFilePath = "data\\config\\config.json";
 
-        public static async ValueTask<bool> LoadConfigFile()
+        public static async Task CreateConfigFile()
         {
             string path = Path.Combine(Directory.GetCurrentDirectory(), configFilePath);
 
-            if (!File.Exists(path))
-                await CreateConfigFile(path);
-            else
-            {
-                string jsonString;
-                ConfigFileData configFileData;
-
-                try
-                {
-                    jsonString = await File.ReadAllTextAsync(path);
-                    configFileData = JsonConvert.DeserializeObject<ConfigFileData>(jsonString)!;
-                }
-                catch (Exception e)
-                {
-                    Console.Clear();
-                    Console.WriteLine(e.Message);
-                    return false;
-                }
-
-                Game.Instance.Settings.SetLanguage(configFileData.Language);
-            }
-
-            return await LoadDataFromFile(Game.Instance.Settings.GetLanguage());
-        }
-
-        public static async Task CreateConfigFile(string filePath)
-        {
             if (!Directory.Exists("data\\config"))
                 Directory.CreateDirectory("data\\config");
 
-            Game.Instance.Settings.Language.SelectLanguage();
+            var oldLang = Game.Instance.Settings.GetLanguage();
+
+            GameLanguage.SelectLanguage();
+
+            if (Game.Instance.Settings.GetLanguage() == oldLang) return;
 
             var configFileData = new ConfigFileData(
                 Environment.UserName,
@@ -64,7 +36,7 @@ namespace Nocturnal.src.services
             try
             {
                 string jsonString = JsonConvert.SerializeObject(configFileData, Formatting.Indented);
-                await File.WriteAllTextAsync(filePath, jsonString);
+                await File.WriteAllTextAsync(path, jsonString);
             }
             catch (JsonException e)
             {
@@ -76,18 +48,38 @@ namespace Nocturnal.src.services
             }
         }
 
-        public static async ValueTask<bool> LoadDataFromFile(GameLanguages lang)
+        public static async ValueTask<bool> LoadConfigFile()
         {
-            try
+            string path = Path.Combine(Directory.GetCurrentDirectory(), configFilePath);
+
+            if (!File.Exists(path))
+                await CreateConfigFile();
+            else
             {
-                await JsonService.LoadAndParseLocalizationFile(lang);
-                return true;
+                try
+                {
+                    string jsonString = await File.ReadAllTextAsync(path);
+
+                    ConfigFileData? configFileData = JsonConvert.DeserializeObject<ConfigFileData>(jsonString);
+
+                    if (configFileData.HasValue)
+                    {
+                        Game.Instance.Settings.SetLanguage(configFileData.Value.Language);
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException("Configuration data is null or invalid.");
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.Clear();
+                    Console.WriteLine(e.Message);
+                    return false;
+                }
             }
-            catch (Exception e)
-            {
-                await Logger.WriteLog(e.Message);
-                return false;
-            }
+
+            return await JsonService.LoadAndParseLocalizationFile(Game.Instance.Settings.GetLanguage());
         }
     }
 }

@@ -3,7 +3,7 @@ using Nocturnal.src.services;
 
 namespace Nocturnal.src.ui
 {
-    public class Display
+    public static class Display
     {
         public static async Task Write(string text, int speed = 50)
         {

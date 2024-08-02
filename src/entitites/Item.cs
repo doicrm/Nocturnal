@@ -1,4 +1,5 @@
 ﻿using Nocturnal.src.core;
+using Nocturnal.src.interfaces;
 using Nocturnal.src.ui;
 using System.Text;
 
