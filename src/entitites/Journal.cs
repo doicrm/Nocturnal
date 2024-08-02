@@ -47,6 +47,7 @@ namespace Nocturnal.src.entitites
             if (IsEmpty())
             {
                 sb.AppendLine(Display.GetJsonString("JOURNAL.NO_QUESTS"));
+                await File.WriteAllTextAsync(path, sb.ToString());
                 return;
             }
 

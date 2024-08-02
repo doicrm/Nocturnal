@@ -67,6 +67,7 @@ namespace Nocturnal.src.entitites
             if (Items.Count <= 0)
             {
                 sb.AppendLine(Display.GetJsonString("INVENTORY.NO_ITEMS"));
+                await File.WriteAllTextAsync(path, sb.ToString());
                 return;
             }
 
