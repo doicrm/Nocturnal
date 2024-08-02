@@ -1,4 +1,5 @@
 ﻿using Nocturnal.src.entitites;
+using Nocturnal.src.services;
 using System.Reflection;
 
 namespace Nocturnal.src.core
@@ -71,6 +72,35 @@ namespace Nocturnal.src.core
                     }
                 }
                 return tempLocation;
+            });
+        }
+
+        public static void UpdateGlobalsFromSave(SaveData saveInfo)
+        {
+            Player = saveInfo.Player;
+            Dictionary<string, Npc> npcs = saveInfo.Npcs.ToObject<Dictionary<string, Npc>>();
+            Npcs = npcs;
+            Dictionary<string, Location> locations = saveInfo.Locations.ToObject<Dictionary<string, Location>>();
+            Locations = locations;
+            Dictionary<string, Fraction> fractions = saveInfo.Fractions.ToObject<Dictionary<string, Fraction>>();
+            Fractions = fractions;
+            Dictionary<string, Quest> quests = saveInfo.Quests.ToObject<Dictionary<string, Quest>>();
+            Quests = quests;
+            Chapter = saveInfo.Chapter;
+            Game.Instance.Weather = saveInfo.Weather;
+            StoryGlobals storyGlobals = saveInfo.StoryGlobals.ToObject<StoryGlobals>();
+            Game.Instance.StoryGlobals = storyGlobals;
+        }
+
+        public static async Task ClearInstances()
+        {
+            await Task.Run(() =>
+            {
+                Items.Clear();
+                Npcs.Clear();
+                Locations.Clear();
+                Fractions.Clear();
+                Quests.Clear();
             });
         }
     }

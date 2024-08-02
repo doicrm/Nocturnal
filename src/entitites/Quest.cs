@@ -1,5 +1,6 @@
 ﻿using Nocturnal.src.core;
 using Nocturnal.src.ui;
+using System.Text;
 
 namespace Nocturnal.src.entitites
 {
@@ -86,18 +87,27 @@ namespace Nocturnal.src.entitites
 
         public string PrintInfo()
         {
-            return $"{Display.GetJsonString("NAME")}: {Name}\n" +
-                $"{Display.GetJsonString("DESCRIPTION")}: {Description}\n" +
-                $"{Display.GetJsonString("STATUS")}: {PrintStatus()}";
+            var sb = new StringBuilder();
+
+            sb.AppendLine($"{Display.GetJsonString("NAME")}: {Name}");
+            sb.AppendLine($"{Display.GetJsonString("DESCRIPTION")}: {Description}");
+            sb.AppendLine($"{Display.GetJsonString("STATUS")}: {PrintStatus()}");
+
+            return sb.ToString();
         }
 
         public static void InsertInstances()
         {
-            Quest KillHex = new("KillHex", Display.GetJsonString("QUEST.KILL_HEX.NAME"), Display.GetJsonString("QUEST.KILL_HEX.DESCRIPTION"));
-            Quest ZedAccelerator = new("ZedAccelerator", Display.GetJsonString("QUEST.ZED_ACCELERATOR.NAME"), Display.GetJsonString("QUEST.ZED_ACCELERATOR.DESCRIPTION"));
+            var quests = new[]
+            {
+                new Quest("KillHex", Display.GetJsonString("QUEST.KILL_HEX.NAME"), Display.GetJsonString("QUEST.KILL_HEX.DESCRIPTION")),
+                new Quest("ZedAccelerator", Display.GetJsonString("QUEST.ZED_ACCELERATOR.NAME"), Display.GetJsonString("QUEST.ZED_ACCELERATOR.DESCRIPTION"))
+            };
 
-            Globals.Quests[KillHex.ID] = KillHex;
-            Globals.Quests[ZedAccelerator.ID] = ZedAccelerator;
+            foreach (var quest in quests)
+            {
+                Globals.Quests[quest.ID] = quest;
+            }
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Nocturnal.src.core;
 using Nocturnal.src.services;
+using Nocturnal.src.ui;
+using System.Text;
 
 namespace Nocturnal.src.entitites
 {
@@ -21,19 +23,29 @@ namespace Nocturnal.src.entitites
 
         public override string PrintInfo()
         {
-            return $"{JsonService.JsonReader!["NAME"]}: {Name}\n" +
-                $"{JsonService.JsonReader!["DESCRIPTION"]}: {Description}\n" +
-                $"{JsonService.JsonReader!["DAMAGE_MIN"]}: {DamageMin}\n" +
-                $"{JsonService.JsonReader!["DAMAGE_MAX"]}: {DamageMin}\n" +
-                $"{JsonService.JsonReader!["TYPE"]}: {Type}\n" +
-                $"{JsonService.JsonReader!["VALUE"]}: {Value}";
+            var sb = new StringBuilder();
+
+            sb.AppendLine($"{Display.GetJsonString("NAME")}: {Name}");
+            sb.AppendLine($"{Display.GetJsonString("DESCRIPTION")}: {Description}");
+            sb.AppendLine($"{Display.GetJsonString("DAMAGE_MIN")}: {DamageMin}");
+            sb.AppendLine($"{Display.GetJsonString("DAMAGE_MAX")}: {DamageMin}");
+            sb.AppendLine($"{Display.GetJsonString("TYPE")}: {Type}");
+            sb.AppendLine($"{Display.GetJsonString("VALUE")}: {Value}");
+
+            return sb.ToString();
         }
 
         public static new void InsertInstances()
         {
-            Weapon Pistol = new("Pistol", $"{JsonService.JsonReader!["WEAPON.PISTOL.NAME"]}", $"{JsonService.JsonReader!["WEAPON.PISTOL.DESCRIPTION"]}", 10, 15, 250);
+            var weapons = new[]
+{
+                new Weapon("Pistol", $"{JsonService.JsonReader!["WEAPON.PISTOL.NAME"]}", $"{JsonService.JsonReader!["WEAPON.PISTOL.DESCRIPTION"]}", 10, 15, 250)
+            };
 
-            Globals.Items[Pistol.ID] = Pistol;
+            foreach (var weapon in weapons)
+            {
+                Globals.Items[weapon.ID] = weapon;
+            }
         }
     }
 }

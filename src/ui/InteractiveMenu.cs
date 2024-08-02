@@ -90,7 +90,7 @@
                 switch (Key.Key)
                 {
                     case ConsoleKey.DownArrow:
-                        Choice = Choice == Options.Count - 1 ? 0 : (Choice + 1);
+                        Choice = Choice == (Options.Count - 1) ? 0 : (Choice + 1);
                         break;
                     case ConsoleKey.UpArrow:
                         Choice = Choice == 0 ? (Options.Count - 1) : (Choice - 1);

@@ -7,8 +7,10 @@ namespace Nocturnal.src.core.utils
         public static async ValueTask<int> GetChoice()
         {
             await Display.Write("\t> ", 25);
-            string input = await Task.Run(() => Console.ReadLine()?.Trim());
+
+            string input = await Task.Run(() => Console.ReadLine()?.Trim() ?? string.Empty);
             bool result = int.TryParse(input, out int choice);
+
             return result ? choice : -1;
         }
 
@@ -20,17 +22,8 @@ namespace Nocturnal.src.core.utils
 
         public static string ConvertToCamelCase(string input)
         {
-            string[] words = input.Split(' ');
-
-            for (int i = 0; i < words.Length; i++)
-            {
-                if (i > 0)
-                {
-                    words[i] = CapitalizeFirstLetter(words[i]);
-                }
-            }
-
-            return string.Join("", words);
+            return string.Concat(input.Split(' ')
+                .Select((word, index) => index == 0 ? word : CapitalizeFirstLetter(word)));
         }
 
         public static string CapitalizeFirstLetter(string word)
@@ -38,9 +31,7 @@ namespace Nocturnal.src.core.utils
             if (string.IsNullOrEmpty(word))
                 return word;
 
-            char[] letters = word.ToCharArray();
-            letters[0] = char.ToUpper(letters[0]);
-            return $"{letters}";
+            return $"{char.ToUpper(word[0])}{word.AsSpan(1).ToString()}";
         }
     }
 }

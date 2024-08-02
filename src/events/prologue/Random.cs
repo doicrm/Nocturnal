@@ -8,9 +8,9 @@ namespace Nocturnal.src.events.prologue
     {
         public static async Task StartRaining()
         {
-            Program.Game!.Weather = Weather.Rainy;
+            Game.Instance.Weather = Weather.Rainy;
 
-            if (Program.Game!.Weather != Weather.Rainy) return;
+            if (Game.Instance.Weather != Weather.Rainy) return;
 
             await Display.WriteNarration($"\n\t{Display.GetJsonString("STREET.START_RAINING_01")}");
             await Task.Delay(1000);
@@ -88,7 +88,7 @@ namespace Nocturnal.src.events.prologue
                 return;
             }
 
-            await Program.Game!.SetCurrentLocation(Globals.Locations["NightclubEden"]);        
+            await Game.Instance.SetCurrentLocation(Globals.Locations["NightclubEden"]);        
         }
 
         //public static async Task PunksAmbush()

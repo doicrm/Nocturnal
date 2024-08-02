@@ -80,8 +80,8 @@ namespace Nocturnal.src.services
                             Globals.Quests,
                             Globals.Chapter,
                             null!,
-                            Program.Game!.Weather,
-                            Program.Game!.StoryGlobals
+                            Game.Instance.Weather,
+                            Game.Instance.StoryGlobals
                         );
 
                         var serializedObject = JsonConvert.SerializeObject(save, Formatting.Indented);
@@ -122,7 +122,7 @@ namespace Nocturnal.src.services
 
             CurrentSaveNr = nr;
 
-            UpdateGlobalsFromSave(saveInfo);
+            Globals.UpdateGlobalsFromSave(saveInfo);
 
             Location currentLocation = DetermineCurrentLocation(saveInfo);
 
@@ -130,7 +130,7 @@ namespace Nocturnal.src.services
             await GameDataService.InitHeroJournal();
             Console.Clear();
 
-            await Program.Game!.SetCurrentLocation(Globals.Locations[currentLocation.ID]);
+            await Game.Instance.SetCurrentLocation(Globals.Locations[currentLocation.ID]);
         }
 
         private static Location DetermineCurrentLocation(SaveData saveInfo)
@@ -177,9 +177,9 @@ namespace Nocturnal.src.services
                     Globals.Fractions,
                     Globals.Quests,
                     Globals.Chapter,
-                    Program.Game!.CurrentLocation!.ToJson(),
-                    Program.Game!.Weather,
-                    Program.Game!.StoryGlobals
+                    Game.Instance.CurrentLocation!.ToJson(),
+                    Game.Instance.Weather,
+                    Game.Instance.StoryGlobals
                 );
 
                 var serializedObject = JsonConvert.SerializeObject(save, Formatting.Indented);
@@ -264,23 +264,6 @@ namespace Nocturnal.src.services
             Console.WriteLine($"\n\n\t{Display.GetJsonString("LOAD_GAME.NO_SAVES_FOUND")}");
             await Task.Delay(2000);
             await Display.LoadLogo();
-        }
-
-        private static void UpdateGlobalsFromSave(SaveData saveInfo)
-        {
-            Globals.Player = saveInfo.Player;
-            Dictionary<string, Npc> npcs = saveInfo.Npcs.ToObject<Dictionary<string, Npc>>();
-            Globals.Npcs = npcs;
-            Dictionary<string, Location> locations = saveInfo.Locations.ToObject<Dictionary<string, Location>>();
-            Globals.Locations = locations;
-            Dictionary<string, Fraction> fractions = saveInfo.Fractions.ToObject<Dictionary<string, Fraction>>();
-            Globals.Fractions = fractions;
-            Dictionary<string, Quest> quests = saveInfo.Quests.ToObject<Dictionary<string, Quest>>();
-            Globals.Quests = quests;
-            Globals.Chapter = saveInfo.Chapter;
-            Program.Game!.Weather = saveInfo.Weather;
-            StoryGlobals storyGlobals = saveInfo.StoryGlobals.ToObject<StoryGlobals>();
-            Program.Game!.StoryGlobals = storyGlobals;
         }
 
         public static string GetSex(uint sex)

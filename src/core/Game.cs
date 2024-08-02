@@ -31,7 +31,7 @@ namespace Nocturnal.src.core
         {
             IsPlaying = true;
             CurrentLocation = null;
-            ConsoleService.ChangeConsoleName();
+            ConsoleService.InitConsole();
             Settings = new();
             StoryGlobals = StoryGlobals.Instance;
             Logger.WriteLog("Game initialized").GetAwaiter().GetResult();

@@ -47,7 +47,7 @@ namespace Nocturnal.src.events.prologue
                 { Display.GetJsonString("GUN_SHOP.DIA_ZED_MENU.02"), DialogueWithZed_02 }
             };
 
-            if (Program.Game!.StoryGlobals.Bob_RecommendsZed && !Program.Game!.StoryGlobals.Zed_KnowsAboutBobAndZed)
+            if (Game.Instance.StoryGlobals.Bob_RecommendsZed && !Game.Instance.StoryGlobals.Zed_KnowsAboutBobAndZed)
                 options.Add(Display.GetJsonString("GUN_SHOP.DIA_ZED_MENU.03"), DialogueWithZed_03);
 
             if (Globals.Quests["ZedAccelerator"].IsRunning && Globals.Player.HasItem(Globals.Items["AD13"]))
@@ -66,11 +66,11 @@ namespace Nocturnal.src.events.prologue
 
         public static async Task DialogueWithZed_02()
         {
-            if (Program.Game!.StoryGlobals.PC_TalkedAboutBusinessWithZed)
+            if (Game.Instance.StoryGlobals.PC_TalkedAboutBusinessWithZed)
                 await Display.WriteDialogue($"\t{Display.GetJsonString("GUN_SHOP.DIA_ZED_01")}");
             else
             {
-                Program.Game!.StoryGlobals.PC_TalkedAboutBusinessWithZed = true;
+                Game.Instance.StoryGlobals.PC_TalkedAboutBusinessWithZed = true;
                 await Display.WriteDialogue($"\t{Display.GetJsonString("GUN_SHOP.DIA_ZED_02")}");
             }
 
@@ -79,7 +79,7 @@ namespace Nocturnal.src.events.prologue
 
         public static async Task DialogueWithZed_03()
         {
-            Program.Game!.StoryGlobals.Zed_KnowsAboutBobAndZed = true;
+            Game.Instance.StoryGlobals.Zed_KnowsAboutBobAndZed = true;
             await Display.WriteDialogue($"\t{Display.GetJsonString("GUN_SHOP.DIA_ZED_03")}");
             await Task.Delay(1000);
             await Display.WriteDialogue($" {Display.GetJsonString("GUN_SHOP.DIA_ZED_04")}");
@@ -101,7 +101,7 @@ namespace Nocturnal.src.events.prologue
             if (!Globals.Npcs["Caden"].IsKnowHero && !Globals.Npcs["CadensPartner"].IsKnowHero)
                 await StreetEvents.MeetingWithPolicemans();
             else
-                await Program.Game!.SetCurrentLocation(Globals.Locations["Street"]);
+                await Game.Instance.SetCurrentLocation(Globals.Locations["Street"]);
         }
 
         public static async Task ZedGetsAnAccelerator()
@@ -135,9 +135,9 @@ namespace Nocturnal.src.events.prologue
                 return;
             }
 
-            if (!Program.Game!.StoryGlobals.Zed_TellsAboutWeapons)
+            if (!Game.Instance.StoryGlobals.Zed_TellsAboutWeapons)
             {
-                Program.Game!.StoryGlobals.Zed_TellsAboutWeapons = true;
+                Game.Instance.StoryGlobals.Zed_TellsAboutWeapons = true;
                 await Display.WriteDialogue($"\t{Display.GetJsonString("GUN_SHOP.DIA_ZED_08")}");
                 await Task.Delay(1000);
                 await Display.WriteDialogue($" {Display.GetJsonString("GUN_SHOP.DIA_ZED_09")} ");
@@ -185,7 +185,7 @@ namespace Nocturnal.src.events.prologue
                 await Display.WriteDialogue($" {Display.GetJsonString("GUN_SHOP.DIA_ZED_17")}");
                 await Task.Delay(1500);
 
-                if (Program.Game!.StoryGlobals.Zed_KnowsAboutBobAndZed)
+                if (Game.Instance.StoryGlobals.Zed_KnowsAboutBobAndZed)
                 {
                     await Display.WriteDialogue($" {Display.GetJsonString("GUN_SHOP.DIA_ZED_18")}");
                     await Task.Delay(1000);

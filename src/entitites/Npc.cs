@@ -123,7 +123,7 @@ namespace Nocturnal.src.entitites
                 Console.ResetColor();
             }
 
-            if (Game.Instance.Settings.Language.IsSetLanguage(GameLanguages.EN))
+            if (Game.Instance.Settings.GetLanguage() == GameLanguages.EN)
                 await Display.Write($"\t{Name} is {attitude} now.\n");
             else
                 await Display.Write($"\t{Name} jest teraz {attitude}.\n");
@@ -140,23 +140,22 @@ namespace Nocturnal.src.entitites
 
         public static void InsertInstances()
         {
-            Npc Bob = new("Bob", "Bob", Genders.Male, null!);
-            Npc Caden = new("Caden", "Caden", Genders.Male, null!);
-            Npc CadensPartner = new("CadensPartner", $"{JsonService.JsonReader!["NPC.POLICEMAN"]}", Genders.Male, null!);
-            Npc Zed = new("Zed", "Zed", Genders.Male, null!);
-            Npc Luna = new("Luna", "Luna", Genders.Female, null!);
-            Npc Jet = new("Jet", "Jet", Genders.Male, null!);
-            Npc HexFolstam = new("HexFolstam", "Hex Folstam", Genders.Male, null!);
-            Npc Enigma = new("Enigma", "Enigma", Genders.Male, null!);
+            var npcs = new List<Npc>
+            {
+                new("Bob", "Bob", Genders.Male, null!),
+                new("Caden", "Caden", Genders.Male, null!),
+                new("CadensPartner", $"{JsonService.JsonReader!["NPC.POLICEMAN"]}", Genders.Male, null!),
+                new("Zed", "Zed", Genders.Male, null!),
+                new("Luna", "Luna", Genders.Female, null!),
+                new("Jet", "Jet", Genders.Male, null!),
+                new("HexFolstam", "Hex Folstam", Genders.Male, null!),
+                new("Enigma", "Enigma", Genders.Male, null!)
+            };
 
-            Globals.Npcs.Add(Bob.ID, Bob);
-            Globals.Npcs.Add(Caden.ID, Caden);
-            Globals.Npcs.Add(CadensPartner.ID, CadensPartner);
-            Globals.Npcs.Add(Zed.ID, Zed);
-            Globals.Npcs.Add(Luna.ID, Luna);
-            Globals.Npcs.Add(Jet.ID, Jet);
-            Globals.Npcs.Add(HexFolstam.ID, HexFolstam);
-            Globals.Npcs.Add(Enigma.ID, Enigma);
+            foreach (var npc in npcs)
+            {
+                Globals.Npcs.Add(npc.ID, npc);
+            }
         }
     }
 }

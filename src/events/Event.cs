@@ -7,7 +7,7 @@ namespace Nocturnal.src.events
     {
         public static async Task HeroDeath()
         {
-            await ClearInstances();
+            await Globals.ClearInstances();
             await Task.Delay(500);
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Red;
@@ -23,7 +23,7 @@ namespace Nocturnal.src.events
 
         public static async Task GameOver()
         {
-            await ClearInstances();
+            await Globals.ClearInstances();
             await Task.Delay(500);
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Blue;
@@ -35,21 +35,9 @@ namespace Nocturnal.src.events
             await Display.LoadLogo();
         }
 
-        public static async Task ClearInstances()
-        {
-            await Task.Run(() =>
-            {
-                Globals.Items.Clear();
-                Globals.Npcs.Clear();
-                Globals.Locations.Clear();
-                Globals.Fractions.Clear();
-                Globals.Quests.Clear();
-            });
-        }
-
         public static async Task EndGame()
         {
-            await ClearInstances();
+            await Globals.ClearInstances();
             Console.Clear();
             await Task.Delay(500);
             Console.ForegroundColor = ConsoleColor.Blue;
@@ -60,7 +48,7 @@ namespace Nocturnal.src.events
             await Display.Write($"\t{Display.GetJsonString("THANKS_FOR_PLAYING")}");
             await Task.Delay(3500);
             Console.Clear();
-            await Program.Game!.End();
+            await Game.Instance.End();
         }
     }
 }

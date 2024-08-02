@@ -110,7 +110,7 @@ namespace Nocturnal.src.events.prologue
             await Display.WriteDialogue($"\n\t{Display.GetJsonString("DARK_ALLEY.DIA_BOB_03")}");
             await Display.WriteNarration($"\n\t{Display.GetJsonString("DARK_ALLEY.OUT_OF_ALLEY_09")}");
             await Task.Delay(1000);
-            await Program.Game!.SetCurrentLocation(Globals.Locations["Street"]);
+            await Game.Instance.SetCurrentLocation(Globals.Locations["Street"]);
         }
 
         public static async Task DialogueWithBob()
@@ -153,7 +153,7 @@ namespace Nocturnal.src.events.prologue
                     await Task.Delay(1500);
                     await Display.WriteNarration($" {Display.GetJsonString("DARK_ALLEY.DIA_BOB_28")}");
                     await Task.Delay(3500);
-                    await Program.Game!.SetCurrentLocation(Globals.Locations["Street"]);
+                    await Game.Instance.SetCurrentLocation(Globals.Locations["Street"]);
                 }
                 else
                 {
@@ -177,7 +177,7 @@ namespace Nocturnal.src.events.prologue
                     await Display.WriteNarration($" {Display.GetJsonString("DARK_ALLEY.DIA_BOB_28")}");
                     await Game.Pause();
                     Console.Clear();
-                    await Program.Game!.SetCurrentLocation(Globals.Locations["Street"]);
+                    await Game.Instance.SetCurrentLocation(Globals.Locations["Street"]);
                 }
             }
         }
@@ -204,7 +204,7 @@ namespace Nocturnal.src.events.prologue
 
         public static async Task DialogueWithBob_03()
         {
-            Program.Game!.StoryGlobals.Bob_RecommendsZed = true; // Bob recommends Zed's gun shop to the hero
+            Game.Instance.StoryGlobals.Bob_RecommendsZed = true; // Bob recommends Zed's gun shop to the hero
             await Display.WriteDialogue($"\t{Display.GetJsonString("DARK_ALLEY.DIA_BOB_10")}");
             await Task.Delay(1000);
             await Display.WriteDialogue($" {Display.GetJsonString("DARK_ALLEY.DIA_BOB_11")}");
@@ -304,7 +304,7 @@ namespace Nocturnal.src.events.prologue
             await Display.WriteNarration($"\n\t{Display.GetJsonString("DARK_ALLEY.CROSSROADS_04")}\n\n");
             await Game.Pause();
             Console.Clear();
-            await Program.Game!.SetCurrentLocation(Globals.Locations["Street"]);
+            await Game.Instance.SetCurrentLocation(Globals.Locations["Street"]);
         }
 
         public static async Task Crossroads_01()
@@ -313,13 +313,13 @@ namespace Nocturnal.src.events.prologue
             await Display.WriteNarration($"{Display.GetJsonString("DARK_ALLEY.CROSSROADS_04")}");
             await Task.Delay(1500);
             Console.Clear();
-            await Program.Game!.SetCurrentLocation(Globals.Locations["Street"]);
+            await Game.Instance.SetCurrentLocation(Globals.Locations["Street"]);
         }
 
         public static async Task Crossroads_02()
         {
             Console.Clear();
-            await Program.Game!.SetCurrentLocation(Globals.Locations["Street"]);
+            await Game.Instance.SetCurrentLocation(Globals.Locations["Street"]);
         }
     }
 }

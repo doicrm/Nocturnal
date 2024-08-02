@@ -1,5 +1,6 @@
 ﻿using Nocturnal.src.services;
 using Nocturnal.src.ui;
+using System.Text;
 
 namespace Nocturnal.src.entitites
 {
@@ -61,23 +62,24 @@ namespace Nocturnal.src.entitites
         {
             string path = Path.Combine(Directory.GetCurrentDirectory(), "Inventory.txt");
 
-            using (StreamWriter output = new StreamWriter(path))
-            {
-                if (Items.Count <= 0)
-                {
-                    await output.WriteLineAsync(Display.GetJsonString("INVENTORY.NO_ITEMS"));
-                    return;
-                }
+            var sb = new StringBuilder();
 
-                foreach (Item item in Items)
-                {
-                    await output.WriteLineAsync($"{Display.GetJsonString("NAME")}: {item.Name}");
-                    await output.WriteLineAsync($"{Display.GetJsonString("TYPE")}: {item.Type}");
-                    await output.WriteLineAsync($"{Display.GetJsonString("DESCRIPTION")}: {item.Description}");
-                    await output.WriteLineAsync($"{Display.GetJsonString("VALUE")}: {item.Value}$");
-                    await output.WriteLineAsync("...........................................................................");
-                }
+            if (Items.Count <= 0)
+            {
+                sb.AppendLine(Display.GetJsonString("INVENTORY.NO_ITEMS"));
+                return;
             }
+
+            foreach (Item item in Items)
+            {
+                sb.AppendLine($"{Display.GetJsonString("NAME")}: {item.Name}");
+                sb.AppendLine($"{Display.GetJsonString("TYPE")}: {item.Type}");
+                sb.AppendLine($"{Display.GetJsonString("DESCRIPTION")}: {item.Description}");
+                sb.AppendLine($"{Display.GetJsonString("VALUE")}: {item.Value}$");
+                sb.AppendLine("...........................................................................");
+            }
+
+            await File.WriteAllTextAsync(path, sb.ToString());
         }
     }
 

@@ -44,13 +44,17 @@ namespace Nocturnal.src.entitites
 
         public static void InsertInstances()
         {
-            Fraction Beggars = new("Beggars", Display.GetJsonString("FRACTION.BEGGARS"), 0, Attitudes.Neutral);
-            Fraction Police = new("Police", Display.GetJsonString("FRACTION.POLICE"), 0, Attitudes.Neutral);
-            Fraction Hammers = new("Hammers", Display.GetJsonString("FRACTION.HAMMERS"), 0, Attitudes.Neutral);
+            var fractions = new[]
+            {
+                new Fraction("Beggars", Display.GetJsonString("FRACTION.BEGGARS"), 0, Attitudes.Neutral),
+                new Fraction("Police", Display.GetJsonString("FRACTION.POLICE"), 0, Attitudes.Neutral),
+                new Fraction("Hammers", Display.GetJsonString("FRACTION.HAMMERS"), 0, Attitudes.Neutral)
+            };
 
-            Globals.Fractions[Beggars.ID] = Beggars;
-            Globals.Fractions[Police.ID] = Police;
-            Globals.Fractions[Hammers.ID] = Hammers;
+            foreach (var fraction in fractions)
+            {
+                Globals.Fractions[fraction.ID] = fraction;
+            }
         }
     }
 }

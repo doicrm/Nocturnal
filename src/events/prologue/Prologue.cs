@@ -35,7 +35,7 @@ namespace Nocturnal.src.events.prologue
             Console.Clear();
 
             if (Globals.Locations.ContainsKey("DarkAlley"))
-                await Program.Game!.SetCurrentLocation(Globals.Locations["DarkAlley"]);
+                await Game.Instance.SetCurrentLocation(Globals.Locations["DarkAlley"]);
         }
 
         public static async Task DarkAlley()
@@ -53,7 +53,7 @@ namespace Nocturnal.src.events.prologue
 
         public static async Task Street()
         {
-            if (Program.Game!.Weather != Weather.Rainy)
+            if (Game.Instance.Weather != Weather.Rainy)
             {
                 int rand = new Random().Next(0, 10);
                 if (rand > 5 && rand <= 10)
@@ -100,23 +100,23 @@ namespace Nocturnal.src.events.prologue
 
         public static async Task VisitDarkAlley()
         {
-            await Program.Game!.SetCurrentLocation(Globals.Locations["Street"]);
+            await Game.Instance.SetCurrentLocation(Globals.Locations["Street"]);
         }
 
         public static async Task VisitStreet()
         {
-            await Program.Game!.SetCurrentLocation(Globals.Locations["Street"]);
+            await Game.Instance.SetCurrentLocation(Globals.Locations["Street"]);
         }
 
         public static async Task VisitNightclubEden()
         {
-            await Program.Game!.SetCurrentLocation(Globals.Locations["NightclubEden"]);
+            await Game.Instance.SetCurrentLocation(Globals.Locations["NightclubEden"]);
         }
 
         public static async Task VisitGunShop()
         {
             await Display.WriteNarration($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.VISIT_CLUB")}");
-            await Program.Game!.SetCurrentLocation(Globals.Locations["GunShop"]);
+            await Game.Instance.SetCurrentLocation(Globals.Locations["GunShop"]);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Nocturnal.src.core;
 using Nocturnal.src.ui;
+using System.Text;
 
 namespace Nocturnal.src.entitites
 {
@@ -26,19 +27,27 @@ namespace Nocturnal.src.entitites
 
         virtual public string PrintInfo()
         {
-            return $"{Display.GetJsonString("NAME")}: {Name}\n" +
-                $"{Display.GetJsonString("DESCRIPTION")}: {Description}\n" +
-                $"{Display.GetJsonString("TYPE")}: {Type}\n" +
-                $"{Display.GetJsonString("VALUE")}: {Value}";
+            var sb = new StringBuilder();
+            sb.AppendLine($"{Display.GetJsonString("NAME")}: {Name}");
+            sb.AppendLine($"{Display.GetJsonString("DESCRIPTION")}: {Description}");
+            sb.AppendLine($"{Display.GetJsonString("TYPE")}: {Type}");
+            sb.AppendLine($"{Display.GetJsonString("VALUE")}: {Value}");
+
+            return sb.ToString();
         }
 
-        static public void InsertInstances()
+        public static void InsertInstances()
         {
-            Item AD13 = new("AD13", $"{Display.GetJsonString("ITEM.AD13.NAME")}", ItemType.Quest, $"{Display.GetJsonString("ITEM.AD13.DESCRIPTION")}", 50);
-            Item AccessCard = new("AccessCard", $"{Display.GetJsonString("ITEM.ACCESS_CARD.NAME")}", ItemType.Misc, $"{Display.GetJsonString("ITEM.ACCESS_CARD.DESCRIPTION")}", 0);
+            var items = new[]
+            {
+                new Item("AD13", Display.GetJsonString("ITEM.AD13.NAME"), ItemType.Quest, Display.GetJsonString("ITEM.AD13.DESCRIPTION"), 50),
+                new Item("AccessCard", Display.GetJsonString("ITEM.ACCESS_CARD.NAME"), ItemType.Misc, Display.GetJsonString("ITEM.ACCESS_CARD.DESCRIPTION"), 0)
+            };
 
-            Globals.Items[AD13.ID] = AD13;
-            Globals.Items[AccessCard.ID] = AccessCard;
+            foreach (var item in items)
+            {
+                Globals.Items[item.ID] = item;
+            }
 
             Weapon.InsertInstances();
         }

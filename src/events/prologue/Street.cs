@@ -52,7 +52,7 @@ namespace Nocturnal.src.events.prologue
         {
             await Display.WriteNarration($"\t{Display.GetJsonString("STREET.ENCOUNTER_GUN_STORE_01")}");
 
-            if (Program.Game!.StoryGlobals.Bob_RecommendsZed)
+            if (Game.Instance.StoryGlobals.Bob_RecommendsZed)
                 await Display.WriteNarration($"\n\t{Display.GetJsonString("STREET.ENCOUNTER_GUN_STORE_02")}");
 
             Random rnd = new(); int rand = rnd.Next(0, 20);
@@ -74,7 +74,7 @@ namespace Nocturnal.src.events.prologue
 
         public static async Task EncounterGunStore_01()
         {
-            await Program.Game!.SetCurrentLocation(Globals.Locations["GunShop"]);
+            await Game.Instance.SetCurrentLocation(Globals.Locations["GunShop"]);
         }
 
         public static async Task EncounterGunStore_02()
@@ -134,7 +134,7 @@ namespace Nocturnal.src.events.prologue
 
             if (!Globals.Npcs["Bob"].IsKnowHero)
             {
-                if (Game.Instance.Settings.Language.IsSetLanguage(GameLanguages.EN))
+                if (Game.Instance.Settings.GetLanguage() == GameLanguages.EN)
                     await Display.WriteDialogue("'\n");
                 else
                     await Display.WriteDialogue("\n");
@@ -142,7 +142,7 @@ namespace Nocturnal.src.events.prologue
                 await MiscEvents.NamingHero();
                 await Task.Delay(1500);
 
-                if (Game.Instance.Settings.Language.IsSetLanguage(GameLanguages.EN))
+                if (Game.Instance.Settings.GetLanguage() == GameLanguages.EN)
                     await Display.WriteDialogue($"\t- '{Globals.Player.Name}...");
                 else
                     await Display.WriteDialogue($"\t- {Globals.Player.Name}...");
@@ -184,7 +184,7 @@ namespace Nocturnal.src.events.prologue
 
         public static async Task MeetingWithPolicemans_01()
         {
-            await Program.Game!.SetCurrentLocation(Globals.Locations["NightclubEden"]);
+            await Game.Instance.SetCurrentLocation(Globals.Locations["NightclubEden"]);
         }
 
         public static async Task MeetingWithPolicemans_02()

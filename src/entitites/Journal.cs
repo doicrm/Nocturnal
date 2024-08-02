@@ -1,5 +1,6 @@
 ﻿using Nocturnal.src.services;
 using Nocturnal.src.ui;
+using System.Text;
 
 namespace Nocturnal.src.entitites
 {
@@ -41,20 +42,21 @@ namespace Nocturnal.src.entitites
         {
             string path = Path.Combine(Directory.GetCurrentDirectory(), "journal.txt");
 
-            using (StreamWriter output = new StreamWriter(path))
-            {
-                if (IsEmpty())
-                {
-                    await output.WriteLineAsync(Display.GetJsonString("JOURNAL.NO_QUESTS"));
-                    return;
-                }
+            var sb = new StringBuilder();
 
-                foreach (Quest quest in Quests)
-                {
-                    await output.WriteLineAsync(quest.PrintInfo());
-                    await output.WriteLineAsync("..............................................................................");
-                }
+            if (IsEmpty())
+            {
+                sb.AppendLine(Display.GetJsonString("JOURNAL.NO_QUESTS"));
+                return;
             }
+
+            foreach (Quest quest in Quests)
+            {
+                sb.AppendLine(quest.PrintInfo());
+                sb.AppendLine("..............................................................................");
+            }
+
+            await File.WriteAllTextAsync(path, sb.ToString());
         }
 
         public void Show()
@@ -67,10 +69,7 @@ namespace Nocturnal.src.entitites
             }
         }
 
-        public bool IsEmpty()
-        {
-            return !Quests.Any();
-        }
+        public bool IsEmpty() => !Quests.Any();
 
         public async Task ClearJournal()
         {

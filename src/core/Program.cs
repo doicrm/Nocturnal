@@ -5,14 +5,14 @@ namespace Nocturnal.src.core
 {
     public class Program
     {
-        public static Game? Game { get; private set; }
-
         static async Task Main()
         {
             await Logger.WriteLog("Program runs");
-            Game = Game.Instance;
-            if (!await ConfigService.LoadConfigFile()) return;
-            await Game.Run();
+
+            if (await ConfigService.LoadConfigFile())
+            {
+                await Game.Instance.Run();
+            }
         }
     }
 }

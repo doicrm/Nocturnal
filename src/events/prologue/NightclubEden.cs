@@ -87,9 +87,9 @@ namespace Nocturnal.src.events.prologue
 
         public static async Task ClubBar()
         {
-            if (!Program.Game!.StoryGlobals.PC_IsAtBar)
+            if (!Game.Instance.StoryGlobals.PC_IsAtBar)
             {
-                Program.Game!.StoryGlobals.PC_IsAtBar = true;
+                Game.Instance.StoryGlobals.PC_IsAtBar = true;
                 await Display.WriteNarration($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.BAR_01")}");
                 await Display.WriteDialogue($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.BAR_02")}");
             };
@@ -132,7 +132,7 @@ namespace Nocturnal.src.events.prologue
         {
             await Display.WriteNarration($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.BAR_13")}");
             await Display.WriteDialogue($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.BAR_14")}\n");
-            Program.Game!.StoryGlobals.PC_IsAtBar = false;
+            Game.Instance.StoryGlobals.PC_IsAtBar = false;
             await Crossroads();
         }
 
@@ -222,7 +222,7 @@ namespace Nocturnal.src.events.prologue
             dialogueWithJetMenu.ClearOptions();
             MenuOptions options = new();
 
-            await JetGetsAngry(Program.Game!.StoryGlobals.Jet_Points);
+            await JetGetsAngry(Game.Instance.StoryGlobals.Jet_Points);
 
             options.Add(Display.GetJsonString("NIGHTCLUB_EDEN.DIA_JET_MENU.I_WANT_PASS"), DialogueWithJet_01);
             options.Add(Display.GetJsonString("NIGHTCLUB_EDEN.DIA_JET_MENU.WHATS_THERE"), DialogueWithJet_02);
@@ -243,7 +243,7 @@ namespace Nocturnal.src.events.prologue
         {
             await Display.WriteNarration($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.DIA_JET_01")}");
             await Display.WriteDialogue($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.DIA_JET_02")}");
-            Program.Game!.StoryGlobals.Jet_Points += 1;
+            Game.Instance.StoryGlobals.Jet_Points += 1;
             await DialogueWithJet();
         }
 
@@ -251,7 +251,7 @@ namespace Nocturnal.src.events.prologue
         {
             await Display.WriteNarration($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.DIA_JET_03")}");
             await Display.WriteDialogue($"\n\t{Display.GetJsonString("NIGHTCLUB_EDEN.DIA_JET_04")}");
-            Program.Game!.StoryGlobals.Jet_Points += 1;
+            Game.Instance.StoryGlobals.Jet_Points += 1;
             await DialogueWithJet();
         }
 
@@ -282,22 +282,26 @@ namespace Nocturnal.src.events.prologue
 
         public static async Task JetGetsAngry(int angerPoints)
         {
-            if (angerPoints < 2 && !Program.Game!.StoryGlobals.Jet_WarnedPlayer && !Program.Game!.StoryGlobals.Jet_BeatedPlayer)
+            if (angerPoints < 2
+                && !Game.Instance.StoryGlobals.Jet_WarnedPlayer
+                && !Game.Instance.StoryGlobals.Jet_BeatedPlayer)
                 return;
 
-            if (angerPoints == 2 && !Program.Game!.StoryGlobals.Jet_WarnedPlayer)
+            if (angerPoints == 2 && !Game.Instance.StoryGlobals.Jet_WarnedPlayer)
             {
-                Program.Game!.StoryGlobals.Jet_WarnedPlayer = true;
+                Game.Instance.StoryGlobals.Jet_WarnedPlayer = true;
                 Console.WriteLine();
                 await Globals.Npcs["Jet"].SetAttitude(Attitudes.Angry);
                 await Display.WriteDialogue($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.DIA_JET_15")}");
                 return;
             }
 
-            if (angerPoints > 2 && Program.Game!.StoryGlobals.Jet_WarnedPlayer && !Program.Game!.StoryGlobals.Jet_BeatedPlayer)
+            if (angerPoints > 2
+                && Game.Instance.StoryGlobals.Jet_WarnedPlayer
+                && !Game.Instance.StoryGlobals.Jet_BeatedPlayer)
             {
-                Program.Game!.StoryGlobals.Jet_BeatedPlayer = true;
-                Program.Game!.StoryGlobals.Jet_Points = 0;
+                Game.Instance.StoryGlobals.Jet_BeatedPlayer = true;
+                Game.Instance.StoryGlobals.Jet_Points = 0;
                 Console.WriteLine();
                 await Globals.Npcs["Jet"].SetAttitude(Attitudes.Hostile);
                 await Display.WriteDialogue($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.DIA_JET_16")}");
@@ -330,7 +334,7 @@ namespace Nocturnal.src.events.prologue
             if (rand > 5 && rand <= 10)
                 await RandomEvents.NickHandDiscovered();
 
-            await Program.Game!.SetCurrentLocation(Globals.Locations["Street"]);
+            await Game.Instance.SetCurrentLocation(Globals.Locations["Street"]);
         }
 
         public static async Task HexOffice()
@@ -346,7 +350,7 @@ namespace Nocturnal.src.events.prologue
 
         public static async Task CheckHexDesk()
         {
-            Program.Game!.StoryGlobals.PC_KnowsHexCode = true;
+            Game.Instance.StoryGlobals.PC_KnowsHexCode = true;
             await Display.WriteNarration($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.CHECK_HEX_DESK")}");
             Console.WriteLine();
             await HexHideoutCode();
@@ -357,7 +361,7 @@ namespace Nocturnal.src.events.prologue
             await Display.WriteNarration($"\t{Display.GetJsonString("NIGHTCLUB_EDEN.HEX_HIDEOUT_CODE_01")}");
             await Task.Delay(1500);
 
-            if (!Program.Game!.StoryGlobals.PC_KnowsHexCode)
+            if (!Game.Instance.StoryGlobals.PC_KnowsHexCode)
             {
                 await Display.WriteNarration($" {Display.GetJsonString("NIGHTCLUB_EDEN.HEX_HIDEOUT_CODE_02")}");
                 Console.WriteLine();

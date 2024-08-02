@@ -42,11 +42,6 @@ namespace Nocturnal.src.core
             _ = new InteractiveMenu(languageOptions);
         }
 
-        public bool IsSetLanguage(GameLanguages language)
-        {
-            return Language == language;
-        }
-
         public static string GetLocalizationFileName(GameLanguages lang)
         {
             if (LocalizationFileNames.TryGetValue(lang, out var fileName))
