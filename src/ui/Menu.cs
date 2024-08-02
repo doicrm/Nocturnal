@@ -16,7 +16,7 @@ namespace Nocturnal.src.ui
             ClearOptions();
         }
 
-        public Menu(Dictionary<string, Func<Task>> options)
+        public Menu(MenuOptions options)
         {
             Options = new Dictionary<int, KeyValuePair<string, Func<Task>>>();
             AddOptions(options);
@@ -43,7 +43,7 @@ namespace Nocturnal.src.ui
             Choice = 0;
         }
 
-        public void AddOptions(Dictionary<string, Func<Task>> options)
+        public void AddOptions(MenuOptions options)
         {
             ClearOptions();
 
@@ -66,21 +66,6 @@ namespace Nocturnal.src.ui
 
         public async Task InputChoice()
         {
-            //Console.WriteLine();
-
-            //while (true)
-            //{
-            //    Choice = Input.GetChoice();
-
-            //    if (Choice <= Options.Count && Choice > 0)
-            //    {
-            //        ExecuteSelectedAction();
-            //        break;
-            //    }
-
-            //    continue;
-            //}
-
             Console.WriteLine();
             while (true)
             {
@@ -102,11 +87,6 @@ namespace Nocturnal.src.ui
 
         public async Task ExecuteSelectedAction()
         {
-            //Action selectedAction = Options[Choice].Value;
-            //Console.Clear();
-            //ShowHeroChoice();
-            //selectedAction.Invoke();
-
             Func<Task> selectedAction = Options[Choice].Value;
             Console.Clear();
             ShowHeroChoice();

@@ -220,7 +220,7 @@ namespace Nocturnal.src.events.prologue
         {
             Menu dialogueWithJetMenu = new();
             dialogueWithJetMenu.ClearOptions();
-            Dictionary<string, Func<Task>> options = new();
+            MenuOptions options = new();
 
             await JetGetsAngry(Program.Game!.StoryGlobals.Jet_Points);
 

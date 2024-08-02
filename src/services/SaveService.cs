@@ -99,7 +99,8 @@ namespace Nocturnal.src.services
         public static async Task LoadSave(uint nr)
         {
             Item.InsertInstances();
-            string path = Path.Combine(Directory.GetCurrentDirectory(), $"data\\saves\\Save{nr}.dat");
+
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "data", "saves", $"Save{nr}.dat");
 
             if (!File.Exists(path))
             {
@@ -107,43 +108,54 @@ namespace Nocturnal.src.services
                 return;
             }
 
+            SaveData saveInfo;
+            try
+            {
+                string content = await File.ReadAllTextAsync(path);
+                saveInfo = JsonConvert.DeserializeObject<SaveData>(content);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Failed to load save file: {ex.Message}");
+                return;
+            }
+
             CurrentSaveNr = nr;
 
-            string content = await File.ReadAllTextAsync(path);
-            var saveInfo = JsonConvert.DeserializeObject<SaveData>(content);
+            UpdateGlobalsFromSave(saveInfo);
 
-            Globals.Player = saveInfo.Player;
-            Dictionary<string, Npc> npcs = saveInfo.Npcs.ToObject<Dictionary<string, Npc>>();
-            Globals.Npcs = npcs;
-            Dictionary<string, Location> locations = saveInfo.Locations.ToObject<Dictionary<string, Location>>();
-            Globals.Locations = locations;
-            Dictionary<string, Fraction> fractions = saveInfo.Fractions.ToObject<Dictionary<string, Fraction>>();
-            Globals.Fractions = fractions;
-            Dictionary<string, Quest> quests = saveInfo.Quests.ToObject<Dictionary<string, Quest>>();
-            Globals.Quests = quests;
-            Globals.Chapter = saveInfo.Chapter;
-            Program.Game!.Weather = saveInfo.Weather;
-            StoryGlobals storyGlobals = saveInfo.StoryGlobals.ToObject<StoryGlobals>();
-            Program.Game!.StoryGlobals = storyGlobals;
+            Location currentLocation = DetermineCurrentLocation(saveInfo);
 
-            Location currentLocation;
-
-            if (saveInfo.CurrentLocation != null)
-                currentLocation = await saveInfo.CurrentLocation.ToObject<Location>();
-            else
-                currentLocation = locations["DarkAlley"];
-
-            if (!Globals.Locations.ContainsKey(currentLocation.ID))
-                Globals.Locations.Add(currentLocation.ID, currentLocation);
-
-            foreach (Location location in Globals.Locations.Values)
-                location.SetEvent();
-
-            await Game.InitHeroInventory();
-            await Game.InitHeroJournal();
+            await GameDataService.InitHeroInventory();
+            await GameDataService.InitHeroJournal();
             Console.Clear();
 
             await Program.Game!.SetCurrentLocation(Globals.Locations[currentLocation.ID]);
+        }
+
+        private static Location DetermineCurrentLocation(SaveData saveInfo)
+        {
+            Location? currentLocation = saveInfo.CurrentLocation?.ToObject<Location>();
+
+            if (currentLocation == null || !Globals.Locations.ContainsKey(currentLocation.ID))
+            {
+                if (!Globals.Locations.TryGetValue("DarkAlley", out currentLocation))
+                {
+                    throw new InvalidOperationException("Default location 'DarkAlley' not found in Globals.Locations.");
+                }
+            }
+
+            if (!Globals.Locations.ContainsKey(currentLocation.ID))
+            {
+                Globals.Locations.Add(currentLocation.ID, currentLocation);
+            }
+
+            foreach (var location in Globals.Locations.Values)
+            {
+                location.SetEvent();
+            }
+
+            return currentLocation;
         }
 
         public static async Task UpdateSave()
@@ -175,7 +187,7 @@ namespace Nocturnal.src.services
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred during a write update: {ex.Message}");
+                Console.WriteLine($"An error occurred during a save update: {ex.Message}");
             }
         }
 
@@ -203,7 +215,7 @@ namespace Nocturnal.src.services
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error during loading of writing information: {ex.Message}");
+                Console.WriteLine($"Error during loading of save info: {ex.Message}");
                 return string.Empty;
             }
         }
@@ -226,12 +238,7 @@ namespace Nocturnal.src.services
                 return;
             }
 
-            var options = await CreateSaveOptions(files);
-            var savesMenu = new InteractiveMenu();
-
-            savesMenu.ClearOptions();
-            savesMenu.AddOptions(options);
-            await savesMenu.InputChoice();
+            _ = new InteractiveMenu(await CreateSaveOptions(files));
         }
 
         private static async Task<MenuOptions> CreateSaveOptions(IEnumerable<string> files)
@@ -247,7 +254,7 @@ namespace Nocturnal.src.services
                 i++;
             }
 
-            options.Add($"{Display.GetJsonString("BACK_TO_MAIN_MENU")}", Display.LoadLogo);
+            options.Add(Display.GetJsonString("BACK_TO_MAIN_MENU"), Display.LoadLogo);
             return options;
         }
 
@@ -257,6 +264,23 @@ namespace Nocturnal.src.services
             Console.WriteLine($"\n\n\t{Display.GetJsonString("LOAD_GAME.NO_SAVES_FOUND")}");
             await Task.Delay(2000);
             await Display.LoadLogo();
+        }
+
+        private static void UpdateGlobalsFromSave(SaveData saveInfo)
+        {
+            Globals.Player = saveInfo.Player;
+            Dictionary<string, Npc> npcs = saveInfo.Npcs.ToObject<Dictionary<string, Npc>>();
+            Globals.Npcs = npcs;
+            Dictionary<string, Location> locations = saveInfo.Locations.ToObject<Dictionary<string, Location>>();
+            Globals.Locations = locations;
+            Dictionary<string, Fraction> fractions = saveInfo.Fractions.ToObject<Dictionary<string, Fraction>>();
+            Globals.Fractions = fractions;
+            Dictionary<string, Quest> quests = saveInfo.Quests.ToObject<Dictionary<string, Quest>>();
+            Globals.Quests = quests;
+            Globals.Chapter = saveInfo.Chapter;
+            Program.Game!.Weather = saveInfo.Weather;
+            StoryGlobals storyGlobals = saveInfo.StoryGlobals.ToObject<StoryGlobals>();
+            Program.Game!.StoryGlobals = storyGlobals;
         }
 
         public static string GetSex(uint sex)

@@ -8,6 +8,12 @@ namespace Nocturnal.src.services
     {
         public string? Username { get; set; }
         public GameLanguages Language { get; set; }
+
+        public ConfigFileData(string? username, GameLanguages language)
+        {
+            Username = username;
+            Language = language;
+        }
     }
 
     public class ConfigService
@@ -50,11 +56,10 @@ namespace Nocturnal.src.services
 
             Game.Instance.Settings.Language.SelectLanguage();
 
-            var configFileData = new ConfigFileData
-            {
-                Username = Environment.UserName,
-                Language = Game.Instance.Settings.GetLanguage()
-            };
+            var configFileData = new ConfigFileData(
+                Environment.UserName,
+                Game.Instance.Settings.GetLanguage()
+            );
 
             try
             {

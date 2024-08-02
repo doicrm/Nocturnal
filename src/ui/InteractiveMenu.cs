@@ -14,7 +14,7 @@
             ClearOptions();
         }
 
-        public InteractiveMenu(Dictionary<string, Func<Task>> options)
+        public InteractiveMenu(MenuOptions options)
         {
             Options = new Dictionary<int, KeyValuePair<string, Func<Task>>>();
             AddOptions(options);
@@ -52,7 +52,7 @@
             Choice = 0;
         }
 
-        public void AddOptions(Dictionary<string, Func<Task>> options)
+        public void AddOptions(MenuOptions options)
         {
             ClearOptions();
 
@@ -90,10 +90,10 @@
                 switch (Key.Key)
                 {
                     case ConsoleKey.DownArrow:
-                        Choice = Choice == Options.Count - 1 ? 0 : Choice + 1;
+                        Choice = Choice == Options.Count - 1 ? 0 : (Choice + 1);
                         break;
                     case ConsoleKey.UpArrow:
-                        Choice = Choice == 0 ? Options.Count - 1 : Choice - 1;
+                        Choice = Choice == 0 ? (Options.Count - 1) : (Choice - 1);
                         break;
                     case ConsoleKey.Enter:
                         IsSelected = true;

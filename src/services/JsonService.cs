@@ -13,7 +13,7 @@ namespace Nocturnal.src.services
         {
             try
             {
-                string path = Path.Combine(Directory.GetCurrentDirectory(), "localization\\" + GameLanguage.GetLocalizationFileName(lang) + ".json");
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "localization", GameLanguage.GetLocalizationFileName(lang) + ".json");
                 string jsonString = await File.ReadAllTextAsync(path);
                 JsonReader = JObject.Parse(jsonString);
                 return true;
@@ -34,7 +34,6 @@ namespace Nocturnal.src.services
                     await Logger.WriteLog($"Key '{stringName}' not found in JsonReader.");
                     return string.Empty;
                 }
-
                 return JsonReader![stringName].ToString();
             }
             catch (JsonException e)
