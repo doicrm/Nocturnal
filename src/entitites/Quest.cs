@@ -104,10 +104,7 @@ namespace Nocturnal.src.entitites
                 new Quest("ZedAccelerator", Display.GetJsonString("QUEST.ZED_ACCELERATOR.NAME"), Display.GetJsonString("QUEST.ZED_ACCELERATOR.DESCRIPTION"))
             };
 
-            foreach (var quest in quests)
-            {
-                Globals.Quests[quest.ID] = quest;
-            }
+            Globals.Quests = quests.ToDictionary(quest => quest.ID);
         }
     }
 }

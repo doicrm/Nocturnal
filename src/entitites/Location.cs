@@ -1,4 +1,7 @@
-﻿using System.Reflection;
+﻿using Nocturnal.src.core;
+using Nocturnal.src.events.prologue;
+using Nocturnal.src.ui;
+using System.Reflection;
 
 namespace Nocturnal.src.entitites
 {
@@ -79,6 +82,19 @@ namespace Nocturnal.src.entitites
                     Events = (Func<Task>)Delegate.CreateDelegate(typeof(Func<Task>), methodInfo);
                 }
             }
+        }
+
+        public static void InsertInstances()
+        {
+            var locations = new List<Location>
+            {
+                new("DarkAlley", Display.GetJsonString("LOCATION.DARK_ALLEY"), null!, PrologueEvents.DarkAlley),
+                new("Street", Display.GetJsonString("LOCATION.STREET"), Globals.Fractions["Police"], PrologueEvents.Street),
+                new("GunShop", Display.GetJsonString("LOCATION.GUN_SHOP"), Globals.Fractions["Police"], PrologueEvents.GunShop),
+                new("NightclubEden", Display.GetJsonString("LOCATION.NIGHTCLUB_EDEN"), Globals.Fractions["Police"], PrologueEvents.NightclubEden)
+            };
+
+            Globals.Locations = locations.ToDictionary(location => location.ID);
         }
 
         public dynamic ToJson()

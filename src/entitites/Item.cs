@@ -45,11 +45,7 @@ namespace Nocturnal.src.entitites
                 new Item("AccessCard", Display.GetJsonString("ITEM.ACCESS_CARD.NAME"), ItemType.Misc, Display.GetJsonString("ITEM.ACCESS_CARD.DESCRIPTION"), 0)
             };
 
-            foreach (var item in items)
-            {
-                Globals.Items[item.ID] = item;
-            }
-
+            Globals.Items = items.ToDictionary(item => item.ID);
             Weapon.InsertInstances();
         }
     }

@@ -6,27 +6,21 @@ namespace Nocturnal.src.entitites
 {
     public class Journal
     {
-        public IList<Quest> Quests { get; set; }
+        public List<Quest> Quests { get; set; } = [];
 
         public Journal()
         {
-            Quests = [];
         }
 
         public async Task AddQuest(Quest quest)
         {
-            if (!quest.IsRunning && !quest.IsCompleted)
-            {
-                Quests.Add(quest);
+            if (quest.IsRunning || quest.IsCompleted) return;
 
-                foreach (Quest q in Quests)
-                {
-                    if (q == quest) quest.Start();
-                }
+            Quests.Add(quest);
+            quest.Start();
 
-                await UpdatedJournalFile();
-                await SaveService.UpdateSave();
-            }
+            await UpdatedJournalFile();
+            await SaveService.UpdateSave();
         }
 
         public async Task EndQuest(Quest quest, QuestStatus status)
@@ -64,13 +58,10 @@ namespace Nocturnal.src.entitites
         {
             if (IsEmpty()) return;
 
-            foreach (var quest in Quests)
-            {
-                Console.WriteLine(quest.Name);
-            }
+            Quests.ForEach(quest => Console.WriteLine(quest.Name));
         }
 
-        public bool IsEmpty() => !Quests.Any();
+        public bool IsEmpty() => Quests.Count == 0;
 
         public async Task ClearJournal()
         {

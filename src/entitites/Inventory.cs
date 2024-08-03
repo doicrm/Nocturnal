@@ -6,11 +6,10 @@ namespace Nocturnal.src.entitites
 {
     public class Inventory
     {
-        public IList<Item> Items { get; set; }
+        public IList<Item> Items { get; set; } = [];
 
         public Inventory()
         {
-            Items = [];
         }
 
         public async Task AddItem(Item item)

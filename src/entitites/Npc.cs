@@ -152,10 +152,7 @@ namespace Nocturnal.src.entitites
                 new("Enigma", "Enigma", Genders.Male, null!)
             };
 
-            foreach (var npc in npcs)
-            {
-                Globals.Npcs.Add(npc.ID, npc);
-            }
+            Globals.Npcs = npcs.ToDictionary(npc => npc.ID);
         }
     }
 }

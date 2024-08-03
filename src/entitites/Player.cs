@@ -28,7 +28,11 @@ namespace Nocturnal.src.entitites
 
         public static async Task Kill() => await Event.HeroDeath();
         public new bool IsDead() { return Attributes.Stamina < 0; }
-        public async Task AddQuest(Quest quest) => await Journal!.AddQuest(quest);
-        public async Task EndQuest(Quest quest, QuestStatus status) => await Journal!.EndQuest(quest, status);
+
+        public async Task AddQuest(Quest quest)
+            => await Journal!.AddQuest(quest);
+
+        public async Task EndQuest(Quest quest, QuestStatus status)
+            => await Journal!.EndQuest(quest, status);
     }
 }

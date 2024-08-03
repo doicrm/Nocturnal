@@ -2,6 +2,7 @@
 using Nocturnal.src.core;
 using Nocturnal.src.core.utils;
 using Nocturnal.src.entitites;
+using Nocturnal.src.interfaces;
 using Nocturnal.src.ui;
 
 namespace Nocturnal.src.services
@@ -20,7 +21,7 @@ namespace Nocturnal.src.services
         public dynamic StoryGlobals = storyGlobals;
     };
 
-    public class SaveService
+    public class SaveService : ISaveCreator, ISaveLoader, ISaveUpdater
     {
         private static readonly Dictionary<uint, string> genderMap = new()
         {

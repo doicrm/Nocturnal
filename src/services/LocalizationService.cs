@@ -1,5 +1,6 @@
 ﻿using Nocturnal.src.core;
 using Nocturnal.src.ui;
+using Spectre.Console;
 
 namespace Nocturnal.src.services
 {
@@ -44,7 +45,7 @@ namespace Nocturnal.src.services
             if (Directory.Exists(localizationDirectory))
                 return new List<string>(Directory.GetFiles(localizationDirectory, "*.json"));
 
-            Console.WriteLine("The 'localization' directory does not exist.");
+            AnsiConsole.MarkupLine("[bold red]ERROR:[/] [red]The 'localization' directory does not exist.[/]");
             return [];
         }
     }

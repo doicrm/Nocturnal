@@ -51,10 +51,7 @@ namespace Nocturnal.src.entitites
                 new Fraction("Hammers", Display.GetJsonString("FRACTION.HAMMERS"), 0, Attitudes.Neutral)
             };
 
-            foreach (var fraction in fractions)
-            {
-                Globals.Fractions[fraction.ID] = fraction;
-            }
+            Globals.Fractions = fractions.ToDictionary(fraction => fraction.ID);
         }
     }
 }

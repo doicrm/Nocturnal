@@ -1,5 +1,6 @@
 ﻿using Nocturnal.src.ui;
 using Nocturnal.src.services;
+using Spectre.Console;
 
 namespace Nocturnal.src.core
 {
@@ -34,7 +35,7 @@ namespace Nocturnal.src.core
 
             if (languageOptions.Count == 0)
             {
-                Console.WriteLine("No localization files available.");
+                AnsiConsole.MarkupLine("[bold red]ERROR:[/] [red]No localization files available.[/]");
                 Environment.Exit(-1);
                 return;
             }

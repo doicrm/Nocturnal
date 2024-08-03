@@ -82,7 +82,7 @@ namespace Nocturnal.src.core
 
         public static async Task NewGame()
         {
-            GameDataService.InitAll();
+            await GameDataService.InitAll();
             await SaveService.CreateSave();
             Console.Clear();
             await PrologueEvents.Prologue();

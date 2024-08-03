@@ -44,7 +44,7 @@ namespace Nocturnal.src.entitites
 
             foreach (var weapon in weapons)
             {
-                Globals.Items[weapon.ID] = weapon;
+                Globals.Items.Add(weapon.ID, weapon);
             }
         }
     }
