@@ -66,23 +66,14 @@ namespace Nocturnal.src.entitites
 
         public string PrintStatus()
         {
-            if (Status is QuestStatus.Running)
+            return (Status switch
             {
-                return Display.GetJsonString("QUEST_STATUS.RUNNING").ToLower();
-            }
-            if (Status is QuestStatus.Success)
-            {
-                return Display.GetJsonString("QUEST_STATUS.SUCCESS").ToLower();
-            }
-            if (Status is QuestStatus.Failed)
-            {
-                return Display.GetJsonString("QUEST_STATUS.FAILED").ToLower();
-            }
-            if (Status is QuestStatus.Obsolete)
-            {
-                return Display.GetJsonString("QUEST_STATUS.OBSOLETE").ToLower();
-            }
-            return Display.GetJsonString("QUEST_STATUS.NOT_STARTED").ToLower();
+                QuestStatus.Running => Display.GetJsonString("QUEST_STATUS.RUNNING"),
+                QuestStatus.Success => Display.GetJsonString("QUEST_STATUS.SUCCESS"),
+                QuestStatus.Failed => Display.GetJsonString("QUEST_STATUS.FAILED"),
+                QuestStatus.Obsolete => Display.GetJsonString("QUEST_STATUS.OBSOLETE"),
+                _ => Display.GetJsonString("QUEST_STATUS.NOT_STARTED"),
+            }).ToLower();
         }
 
         public string PrintInfo()

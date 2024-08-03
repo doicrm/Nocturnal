@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
 using Nocturnal.src.core.utilities;
 using Nocturnal.src.core;
 using Nocturnal.src.entitites;
@@ -9,45 +8,41 @@ namespace Nocturnal.src.services
 {
     public class JsonService
     {
-        public static dynamic? JsonReader { get; set; }
+        public static JObject? JsonReader { get; private set; }
 
         public static async ValueTask<bool> LoadAndParseLocalizationFile(GameLanguages lang)
         {
             try
             {
-                string path = Path.Combine(Directory.GetCurrentDirectory(), "localization", $"{GameLanguage.GetLocalizationFileName(lang)}.json");
-                string jsonString = await File.ReadAllTextAsync(path);
+                string path = GetLocalizationFilePath(lang);
+                string jsonString = await File.ReadAllTextAsync(path).ConfigureAwait(false);
                 JsonReader = JObject.Parse(jsonString);
                 return true;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                await Logger.WriteLog(e.Message);
+                await Logger.WriteLog($"Error loading localization file: {ex.Message}").ConfigureAwait(false);
                 return false;
             }
         }
 
+        private static string GetLocalizationFilePath(GameLanguages lang)
+        {
+            return Path.Combine(
+                Directory.GetCurrentDirectory(),
+                "localization",
+                $"{GameLanguage.GetLocalizationFileName(lang)}.json");
+        }
+
         public static async Task<string> GetJsonStringAsync(string stringName)
         {
-            try
+            if (JsonReader == null || !JsonReader.ContainsKey(stringName))
             {
-                if (JsonReader == null || !JsonReader!.ContainsKey(stringName))
-                {
-                    await Logger.WriteLog($"Key '{stringName}' not found in JsonReader.");
-                    return string.Empty;
-                }
-                return JsonReader![stringName].ToString();
-            }
-            catch (JsonException e)
-            {
-                await Logger.WriteLog($"JsonException: {e.Message}");
+                await Logger.WriteLog($"Key '{stringName}' not found in JsonReader.").ConfigureAwait(false);
                 return string.Empty;
             }
-            catch (Exception e)
-            {
-                await Logger.WriteLog($"Exception: {e.Message}");
-                return string.Empty;
-            }
+
+            return JsonReader[stringName]?.ToString() ?? string.Empty;
         }
 
         public static string GetJsonString(string stringName)
@@ -61,14 +56,14 @@ namespace Nocturnal.src.services
 
             foreach (var location in Globals.Locations)
             {
-                dynamic tempLocation = await Task.Run(() => location.Value.ToJson());
+                dynamic tempLocation = await Task.Run(() => location.Value.ToJson()).ConfigureAwait(false);
                 tempLocations.Add(location.Key, tempLocation);
             }
 
             return tempLocations;
         }
 
-        public static async ValueTask<dynamic> LocationsFromJson(dynamic locations)
+        public static async ValueTask<Dictionary<string, dynamic>> LocationsFromJson(dynamic locations)
         {
             return await Task.Run(() =>
             {
@@ -76,44 +71,64 @@ namespace Nocturnal.src.services
 
                 foreach (var location in locations)
                 {
-                    Type type = Type.GetType(location.Value.EventType)!;
-
-                    if (type != null)
+                    if (location.Value?.EventType == null || location.Value?.EventName == null)
                     {
-                        object instance = Activator.CreateInstance(type)!;
-                        MethodInfo method = type.GetMethod(location.Value.EventName)!;
+                        continue;
+                    }
 
-                        if (method != null)
-                        {
-                            location.Value.Events = (Action)instance;
-                            tempLocations.Add(location.Key, location.Value);
-                        }
+                    Type? type = Type.GetType(location.Value.EventType);
+                    if (type == null)
+                    {
+                        continue;
+                    }
+
+                    MethodInfo? method = type.GetMethod(location.Value.EventName, BindingFlags.Static | BindingFlags.Public);
+                    if (method == null)
+                    {
+                        continue;
+                    }
+
+                    if (method.CreateDelegate(typeof(Action)) is Action eventDelegate)
+                    {
+                        location.Value.Events = eventDelegate;
+                        tempLocations.Add(location.Key, location.Value);
                     }
                 }
+
                 return tempLocations;
-            });
+            }).ConfigureAwait(false);
         }
 
         public static async ValueTask<Location> LocationFromJson(Location loc)
         {
             return await Task.Run(() =>
             {
-                Location tempLocation = new();
-                Console.WriteLine(loc.EventType + "." + loc.EventName);
-                Type type = Type.GetType(loc.EventType!)!;
-
-                if (type != null)
+                if (string.IsNullOrEmpty(loc.EventType) || string.IsNullOrEmpty(loc.EventName))
                 {
-                    MethodInfo method = type.GetMethod(loc.EventName!, BindingFlags.Static | BindingFlags.Public)!;
-
-                    if (method != null)
-                    {
-                        loc.Events = (Func<Task>)Delegate.CreateDelegate(typeof(Action), method);
-                        tempLocation = loc;
-                    }
+                    return loc;
                 }
-                return tempLocation;
-            });
+
+                Console.WriteLine($"{loc.EventType}.{loc.EventName}");
+
+                Type? type = Type.GetType(loc.EventType);
+                if (type == null)
+                {
+                    return loc;
+                }
+
+                MethodInfo? method = type.GetMethod(loc.EventName, BindingFlags.Static | BindingFlags.Public);
+                if (method == null)
+                {
+                    return loc;
+                }
+
+                if (Delegate.CreateDelegate(typeof(Func<Task>), method) is Func<Task> eventFunc)
+                {
+                    loc.Events = eventFunc;
+                }
+
+                return loc;
+            }).ConfigureAwait(false);
         }
     }
 }

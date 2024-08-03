@@ -10,22 +10,26 @@ namespace Nocturnal.src.ui
             foreach (char letter in text)
             {
                 Console.Write(letter);
-                await Task.Delay(speed);
+                await Task.Delay(speed).ConfigureAwait(false);
             }
         }
 
         public static async Task WriteColoredText(string text, ConsoleColor color, int speed = 50)
         {
             Console.ForegroundColor = color;
-            await Write(text, speed);
+            await Write(text, speed).ConfigureAwait(false);
             Console.ResetColor();
         }
 
         public static async Task WriteNarration(string text, int speed = 50)
-            => await WriteColoredText(text, ConsoleColor.Gray, speed);
+        {
+            await WriteColoredText(text, ConsoleColor.Gray, speed);
+        }
 
         public static async Task WriteDialogue(string text, int speed = 50)
-            => await WriteColoredText(text, ConsoleColor.White, speed);
+        {
+            await WriteColoredText(text, ConsoleColor.White, speed);
+        }
 
         public static string GetJsonString(string stringName)
             => JsonService.GetJsonString(stringName);
@@ -45,7 +49,7 @@ namespace Nocturnal.src.ui
             foreach (var s in Constants.GAME_LOGO)
                 Console.Write(s);
             Console.ResetColor();
-            await Game.Instance.MainMenu();
+            await Game.Instance.MainMenu().ConfigureAwait(false);
         }
     }
 }

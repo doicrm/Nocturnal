@@ -6,39 +6,28 @@
         public int OptionNr { get; set; }
         public int Choice { get; set; }
         public ConsoleKeyInfo Key { get; set; }
-        public IDictionary<int, KeyValuePair<string, Func<Task>>> Options { get; private set; }
+        public IDictionary<int, KeyValuePair<string, Func<Task>>> Options { get; private set; } = new Dictionary<int, KeyValuePair<string, Func<Task>>>();
 
-        public InteractiveMenu()
-        {
-            Options = new Dictionary<int, KeyValuePair<string, Func<Task>>>();
-            ClearOptions();
-        }
+
+        public InteractiveMenu() => ClearOptions();
 
         public InteractiveMenu(MenuOptions options)
         {
-            Options = new Dictionary<int, KeyValuePair<string, Func<Task>>>();
             AddOptions(options);
             InputChoice().GetAwaiter().GetResult();
         }
 
         public void ActionOption(int nr, string text)
         {
-            if (Choice + 1 != nr)
-            {
-                Console.ResetColor();
-                Console.Write($"\n\t[{nr}] {text}");
-                return;
-            }
-
-            Console.ForegroundColor = ConsoleColor.Black;
-            Console.BackgroundColor = ConsoleColor.White;
+            bool isSelectedOption = Choice + 1 == nr;
+            Console.ForegroundColor = isSelectedOption ? ConsoleColor.Black : Console.ForegroundColor;
+            Console.BackgroundColor = isSelectedOption ? ConsoleColor.White : Console.BackgroundColor;
             Console.Write($"\n\t[{nr}] {text}");
             Console.ResetColor();
         }
 
         public void ShowHeroChoice()
         {
-            Console.ResetColor();
             Console.ForegroundColor = ConsoleColor.Black;
             Console.BackgroundColor = ConsoleColor.White;
             Console.WriteLine($"\n\t> {Options[Choice].Key}\n");
@@ -55,11 +44,7 @@
         public void AddOptions(MenuOptions options)
         {
             ClearOptions();
-
-            options
-                .Select((option, index) => new { OptionNr = index + 1, option.Key, option.Value })
-                .ToList()
-                .ForEach(x => Options.Add(x.OptionNr, new KeyValuePair<string, Func<Task>>(x.Key, x.Value)));
+            Options = options.Select((option, index) => new KeyValuePair<int, KeyValuePair<string, Func<Task>>>(index + 1, option)).ToDictionary(pair => pair.Key, pair => pair.Value);
         }
 
         public void ShowOptions()
@@ -70,7 +55,9 @@
             Console.WriteLine();
 
             foreach (var option in Options)
+            {
                 ActionOption(option.Key, option.Value.Key);
+            }
         }
 
         public async Task InputChoice()
@@ -101,18 +88,39 @@
                 }
             }
 
+            while (!IsSelected)
+            {
+                Console.SetCursorPosition(left, top);
+                ShowOptions();
+
+                Key = Console.ReadKey(true);
+                switch (Key.Key)
+                {
+                    case ConsoleKey.DownArrow:
+                        Choice = (Choice + 1) % Options.Count;
+                        break;
+                    case ConsoleKey.UpArrow:
+                        Choice = (Choice - 1 + Options.Count) % Options.Count;
+                        break;
+                    case ConsoleKey.Enter:
+                        IsSelected = true;
+                        break;
+                }
+            }
+
             Choice++;
 
             if (Options.ContainsKey(Choice))
-                await ExecuteSelectedAction();
+            {
+                await ExecuteSelectedAction().ConfigureAwait(false);
+            }
         }
 
         public async Task ExecuteSelectedAction()
         {
-            var selectedAction = Options[Choice].Value;
             Console.Clear();
             ShowHeroChoice();
-            await selectedAction();
+            await Options[Choice].Value().ConfigureAwait(false);
         }
     }
 }

@@ -91,42 +91,33 @@ namespace Nocturnal.src.entitites
             }
         }
 
-        public async Task SetAttitude(Attitudes attitude)
+        public async Task SetAttitude(Attitudes newAttitude)
         {
-            if (Attitude == attitude) return;
-            Attitude = attitude;
+            if (Attitude == newAttitude) return;
+            Attitude = newAttitude;
             await PrintAttitude();
         }
 
         public async Task PrintAttitude()
         {
-            string attitude;
+            var (attitude, color) = Attitude switch
+            {
+                Attitudes.Angry => (JsonService.JsonReader!["ATTITUDE.ANGRY"]!.ToString().ToLower(), ConsoleColor.Yellow),
+                Attitudes.Hostile => (JsonService.JsonReader!["ATTITUDE.HOSTILE"]!.ToString().ToLower(), ConsoleColor.Red),
+                Attitudes.Friendly => (JsonService.JsonReader!["ATTITUDE.FRIENDLY"]!.ToString().ToLower(), ConsoleColor.Green),
+                _ => (JsonService.JsonReader!["ATTITUDE.NEUTRAL"]!.ToString().ToLower(), (ConsoleColor?)null)
+            };
 
-            if (Attitude is Attitudes.Angry)
-            {
-                attitude = $"{JsonService.JsonReader!["ATTITUDE.ANGRY"]!.ToString().ToLower()}";
-                Console.ForegroundColor = ConsoleColor.Yellow;
-            }
-            else if (Attitude is Attitudes.Hostile)
-            {
-                attitude = $"{JsonService.JsonReader!["ATTITUDE.HOSTILE"]!.ToString().ToLower()}";
-                Console.ForegroundColor = ConsoleColor.Red;
-            }
-            else if (Attitude is Attitudes.Friendly)
-            {
-                attitude = $"{JsonService.JsonReader!["ATTITUDE.FRIENDLY"]!.ToString().ToLower()}";
-                Console.ForegroundColor = ConsoleColor.Green;
-            }
+            if (color.HasValue)
+                Console.ForegroundColor = color.Value;
             else
-            {
-                attitude = $"{JsonService.JsonReader!["ATTITUDE.NEUTRAL"]!.ToString().ToLower()}";
                 Console.ResetColor();
-            }
 
-            if (Game.Instance.Settings.GetLanguage() == GameLanguages.EN)
-                await Display.Write($"\t{Name} is {attitude} now.\n");
-            else
-                await Display.Write($"\t{Name} jest teraz {attitude}.\n");
+            string message = Game.Instance.Settings.GetLanguage() == GameLanguages.EN
+                ? $"\t{Name} is {attitude} now.\n"
+                : $"\t{Name} jest teraz {attitude}.\n";
+
+            await Display.Write(message);
             Console.ResetColor();
         }
 

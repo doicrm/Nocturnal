@@ -47,41 +47,50 @@ namespace Nocturnal.src.entitites
             IsVisited = isVisited;
             EventName = "";
             EventType = "";
+
             SetEventNameAndType();
             SetEvent();
         }
 
-        public void SetEventNameAndType()
+        private void SetEventNameAndType()
         {
             if (Events == null) return;
 
-            MethodInfo methodInfo = Events.GetMethodInfo();
-            string methodName = methodInfo.Name;
-            EventName = methodName;
-
+            var methodInfo = Events.GetMethodInfo();
             if (methodInfo == null) return;
 
-            Type declaringType = methodInfo.DeclaringType!;
-            string typeName = declaringType.Namespace!;
-            typeName += "." + declaringType.Name;
-            EventType = typeName;
+            EventName = methodInfo.Name;
+            var declaringType = methodInfo.DeclaringType;
+
+            if (declaringType != null)
+            {
+                EventType = $"{declaringType.Namespace}.{declaringType.Name}";
+            }
         }
 
         public void SetEvent()
         {
-            if (EventType == null) return;
-
-            Type type = Type.GetType(EventType)!;
-
-            if (type != null && EventName != null)
+            if (string.IsNullOrEmpty(EventType) || string.IsNullOrEmpty(EventName))
             {
-                MethodInfo? methodInfo = type.GetMethod(EventName!);
-
-                if (methodInfo != null)
-                {
-                    Events = (Func<Task>)Delegate.CreateDelegate(typeof(Func<Task>), methodInfo);
-                }
+                Events = null;
+                return;
             }
+
+            var type = Type.GetType(EventType);
+            if (type == null)
+            {
+                Events = null;
+                return;
+            }
+
+            var methodInfo = type.GetMethod(EventName);
+            if (methodInfo != null)
+            {
+                Events = (Func<Task>)Delegate.CreateDelegate(typeof(Func<Task>), methodInfo);
+                return;
+            }
+
+            Events = null;
         }
 
         public static void InsertInstances()

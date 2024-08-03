@@ -8,24 +8,19 @@ namespace Nocturnal.src.ui
     {
         public int OptionNr { get; set; }
         public int Choice { get; set; }
-        public IDictionary<int, KeyValuePair<string, Func<Task>>> Options { get; private set; }
+        public IDictionary<int, KeyValuePair<string, Func<Task>>> Options { get; private set; } = new Dictionary<int, KeyValuePair<string, Func<Task>>>();
 
-        public Menu()
-        {
-            Options = new Dictionary<int, KeyValuePair<string, Func<Task>>>();
-            ClearOptions();
-        }
+        public Menu() { }
 
         public Menu(MenuOptions options)
         {
-            Options = new Dictionary<int, KeyValuePair<string, Func<Task>>>();
             AddOptions(options);
             ShowOptions().GetAwaiter().GetResult();
             InputChoice().GetAwaiter().GetResult();
         }
 
-        public static async Task ActionOption(int nr, string text, int seconds = 25)
-            => await Display.Write($"\n\t[{nr}] {text}", seconds);
+        private static async Task ActionOption(int nr, string text, int speed = 25)
+            => await Display.Write($"\n\t[{nr}] {text}", speed).ConfigureAwait(false);
 
         public void ShowHeroChoice()
         {
@@ -46,11 +41,9 @@ namespace Nocturnal.src.ui
         public void AddOptions(MenuOptions options)
         {
             ClearOptions();
-
-            options
-                .Select((option, index) => new { OptionNr = index + 1, option.Key, option.Value })
-                .ToList()
-                .ForEach(x => Options.Add(x.OptionNr, new KeyValuePair<string, Func<Task>>(x.Key, x.Value)));
+            Options = options
+                .Select((option, index) => new KeyValuePair<int, KeyValuePair<string, Func<Task>>>(index + 1, option))
+                .ToDictionary(x => x.Key, x => x.Value);
         }
 
         public async Task ShowOptions(int seconds = 25)
@@ -61,7 +54,9 @@ namespace Nocturnal.src.ui
             Console.WriteLine();
 
             foreach (var option in Options)
-                await ActionOption(option.Key, option.Value.Key, seconds);
+            {
+                await ActionOption(option.Key, option.Value.Key, seconds).ConfigureAwait(false);
+            }
         }
 
         public async Task InputChoice()
@@ -69,10 +64,10 @@ namespace Nocturnal.src.ui
             Console.WriteLine();
             while (true)
             {
-                Choice = await Input.GetChoice();
+                Choice = await Input.GetChoice().ConfigureAwait(false);
                 if (Options.ContainsKey(Choice))
                 {
-                    await ExecuteSelectedAction();
+                    await ExecuteSelectedAction().ConfigureAwait(false);
                     break;
                 }
                 Console.WriteLine("Invalid choice. Please select a valid option.");
@@ -81,16 +76,16 @@ namespace Nocturnal.src.ui
 
         public async ValueTask<int> GetInputChoice()
         {
-            Choice = await Input.GetChoice();
+            Choice = await Input.GetChoice().ConfigureAwait(false);
             return Choice;
         }
 
-        public async Task ExecuteSelectedAction()
+        private async Task ExecuteSelectedAction()
         {
             Func<Task> selectedAction = Options[Choice].Value;
             Console.Clear();
             ShowHeroChoice();
-            await selectedAction();
+            await selectedAction().ConfigureAwait(false);
         }
     }
 }

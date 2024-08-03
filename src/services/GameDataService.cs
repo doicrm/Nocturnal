@@ -8,8 +8,13 @@ namespace Nocturnal.src.services
     {
         public static async Task InitAll()
         {
-            await InitHeroInventory();
-            await InitHeroJournal();
+            await InitHeroInventory().ConfigureAwait(false);
+            await InitHeroJournal().ConfigureAwait(false);
+            InsertInstances();
+        }
+
+        private static void InsertInstances()
+        {
             Npc.InsertInstances();
             Item.InsertInstances();
             Fraction.InsertInstances();
@@ -23,12 +28,11 @@ namespace Nocturnal.src.services
 
             if (inventory != null && !inventory.IsEmpty())
             {
-                await inventory.UpdateFile();
+                await inventory.UpdateFile().ConfigureAwait(false);
                 return;
             }
 
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "Inventory.txt");
-            await File.WriteAllTextAsync(path, Display.GetJsonString("INVENTORY.NO_ITEMS"));
+            await WriteToFile("Inventory.txt", Display.GetJsonString("INVENTORY.NO_ITEMS")).ConfigureAwait(false);
         }
 
         public static async Task InitHeroJournal()
@@ -37,12 +41,17 @@ namespace Nocturnal.src.services
 
             if (journal != null && !journal.IsEmpty())
             {
-                await journal.UpdatedJournalFile();
+                await journal.UpdatedJournalFile().ConfigureAwait(false);
                 return;
             }
 
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "Journal.txt");
-            await File.WriteAllTextAsync(path, Display.GetJsonString("JOURNAL.NO_QUESTS"));
+            await WriteToFile("Journal.txt", Display.GetJsonString("JOURNAL.NO_QUESTS")).ConfigureAwait(false);
+        }
+
+        private static async Task WriteToFile(string fileName, string content)
+        {
+            string path = Path.Combine(Directory.GetCurrentDirectory(), fileName);
+            await File.WriteAllTextAsync(path, content).ConfigureAwait(false);
         }
     }
 }

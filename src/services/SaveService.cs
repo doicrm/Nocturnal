@@ -40,9 +40,14 @@ namespace Nocturnal.src.services
 
         private static uint CurrentSaveNr = 0;
 
+        private static string GetSaveDirectory()
+        {
+            return Path.Combine(Directory.GetCurrentDirectory(), "data", "saves");
+        }
+
         public static async Task CreateSave()
         {
-            string saveDirectory = Path.Combine(Directory.GetCurrentDirectory(), "data", "saves");
+            string saveDirectory = GetSaveDirectory();
 
             if (!Directory.Exists(saveDirectory))
                 Directory.CreateDirectory(saveDirectory);
@@ -62,7 +67,7 @@ namespace Nocturnal.src.services
                             TimeFormatter.GetFormattedTimestamp(),
                             Globals.Player,
                             Globals.Npcs,
-                            await JsonService.LocationsToJson(),
+                            await JsonService.LocationsToJson().ConfigureAwait(false),
                             Globals.Fractions,
                             Globals.Quests,
                             Globals.Chapter,
@@ -72,7 +77,7 @@ namespace Nocturnal.src.services
                         );
 
                         var serializedObject = JsonConvert.SerializeObject(save, Formatting.Indented);
-                        await newSave.WriteAsync(serializedObject);
+                        await newSave.WriteAsync(serializedObject).ConfigureAwait(false);
                         break;
                     }
                     catch (Exception ex)
@@ -87,37 +92,33 @@ namespace Nocturnal.src.services
         {
             Item.InsertInstances();
 
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "data", "saves", $"Save{nr}.dat");
+            string path = Path.Combine(GetSaveDirectory(), $"Save{nr}.dat");
 
             if (!File.Exists(path))
             {
-                await Display.LoadLogo();
+                await Display.LoadLogo().ConfigureAwait(false);
                 return;
             }
 
-            SaveData saveInfo;
             try
             {
-                string content = await File.ReadAllTextAsync(path);
-                saveInfo = JsonConvert.DeserializeObject<SaveData>(content);
+                string content = await File.ReadAllTextAsync(path).ConfigureAwait(false);
+                SaveData saveInfo = JsonConvert.DeserializeObject<SaveData>(content)!;
+                CurrentSaveNr = nr;
+
+                Globals.UpdateGlobalsFromSave(saveInfo);
+                Location currentLocation = DetermineCurrentLocation(saveInfo);
+
+                await GameDataService.InitHeroInventory().ConfigureAwait(false);
+                await GameDataService.InitHeroJournal().ConfigureAwait(false);
+                Console.Clear();
+
+                await Game.Instance.SetCurrentLocation(Globals.Locations[currentLocation.ID]).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Failed to load save file: {ex.Message}");
-                return;
             }
-
-            CurrentSaveNr = nr;
-
-            Globals.UpdateGlobalsFromSave(saveInfo);
-
-            Location currentLocation = DetermineCurrentLocation(saveInfo);
-
-            await GameDataService.InitHeroInventory();
-            await GameDataService.InitHeroJournal();
-            Console.Clear();
-
-            await Game.Instance.SetCurrentLocation(Globals.Locations[currentLocation.ID]);
         }
 
         private static Location DetermineCurrentLocation(SaveData saveInfo)
@@ -149,12 +150,10 @@ namespace Nocturnal.src.services
         {
             try
             {
-                string saveDirectory = Path.Combine(Directory.GetCurrentDirectory(), "data", "saves");
+                string path = Path.Combine(GetSaveDirectory(), $"Save{CurrentSaveNr}.dat");
 
-                if (!Directory.Exists(saveDirectory))
-                    Directory.CreateDirectory(saveDirectory);
-
-                string path = Path.Combine(saveDirectory, $"Save{CurrentSaveNr}.dat");
+                if (!Directory.Exists(GetSaveDirectory()))
+                    Directory.CreateDirectory(GetSaveDirectory());
 
                 var save = new SaveData(
                     TimeFormatter.GetFormattedTimestamp(),
@@ -185,18 +184,12 @@ namespace Nocturnal.src.services
 
             try
             {
-                string content = await File.ReadAllTextAsync(saveToLoad);
+                string content = await File.ReadAllTextAsync(saveToLoad).ConfigureAwait(false);
                 var saveInfo = JsonConvert.DeserializeObject<SaveData>(content);
 
-                Location currentLocation;
-
-                if (saveInfo.CurrentLocation != null)
-                    currentLocation = await saveInfo.CurrentLocation.ToObject<Location>();
-                else
-                {
-                    Dictionary<string, Location> locations = saveInfo.Locations.ToObject<Dictionary<string, Location>>();
-                    currentLocation = locations["DarkAlley"];
-                }
+                Location currentLocation = saveInfo.CurrentLocation != null
+                    ? await saveInfo.CurrentLocation.ToObject<Location>()
+                    : saveInfo.Locations.ToObject<Dictionary<string, Location>>()["DarkAlley"];
 
                 return $"{GetName(saveInfo.Player.Name)}, {GetSex((uint)saveInfo.Player.Sex).ToLower()} | {GetChapterToString(saveInfo.Chapter)}{GetLocationName(currentLocation)} | {saveInfo.Timestamp}";
             }
@@ -209,11 +202,11 @@ namespace Nocturnal.src.services
 
         public static async Task FindSaves()
         {
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "data", "saves");
+            string path = GetSaveDirectory();
 
             if (!Directory.Exists(path))
             {
-                await NoSavesFound();
+                await NoSavesFound().ConfigureAwait(false);
                 return;
             }
 
@@ -221,11 +214,11 @@ namespace Nocturnal.src.services
 
             if (!files.Any())
             {
-                await NoSavesFound();
+                await NoSavesFound().ConfigureAwait(false);
                 return;
             }
 
-            _ = new InteractiveMenu(await CreateSaveOptions(files));
+            _ = new InteractiveMenu(await CreateSaveOptions(files).ConfigureAwait(false));
         }
 
         private static async Task<MenuOptions> CreateSaveOptions(IEnumerable<string> files)
@@ -236,8 +229,8 @@ namespace Nocturnal.src.services
             foreach (var file in files)
             {
                 uint currentIndex = i;
-                var saveInfo = await LoadSaveInfo(file);
-                options.Add(saveInfo, async () => await LoadSave(currentIndex));
+                var saveInfo = await LoadSaveInfo(file).ConfigureAwait(false);
+                options.Add(saveInfo, async () => await LoadSave(currentIndex).ConfigureAwait(false));
                 i++;
             }
 
@@ -249,20 +242,20 @@ namespace Nocturnal.src.services
         {
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine($"\n\n\t{Display.GetJsonString("LOAD_GAME.NO_SAVES_FOUND")}");
-            await Task.Delay(2000);
-            await Display.LoadLogo();
+            await Task.Delay(2000).ConfigureAwait(false);
+            await Display.LoadLogo().ConfigureAwait(false);
         }
 
         public static string GetSex(uint sex)
         {
-            if (genderMap.TryGetValue(sex, out var genderKey))
-                return Display.GetJsonString(genderKey);
-            return Display.GetJsonString("SEX.UNDEFINED");
+            return genderMap.TryGetValue(sex, out var genderKey)
+                ? Display.GetJsonString(genderKey)
+                : Display.GetJsonString("SEX.UNDEFINED");
         }
 
         private static string GetName(string name)
         {
-            return name != "" ? name : Display.GetJsonString("UNKNOWN");
+            return !string.IsNullOrEmpty(name) ? name : Display.GetJsonString("UNKNOWN");
         }
 
         private static string GetChapterToString(uint chapter)
@@ -278,9 +271,9 @@ namespace Nocturnal.src.services
 
         private static string GetLocationName(Location location)
         {
-            if (locationNames.TryGetValue(location.ID, out var locationKey))
-                return $": {Display.GetJsonString(locationKey)}";
-            return string.Empty;
+            return locationNames.TryGetValue(location.ID, out var locationKey)
+                ? $": {Display.GetJsonString(locationKey)}"
+                : string.Empty;
         }
     }
 }

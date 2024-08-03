@@ -13,47 +13,50 @@ namespace Nocturnal.src.services
 
     public class ConfigService : IConfigCreator, IConfigLoader
     {
-        public const string configFilePath = "data\\config\\config.json";
+        private const string ConfigDirectory = "data\\config";
+        private const string ConfigFileName = "config.json";
+
+        private static string GetConfigFilePath() =>
+            Path.Combine(Directory.GetCurrentDirectory(), ConfigDirectory, ConfigFileName);
 
         public static async Task CreateConfigFile()
         {
-            string path = Path.Combine(Directory.GetCurrentDirectory(), configFilePath);
+            string path = GetConfigFilePath();
 
-            if (!Directory.Exists("data\\config"))
-                Directory.CreateDirectory("data\\config");
+            if (!Directory.Exists(ConfigDirectory))
+                Directory.CreateDirectory(ConfigDirectory);
 
-            var oldLang = Game.Instance.Settings.GetLanguage();
-
+            var oldLanguage = Game.Instance.Settings.GetLanguage();
             GameLanguage.SelectLanguage();
+            var newLanguage = Game.Instance.Settings.GetLanguage();
 
-            if (Game.Instance.Settings.GetLanguage() == oldLang) return;
+            if (newLanguage == oldLanguage) return;
 
-            var configFileData = new ConfigFileData(
-                Environment.UserName,
-                Game.Instance.Settings.GetLanguage()
-            );
+            var configFileData = new ConfigFileData(Environment.UserName, newLanguage);
 
             try
             {
                 string jsonString = JsonConvert.SerializeObject(configFileData, Formatting.Indented);
-                await File.WriteAllTextAsync(path, jsonString);
+                await File.WriteAllTextAsync(path, jsonString).ConfigureAwait(false);
             }
-            catch (JsonException e)
+            catch (JsonException jsonEx)
             {
-                await Logger.WriteLog(e.Message);
+                await Logger.WriteLog($"JSON Error: {jsonEx.Message}").ConfigureAwait(false);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                await Logger.WriteLog(e.Message);
+                await Logger.WriteLog($"Error writing config file: {ex.Message}").ConfigureAwait(false);
             }
         }
 
         public static async ValueTask<bool> LoadConfigFile()
         {
-            string path = Path.Combine(Directory.GetCurrentDirectory(), configFilePath);
+            string path = GetConfigFilePath();
 
             if (!File.Exists(path))
-                await CreateConfigFile();
+            {
+                await CreateConfigFile().ConfigureAwait(false);
+            }
             else
             {
                 try
@@ -71,15 +74,16 @@ namespace Nocturnal.src.services
                         throw new InvalidOperationException("Configuration data is null or invalid.");
                     }
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
                     Console.Clear();
-                    Console.WriteLine(e.Message);
+                    Console.WriteLine($"Error loading config file: {ex.Message}");
                     return false;
                 }
             }
 
-            return await JsonService.LoadAndParseLocalizationFile(Game.Instance.Settings.GetLanguage());
+            return await JsonService.LoadAndParseLocalizationFile(Game.Instance.Settings.GetLanguage()).ConfigureAwait(false);
         }
     }
 }
+
