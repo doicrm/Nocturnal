@@ -21,15 +21,15 @@ namespace Nocturnal.src.services
         public dynamic StoryGlobals = storyGlobals;
     };
 
-    public class SaveService : ISaveCreator, ISaveLoader, ISaveUpdater
+    public class SaveService : ISaveCreator, ISaveLoader, ISaveUpdater, ISaveFinder
     {
-        private static readonly Dictionary<uint, string> genderMap = new()
+        private static readonly Dictionary<Genders, string> genderMap = new()
         {
-            { (uint)Genders.Male, "SEX.MALE" },
-            { (uint)Genders.Female, "SEX.FEMALE" }
+            { Genders.Male, "SEX.MALE" },
+            { Genders.Female, "SEX.FEMALE" }
         };
 
-        private static readonly Dictionary<string, string> locationNames = new()
+        public static readonly Dictionary<string, string> locationNames = new()
         {
             { "DarkAlley", "LOCATION.DARK_ALLEY" },
             { "Street", "LOCATION.STREET" },
@@ -191,7 +191,11 @@ namespace Nocturnal.src.services
                     ? await saveInfo.CurrentLocation.ToObject<Location>()
                     : saveInfo.Locations.ToObject<Dictionary<string, Location>>()["DarkAlley"];
 
-                return $"{GetName(saveInfo.Player.Name)}, {GetSex((uint)saveInfo.Player.Sex).ToLower()} | {GetChapterToString(saveInfo.Chapter)}{GetLocationName(currentLocation)} | {saveInfo.Timestamp}";
+                return $"{SaveInfoPrinter.GetName(saveInfo.Player.Name)}, " +
+                        $"{GetSex(saveInfo.Player.Sex).ToLower()} | " +
+                        $"{SaveInfoPrinter.GetChapterToString(saveInfo.Chapter)}" +
+                        $"{SaveInfoPrinter.GetLocationName(currentLocation)} | " +
+                        $"{saveInfo.Timestamp}";
             }
             catch (Exception ex)
             {
@@ -234,46 +238,23 @@ namespace Nocturnal.src.services
                 i++;
             }
 
-            options.Add(Display.GetJsonString("BACK_TO_MAIN_MENU"), Display.LoadLogo);
+            options.Add(LocalizationService.GetString("BACK_TO_MAIN_MENU"), Display.LoadLogo);
             return options;
         }
 
         private static async Task NoSavesFound()
         {
             Console.ForegroundColor = ConsoleColor.Gray;
-            Console.WriteLine($"\n\n\t{Display.GetJsonString("LOAD_GAME.NO_SAVES_FOUND")}");
+            Console.WriteLine($"\n\n\t{LocalizationService.GetString("LOAD_GAME.NO_SAVES_FOUND")}");
             await Task.Delay(2000).ConfigureAwait(false);
             await Display.LoadLogo().ConfigureAwait(false);
         }
 
-        public static string GetSex(uint sex)
+        public static string GetSex(Genders sex)
         {
             return genderMap.TryGetValue(sex, out var genderKey)
-                ? Display.GetJsonString(genderKey)
-                : Display.GetJsonString("SEX.UNDEFINED");
-        }
-
-        private static string GetName(string name)
-        {
-            return !string.IsNullOrEmpty(name) ? name : Display.GetJsonString("UNKNOWN");
-        }
-
-        private static string GetChapterToString(uint chapter)
-        {
-            if (chapter == 0)
-                return Display.GetJsonString("PROLOGUE");
-
-            if (chapter >= 1 && chapter <= 3)
-                return $"{Display.GetJsonString("CHAPTER")} {chapter}";
-
-            return Display.GetJsonString("EPILOGUE");
-        }
-
-        private static string GetLocationName(Location location)
-        {
-            return locationNames.TryGetValue(location.ID, out var locationKey)
-                ? $": {Display.GetJsonString(locationKey)}"
-                : string.Empty;
+                ? LocalizationService.GetString(genderKey)
+                : LocalizationService.GetString("SEX.UNDEFINED");
         }
     }
 }

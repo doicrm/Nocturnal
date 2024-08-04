@@ -1,5 +1,5 @@
 ﻿using Nocturnal.src.core;
-using Nocturnal.src.ui;
+using Nocturnal.src.services;
 using System.Text;
 
 namespace Nocturnal.src.entitites
@@ -54,7 +54,7 @@ namespace Nocturnal.src.entitites
             Status = QuestStatus.Running;
 
             Console.ResetColor();
-            Console.WriteLine($"\n\n\t{Display.GetJsonString("NEW_QUEST")}: {Name}");
+            Console.WriteLine($"\n\n\t{LocalizationService.GetString("NEW_QUEST")}: {Name}");
         }
 
         public void End(QuestStatus status)
@@ -68,11 +68,11 @@ namespace Nocturnal.src.entitites
         {
             return (Status switch
             {
-                QuestStatus.Running => Display.GetJsonString("QUEST_STATUS.RUNNING"),
-                QuestStatus.Success => Display.GetJsonString("QUEST_STATUS.SUCCESS"),
-                QuestStatus.Failed => Display.GetJsonString("QUEST_STATUS.FAILED"),
-                QuestStatus.Obsolete => Display.GetJsonString("QUEST_STATUS.OBSOLETE"),
-                _ => Display.GetJsonString("QUEST_STATUS.NOT_STARTED"),
+                QuestStatus.Running => LocalizationService.GetString("QUEST_STATUS.RUNNING"),
+                QuestStatus.Success => LocalizationService.GetString("QUEST_STATUS.SUCCESS"),
+                QuestStatus.Failed => LocalizationService.GetString("QUEST_STATUS.FAILED"),
+                QuestStatus.Obsolete => LocalizationService.GetString("QUEST_STATUS.OBSOLETE"),
+                _ => LocalizationService.GetString("QUEST_STATUS.NOT_STARTED"),
             }).ToLower();
         }
 
@@ -80,9 +80,9 @@ namespace Nocturnal.src.entitites
         {
             var sb = new StringBuilder();
 
-            sb.AppendLine($"{Display.GetJsonString("NAME")}: {Name}");
-            sb.AppendLine($"{Display.GetJsonString("DESCRIPTION")}: {Description}");
-            sb.AppendLine($"{Display.GetJsonString("STATUS")}: {PrintStatus()}");
+            sb.AppendLine($"{LocalizationService.GetString("NAME")}: {Name}");
+            sb.AppendLine($"{LocalizationService.GetString("DESCRIPTION")}: {Description}");
+            sb.AppendLine($"{LocalizationService.GetString("STATUS")}: {PrintStatus()}");
 
             return sb.ToString();
         }
@@ -91,8 +91,8 @@ namespace Nocturnal.src.entitites
         {
             var quests = new[]
             {
-                new Quest("KillHex", Display.GetJsonString("QUEST.KILL_HEX.NAME"), Display.GetJsonString("QUEST.KILL_HEX.DESCRIPTION")),
-                new Quest("ZedAccelerator", Display.GetJsonString("QUEST.ZED_ACCELERATOR.NAME"), Display.GetJsonString("QUEST.ZED_ACCELERATOR.DESCRIPTION"))
+                new Quest("KillHex", LocalizationService.GetString("QUEST.KILL_HEX.NAME"), LocalizationService.GetString("QUEST.KILL_HEX.DESCRIPTION")),
+                new Quest("ZedAccelerator", LocalizationService.GetString("QUEST.ZED_ACCELERATOR.NAME"), LocalizationService.GetString("QUEST.ZED_ACCELERATOR.DESCRIPTION"))
             };
 
             Globals.Quests = quests.ToDictionary(quest => quest.ID);

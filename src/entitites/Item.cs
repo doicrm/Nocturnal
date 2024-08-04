@@ -1,6 +1,5 @@
 ﻿using Nocturnal.src.core;
-using Nocturnal.src.interfaces;
-using Nocturnal.src.ui;
+using Nocturnal.src.services;
 using System.Text;
 
 namespace Nocturnal.src.entitites
@@ -29,10 +28,10 @@ namespace Nocturnal.src.entitites
         virtual public string PrintInfo()
         {
             var sb = new StringBuilder();
-            sb.AppendLine($"{Display.GetJsonString("NAME")}: {Name}");
-            sb.AppendLine($"{Display.GetJsonString("DESCRIPTION")}: {Description}");
-            sb.AppendLine($"{Display.GetJsonString("TYPE")}: {Type}");
-            sb.AppendLine($"{Display.GetJsonString("VALUE")}: {Value}");
+            sb.AppendLine($"{LocalizationService.GetString("NAME")}: {Name}");
+            sb.AppendLine($"{LocalizationService.GetString("DESCRIPTION")}: {Description}");
+            sb.AppendLine($"{LocalizationService.GetString("TYPE")}: {Type}");
+            sb.AppendLine($"{LocalizationService.GetString("VALUE")}: {Value}");
 
             return sb.ToString();
         }
@@ -41,8 +40,8 @@ namespace Nocturnal.src.entitites
         {
             var items = new[]
             {
-                new Item("AD13", Display.GetJsonString("ITEM.AD13.NAME"), ItemType.Quest, Display.GetJsonString("ITEM.AD13.DESCRIPTION"), 50),
-                new Item("AccessCard", Display.GetJsonString("ITEM.ACCESS_CARD.NAME"), ItemType.Misc, Display.GetJsonString("ITEM.ACCESS_CARD.DESCRIPTION"), 0)
+                new Item("AD13", LocalizationService.GetString("ITEM.AD13.NAME"), ItemType.Quest, LocalizationService.GetString("ITEM.AD13.DESCRIPTION"), 50),
+                new Item("AccessCard", LocalizationService.GetString("ITEM.ACCESS_CARD.NAME"), ItemType.Misc, LocalizationService.GetString("ITEM.ACCESS_CARD.DESCRIPTION"), 0)
             };
 
             Globals.Items = items.ToDictionary(item => item.ID);

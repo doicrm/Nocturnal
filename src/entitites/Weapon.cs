@@ -25,12 +25,12 @@ namespace Nocturnal.src.entitites
         {
             var sb = new StringBuilder();
 
-            sb.AppendLine($"{Display.GetJsonString("NAME")}: {Name}");
-            sb.AppendLine($"{Display.GetJsonString("DESCRIPTION")}: {Description}");
-            sb.AppendLine($"{Display.GetJsonString("DAMAGE_MIN")}: {DamageMin}");
-            sb.AppendLine($"{Display.GetJsonString("DAMAGE_MAX")}: {DamageMin}");
-            sb.AppendLine($"{Display.GetJsonString("TYPE")}: {Type}");
-            sb.AppendLine($"{Display.GetJsonString("VALUE")}: {Value}");
+            sb.AppendLine($"{LocalizationService.GetString("NAME")}: {Name}");
+            sb.AppendLine($"{LocalizationService.GetString("DESCRIPTION")}: {Description}");
+            sb.AppendLine($"{LocalizationService.GetString("DAMAGE_MIN")}: {DamageMin}");
+            sb.AppendLine($"{LocalizationService.GetString("DAMAGE_MAX")}: {DamageMin}");
+            sb.AppendLine($"{LocalizationService.GetString("TYPE")}: {Type}");
+            sb.AppendLine($"{LocalizationService.GetString("VALUE")}: {Value}");
 
             return sb.ToString();
         }
@@ -39,7 +39,7 @@ namespace Nocturnal.src.entitites
         {
             var weapons = new[]
 {
-                new Weapon("Pistol", $"{JsonService.JsonReader!["WEAPON.PISTOL.NAME"]}", $"{JsonService.JsonReader!["WEAPON.PISTOL.DESCRIPTION"]}", 10, 15, 250)
+                new Weapon("Pistol", LocalizationService.GetString("WEAPON.PISTOL.NAME"), LocalizationService.GetString("WEAPON.PISTOL.DESCRIPTION"), 10, 15, 250)
             };
 
             foreach (var weapon in weapons)

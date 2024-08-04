@@ -102,10 +102,10 @@ namespace Nocturnal.src.entitites
         {
             var (attitude, color) = Attitude switch
             {
-                Attitudes.Angry => (JsonService.JsonReader!["ATTITUDE.ANGRY"]!.ToString().ToLower(), ConsoleColor.Yellow),
-                Attitudes.Hostile => (JsonService.JsonReader!["ATTITUDE.HOSTILE"]!.ToString().ToLower(), ConsoleColor.Red),
-                Attitudes.Friendly => (JsonService.JsonReader!["ATTITUDE.FRIENDLY"]!.ToString().ToLower(), ConsoleColor.Green),
-                _ => (JsonService.JsonReader!["ATTITUDE.NEUTRAL"]!.ToString().ToLower(), (ConsoleColor?)null)
+                Attitudes.Angry => (LocalizationService.GetString("ATTITUDE.ANGRY").ToLower(), ConsoleColor.Yellow),
+                Attitudes.Hostile => (LocalizationService.GetString("ATTITUDE.HOSTILE").ToLower(), ConsoleColor.Red),
+                Attitudes.Friendly => (LocalizationService.GetString("ATTITUDE.FRIENDLY").ToLower(), ConsoleColor.Green),
+                _ => (LocalizationService.GetString("ATTITUDE.NEUTRAL").ToLower(), (ConsoleColor?)null)
             };
 
             if (color.HasValue)
@@ -135,7 +135,7 @@ namespace Nocturnal.src.entitites
             {
                 new("Bob", "Bob", Genders.Male, null!),
                 new("Caden", "Caden", Genders.Male, null!),
-                new("CadensPartner", $"{JsonService.JsonReader!["NPC.POLICEMAN"]}", Genders.Male, null!),
+                new("CadensPartner", LocalizationService.GetString("NPC.POLICEMAN"), Genders.Male, null!),
                 new("Zed", "Zed", Genders.Male, null!),
                 new("Luna", "Luna", Genders.Female, null!),
                 new("Jet", "Jet", Genders.Male, null!),

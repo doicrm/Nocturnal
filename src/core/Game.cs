@@ -3,6 +3,7 @@ using Nocturnal.src.events.prologue;
 using Nocturnal.src.core.utilities;
 using Nocturnal.src.services;
 using Nocturnal.src.ui;
+using Spectre.Console;
 
 namespace Nocturnal.src.core
 {
@@ -51,7 +52,7 @@ namespace Nocturnal.src.core
 
         public static async Task Pause()
         {
-            await Display.Write($"\t{Display.GetJsonString("PRESS_ANY_KEY")}", 25);
+            await Display.Write($"{LocalizationService.GetString("PRESS_ANY_KEY")}", 25);
             await Task.Run(() => Console.ReadKey());
         }
 
@@ -59,7 +60,7 @@ namespace Nocturnal.src.core
         {
             Console.Clear();
             await Task.Delay(500);
-            await Display.Write($"\n\t{Display.GetJsonString("AUTHOR_PRESENTS")}", 40);
+            await Display.Write($"\n\t{LocalizationService.GetString("AUTHOR_PRESENTS")}", 40);
             await Task.Delay(2000);
             Console.Clear();
         }
@@ -72,10 +73,10 @@ namespace Nocturnal.src.core
                 Console.WriteLine();
                 _ = new InteractiveMenu(new MenuOptions
                 {
-                    { Display.GetJsonString("MAIN_MENU.NEW_GAME"), NewGame },
-                    { Display.GetJsonString("MAIN_MENU.LOAD_GAME"), LoadGame },
-                    { Display.GetJsonString("MAIN_MENU.CHANGE_LANG"), ChangeLanguage },
-                    { Display.GetJsonString("MAIN_MENU.QUIT_GAME"), EndGame }
+                    { LocalizationService.GetString("MAIN_MENU.NEW_GAME"), NewGame },
+                    { LocalizationService.GetString("MAIN_MENU.LOAD_GAME"), LoadGame },
+                    { LocalizationService.GetString("MAIN_MENU.CHANGE_LANG"), ChangeLanguage },
+                    { LocalizationService.GetString("MAIN_MENU.QUIT_GAME"), EndGame }
                 });
             });
         }
@@ -91,7 +92,7 @@ namespace Nocturnal.src.core
         public static async Task LoadGame()
         {
             Console.Clear();
-            await Display.Write($"\n\t{Display.GetJsonString("MAIN_MENU.LOAD_GAME").ToUpper()}", 25);
+            await Display.Write($"\n{LocalizationService.GetString("MAIN_MENU.LOAD_GAME").ToUpper()}", 25);
             Console.ResetColor();
             await SaveService.FindSaves();
         }
@@ -106,11 +107,11 @@ namespace Nocturnal.src.core
         public async Task EndGame()
         {
             Console.Clear();
-            await Display.Write($"\n\t{Display.GetJsonString("QUIT_GAME")}", 25);
+            await Display.Write($"\n{LocalizationService.GetString("QUIT_GAME")}", 25);
             _ = new InteractiveMenu(new MenuOptions
             {
-                { Display.GetJsonString("YES"), End },
-                { Display.GetJsonString("NO"), Display.LoadLogo }
+                { LocalizationService.GetString("YES"), End },
+                { LocalizationService.GetString("NO"), Display.LoadLogo }
             });
         }
 

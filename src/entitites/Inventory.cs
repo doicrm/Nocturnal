@@ -65,17 +65,17 @@ namespace Nocturnal.src.entitites
 
             if (Items.Count <= 0)
             {
-                sb.AppendLine(Display.GetJsonString("INVENTORY.NO_ITEMS"));
+                sb.AppendLine(LocalizationService.GetString("INVENTORY.NO_ITEMS"));
                 await File.WriteAllTextAsync(path, sb.ToString());
                 return;
             }
 
             foreach (Item item in Items)
             {
-                sb.AppendLine($"{Display.GetJsonString("NAME")}: {item.Name}");
-                sb.AppendLine($"{Display.GetJsonString("TYPE")}: {item.Type}");
-                sb.AppendLine($"{Display.GetJsonString("DESCRIPTION")}: {item.Description}");
-                sb.AppendLine($"{Display.GetJsonString("VALUE")}: {item.Value}$");
+                sb.AppendLine($"{LocalizationService.GetString("NAME")}: {item.Name}");
+                sb.AppendLine($"{LocalizationService.GetString("TYPE")}: {item.Type}");
+                sb.AppendLine($"{LocalizationService.GetString("DESCRIPTION")}: {item.Description}");
+                sb.AppendLine($"{LocalizationService.GetString("VALUE")}: {item.Value}$");
                 sb.AppendLine("...........................................................................");
             }
 

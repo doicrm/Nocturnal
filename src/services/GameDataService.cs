@@ -32,7 +32,7 @@ namespace Nocturnal.src.services
                 return;
             }
 
-            await WriteToFile("Inventory.txt", Display.GetJsonString("INVENTORY.NO_ITEMS")).ConfigureAwait(false);
+            await WriteToFile("Inventory.txt", LocalizationService.GetString("INVENTORY.NO_ITEMS")).ConfigureAwait(false);
         }
 
         public static async Task InitHeroJournal()
@@ -45,7 +45,7 @@ namespace Nocturnal.src.services
                 return;
             }
 
-            await WriteToFile("Journal.txt", Display.GetJsonString("JOURNAL.NO_QUESTS")).ConfigureAwait(false);
+            await WriteToFile("Journal.txt", LocalizationService.GetString("JOURNAL.NO_QUESTS")).ConfigureAwait(false);
         }
 
         private static async Task WriteToFile(string fileName, string content)

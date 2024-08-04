@@ -1,22 +1,24 @@
-﻿using Newtonsoft.Json.Linq;
-using Nocturnal.src.core.utilities;
+﻿using Nocturnal.src.core.utilities;
 using Nocturnal.src.core;
 using Nocturnal.src.entitites;
 using System.Reflection;
+using Newtonsoft.Json;
 
 namespace Nocturnal.src.services
 {
     public class JsonService
     {
-        public static JObject? JsonReader { get; private set; }
-
         public static async ValueTask<bool> LoadAndParseLocalizationFile(GameLanguages lang)
         {
             try
             {
                 string path = GetLocalizationFilePath(lang);
                 string jsonString = await File.ReadAllTextAsync(path).ConfigureAwait(false);
-                JsonReader = JObject.Parse(jsonString);
+
+                var localizationStrings = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonString) ?? [];
+
+                LocalizationService.InitLocalizationStrings(localizationStrings);
+
                 return true;
             }
             catch (Exception ex)
@@ -34,20 +36,16 @@ namespace Nocturnal.src.services
                 $"{GameLanguage.GetLocalizationFileName(lang)}.json");
         }
 
-        public static async Task<string> GetJsonStringAsync(string stringName)
+        public static async ValueTask<string> GetJsonStringAsync(string stringName)
         {
-            if (JsonReader == null || !JsonReader.ContainsKey(stringName))
+            if (LocalizationService.LocalizationStrings == null
+                || !LocalizationService.LocalizationStrings.TryGetValue(stringName, out string? value))
             {
-                await Logger.WriteLog($"Key '{stringName}' not found in JsonReader.").ConfigureAwait(false);
+                await Logger.WriteLog($"Key '{stringName}' not found in LocalizationStrings.").ConfigureAwait(false);
                 return string.Empty;
             }
 
-            return JsonReader[stringName]?.ToString() ?? string.Empty;
-        }
-
-        public static string GetJsonString(string stringName)
-        {
-            return GetJsonStringAsync(stringName).GetAwaiter().GetResult();
+            return value?.ToString() ?? string.Empty;
         }
 
         public static async ValueTask<Dictionary<string, dynamic>> LocationsToJson()

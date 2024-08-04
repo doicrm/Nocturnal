@@ -1,5 +1,5 @@
 ﻿using Nocturnal.src.core;
-using Nocturnal.src.ui;
+using Nocturnal.src.services;
 
 namespace Nocturnal.src.entitites
 {
@@ -34,21 +34,21 @@ namespace Nocturnal.src.entitites
         public string PrintAttitude()
         {
             if (Attitude is Attitudes.Angry)
-                return Display.GetJsonString("ATTITUDE.ANGRY").ToLower();
+                return LocalizationService.GetString("ATTITUDE.ANGRY").ToLower();
             if (Attitude is Attitudes.Hostile)
-                return Display.GetJsonString("ATTITUDE.HOSTILE").ToLower();
+                return LocalizationService.GetString("ATTITUDE.HOSTILE").ToLower();
             if (Attitude is Attitudes.Friendly)
-                return Display.GetJsonString("ATTITUDE.FRIENDLY").ToLower();
-            return Display.GetJsonString("ATTITUDE.NEUTRAL").ToLower();
+                return LocalizationService.GetString("ATTITUDE.FRIENDLY").ToLower();
+            return LocalizationService.GetString("ATTITUDE.NEUTRAL").ToLower();
         }
 
         public static void InsertInstances()
         {
             var fractions = new[]
             {
-                new Fraction("Beggars", Display.GetJsonString("FRACTION.BEGGARS"), 0, Attitudes.Neutral),
-                new Fraction("Police", Display.GetJsonString("FRACTION.POLICE"), 0, Attitudes.Neutral),
-                new Fraction("Hammers", Display.GetJsonString("FRACTION.HAMMERS"), 0, Attitudes.Neutral)
+                new Fraction("Beggars", LocalizationService.GetString("FRACTION.BEGGARS"), 0, Attitudes.Neutral),
+                new Fraction("Police", LocalizationService.GetString("FRACTION.POLICE"), 0, Attitudes.Neutral),
+                new Fraction("Hammers", LocalizationService.GetString("FRACTION.HAMMERS"), 0, Attitudes.Neutral)
             };
 
             Globals.Fractions = fractions.ToDictionary(fraction => fraction.ID);

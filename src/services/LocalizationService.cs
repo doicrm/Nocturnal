@@ -12,6 +12,8 @@ namespace Nocturnal.src.services
             { "pl", ("Polski", GameLanguages.PL) }
         };
 
+        public static Dictionary<string, string> LocalizationStrings { get; private set; } = [];
+
         public static MenuOptions GetLocalizationOptions()
         {
             var options = new MenuOptions();
@@ -47,6 +49,14 @@ namespace Nocturnal.src.services
 
             AnsiConsole.MarkupLine("[bold red]ERROR:[/] [red]The 'localization' directory does not exist.[/]");
             return [];
+        }
+
+        public static void InitLocalizationStrings(Dictionary<string, string> localizationStringsDictionary)
+            => LocalizationStrings = localizationStringsDictionary;
+
+        public static string GetString(string stringName)
+        {
+            return JsonService.GetJsonStringAsync(stringName).ConfigureAwait(false).GetAwaiter().GetResult();
         }
     }
 }
