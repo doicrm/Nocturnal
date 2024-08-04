@@ -31,9 +31,6 @@ namespace Nocturnal.src.ui
             await WriteColoredText(text, ConsoleColor.White, speed);
         }
 
-        public static string GetJsonString(string stringName)
-            => JsonService.GetJsonString(stringName);
-
         public static async Task WriteLogo()
         {
             Console.WriteLine();

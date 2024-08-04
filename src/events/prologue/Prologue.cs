@@ -19,7 +19,7 @@ namespace Nocturnal.src.events.prologue
 
         public static async Task Intro()
         {
-            await Display.Write($"\n{LocalizationService.GetString("INTRO_01")}\n");
+            await Display.Write($"\n\t{LocalizationService.GetString("INTRO_01")}");
             await Task.Delay(1000);
             await Display.Write($" {LocalizationService.GetString("INTRO_02")}\n\n", 20);
             await Game.Pause();
@@ -34,8 +34,8 @@ namespace Nocturnal.src.events.prologue
             await Task.Delay(3000);
             Console.Clear();
 
-            if (Globals.Locations.ContainsKey("DarkAlley"))
-                await Game.Instance.SetCurrentLocation(Globals.Locations["DarkAlley"]);
+            if (Globals.Locations.TryGetValue("DarkAlley", out entitites.Location? value))
+                await Game.Instance.SetCurrentLocation(value);
         }
 
         public static async Task DarkAlley()
