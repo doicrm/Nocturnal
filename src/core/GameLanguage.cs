@@ -4,7 +4,11 @@ using Spectre.Console;
 
 namespace Nocturnal.src.core
 {
-    public enum GameLanguages { NONE = 0, EN = 1, PL = 2 }
+    public enum GameLanguages {
+        None = 0,
+        EN = 1,
+        PL = 2
+    }
 
     public class GameLanguage
     {
@@ -14,7 +18,7 @@ namespace Nocturnal.src.core
             { GameLanguages.PL, "pl" }
         };
 
-        public GameLanguages Language { get; private set; } = GameLanguages.NONE;
+        public GameLanguages Language { get; private set; } = GameLanguages.None;
 
         public GameLanguage() {}
 
@@ -45,9 +49,9 @@ namespace Nocturnal.src.core
 
         public static string GetLocalizationFileName(GameLanguages lang)
         {
-            if (LocalizationFileNames.TryGetValue(lang, out var fileName))
-                return fileName;
-            throw new ArgumentException("Unknown language");
+            return LocalizationFileNames.TryGetValue(lang, out var fileName) 
+                ? fileName 
+                : throw new ArgumentException("Unknown language");
         }
     }
 }

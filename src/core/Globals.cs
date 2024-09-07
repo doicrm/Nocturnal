@@ -8,11 +8,11 @@ namespace Nocturnal.src.core
     {
         public static Player Player { get; set; } = new();
         public static uint Chapter { get; set; } = 0;
-        public static IDictionary<string, Npc> Npcs { get; set; } = new Dictionary<string, Npc>();
-        public static IDictionary<string, Item> Items { get; set; } = new Dictionary<string, Item>();
-        public static IDictionary<string, Fraction> Fractions { get; set; } = new Dictionary<string, Fraction>();
-        public static IDictionary<string, Location> Locations { get; set; } = new Dictionary<string, Location>();
-        public static IDictionary<string, Quest> Quests { get; set; } = new Dictionary<string, Quest>();
+        public static Dictionary<string, Npc> Npcs { get; set; } = [];
+        public static Dictionary<string, Item> Items { get; set; } = [];
+        public static Dictionary<string, Fraction> Fractions { get; set; } = [];
+        public static Dictionary<string, Location> Locations { get; set; } = [];
+        public static Dictionary<string, Quest> Quests { get; set; } = [];
 
         public static void UpdateGlobalsFromSave(SaveData saveInfo)
         {
