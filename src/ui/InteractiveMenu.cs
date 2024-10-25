@@ -1,12 +1,12 @@
-﻿namespace Nocturnal.src.ui
+﻿namespace Nocturnal.ui
 {
     public class InteractiveMenu
     {
-        public bool IsSelected { get; set; } = false;
+        private bool IsSelected { get; set; } = false;
         public int OptionNr { get; set; }
-        public int Choice { get; set; }
-        public ConsoleKeyInfo Key { get; set; }
-        public IDictionary<int, KeyValuePair<string, Func<Task>>> Options { get; private set; } = new Dictionary<int, KeyValuePair<string, Func<Task>>>();
+        private int Choice { get; set; }
+        private ConsoleKeyInfo Key { get; set; }
+        private IDictionary<int, KeyValuePair<string, Func<Task>>> Options { get; set; } = new Dictionary<int, KeyValuePair<string, Func<Task>>>();
 
 
         public InteractiveMenu() => ClearOptions();
@@ -17,16 +17,16 @@
             InputChoice().GetAwaiter().GetResult();
         }
 
-        public void ActionOption(int nr, string text)
+        private void ActionOption(int nr, string text)
         {
-            bool isSelectedOption = Choice + 1 == nr;
+            var isSelectedOption = Choice + 1 == nr;
             Console.ForegroundColor = isSelectedOption ? ConsoleColor.Black : Console.ForegroundColor;
             Console.BackgroundColor = isSelectedOption ? ConsoleColor.White : Console.BackgroundColor;
             Console.Write($"\n\t[{nr}] {text}");
             Console.ResetColor();
         }
 
-        public void ShowHeroChoice()
+        private void ShowHeroChoice()
         {
             Console.ForegroundColor = ConsoleColor.Black;
             Console.BackgroundColor = ConsoleColor.White;
@@ -64,7 +64,7 @@
         {
             Choice = 0;
             Console.WriteLine();
-            (int left, int top) = Console.GetCursorPosition();
+            var (left, top) = Console.GetCursorPosition();
 
             while (!IsSelected)
             {
@@ -85,6 +85,8 @@
                     case ConsoleKey.Enter:
                         IsSelected = true;
                         break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
                 }
             }
 
@@ -105,6 +107,8 @@
                     case ConsoleKey.Enter:
                         IsSelected = true;
                         break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
                 }
             }
 
@@ -116,7 +120,7 @@
             }
         }
 
-        public async Task ExecuteSelectedAction()
+        private async Task ExecuteSelectedAction()
         {
             Console.Clear();
             ShowHeroChoice();

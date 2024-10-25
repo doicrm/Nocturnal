@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-namespace Nocturnal.src.core.utilities
+namespace Nocturnal.core.utils
 {
     public static class Logger
     {

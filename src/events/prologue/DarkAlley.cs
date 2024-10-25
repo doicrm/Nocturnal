@@ -1,14 +1,14 @@
-﻿using Nocturnal.src.entitites;
-using Nocturnal.src.core;
-using Nocturnal.src.ui;
-using Nocturnal.src.services;
+﻿using Nocturnal.core;
+using Nocturnal.entitites;
+using Nocturnal.services;
+using Nocturnal.ui;
 
-namespace Nocturnal.src.events.prologue
+namespace Nocturnal.events.prologue
 {
     public static class DarkAlleyEvents
     {
         ///////////////////////////////////////////////////////////////////////
-        //	DARK ALLEY in 'Eden' nigthclub area
+        //	DARK ALLEY in 'Eden' nightclub area
         ///////////////////////////////////////////////////////////////////////
 
         public static async Task WakeUp()
@@ -39,14 +39,14 @@ namespace Nocturnal.src.events.prologue
             });
         }
 
-        public static async Task SearchGarbage()
+        private static async Task SearchGarbage()
         {
             await AcceleratorFinding();
             Console.WriteLine();
             await OutOfAlley();
         }
 
-        public static async Task AcceleratorFinding()
+        private static async Task AcceleratorFinding()
         {
             await Display.WriteNarration($"\t{LocalizationService.GetString("DARK_ALLEY.FINDING_ACCELERATOR_01")}");
             await Task.Delay(1500);
@@ -70,7 +70,7 @@ namespace Nocturnal.src.events.prologue
             await Task.Delay(1000);
         }
 
-        public static async Task OutOfAlley()
+        private static async Task OutOfAlley()
         {
             if (!Globals.Player.HasItem(Globals.Items["AD13"]))
             {
@@ -95,7 +95,7 @@ namespace Nocturnal.src.events.prologue
             });
         }
 
-        public static async Task OutOfAlley_01()
+        private static async Task OutOfAlley_01()
         {
             await Display.WriteNarration($"\t{LocalizationService.GetString("DARK_ALLEY.OUT_OF_ALLEY_06")}");
             await Task.Delay(1500);
@@ -104,7 +104,7 @@ namespace Nocturnal.src.events.prologue
             await DialogueWithBob();
         }
 
-        public static async Task OutOfAlley_02()
+        private static async Task OutOfAlley_02()
         {
             await Display.WriteNarration($"\t{LocalizationService.GetString("DARK_ALLEY.OUT_OF_ALLEY_08")}");
             await Display.WriteDialogue($"\n\t{LocalizationService.GetString("DARK_ALLEY.DIA_BOB_03")}");
@@ -113,7 +113,7 @@ namespace Nocturnal.src.events.prologue
             await Game.Instance.SetCurrentLocation(Globals.Locations["Street"]);
         }
 
-        public static async Task DialogueWithBob()
+        private static async Task DialogueWithBob()
         {
             await Display.WriteDialogue($"\t{LocalizationService.GetString("DARK_ALLEY.DIA_BOB_04")}\n");
 
@@ -124,7 +124,7 @@ namespace Nocturnal.src.events.prologue
                 _ = new InteractiveMenu(new MenuOptions
                 {
                     { LocalizationService.GetString("DARK_ALLEY.HERO_NAME_MENU.INTRODUCE_YOURSELF"), DialogueWithBob_01 },
-                    { LocalizationService.GetString("DARK_ALLEY.HERO_NAME_MENU.KEEP_YOUR_INDETIFY"), DialogueWithBob_02 }
+                    { LocalizationService.GetString("DARK_ALLEY.HERO_NAME_MENU.KEEP_YOUR_IDENTIFY"), DialogueWithBob_02 }
                 });
 
                 _ = new InteractiveMenu(new MenuOptions
@@ -153,7 +153,6 @@ namespace Nocturnal.src.events.prologue
                     await Task.Delay(1500);
                     await Display.WriteNarration($" {LocalizationService.GetString("DARK_ALLEY.DIA_BOB_28")}");
                     await Task.Delay(3500);
-                    await Game.Instance.SetCurrentLocation(Globals.Locations["Street"]);
                 }
                 else
                 {
@@ -177,12 +176,13 @@ namespace Nocturnal.src.events.prologue
                     await Display.WriteNarration($" {LocalizationService.GetString("DARK_ALLEY.DIA_BOB_28")}");
                     await Game.Pause();
                     Console.Clear();
-                    await Game.Instance.SetCurrentLocation(Globals.Locations["Street"]);
                 }
+
+                await Game.Instance.SetCurrentLocation(Globals.Locations["Street"]);
             }
         }
 
-        public static async Task DialogueWithBob_01()
+        private static async Task DialogueWithBob_01()
         {
             Console.WriteLine();
             await MiscEvents.NamingHero();
@@ -195,14 +195,14 @@ namespace Nocturnal.src.events.prologue
             await Display.WriteNarration($"\n\t{LocalizationService.GetString("DARK_ALLEY.DIA_BOB_01")}");
         }
 
-        public static async Task DialogueWithBob_02()
+        private static async Task DialogueWithBob_02()
         {
             await Globals.Npcs["Bob"].SetAttitude(Attitudes.Angry);
             await Task.Delay(500);
             await Display.WriteDialogue($"\t{LocalizationService.GetString("DARK_ALLEY.DIA_BOB_09")}");
         }
 
-        public static async Task DialogueWithBob_03()
+        private static async Task DialogueWithBob_03()
         {
             Game.Instance.StoryGlobals.Bob_RecommendsZed = true; // Bob recommends Zed's gun shop to the hero
             await Display.WriteDialogue($"\t{LocalizationService.GetString("DARK_ALLEY.DIA_BOB_10")}");
@@ -212,7 +212,7 @@ namespace Nocturnal.src.events.prologue
             await Display.WriteDialogue($"\n\t{LocalizationService.GetString("DARK_ALLEY.DIA_BOB_12")}");
         }
 
-        public static async Task DialogueWithBob_04()
+        private static async Task DialogueWithBob_04()
         {
             await Display.WriteDialogue($"\t{LocalizationService.GetString("DARK_ALLEY.DIA_BOB_13")}");
             await Task.Delay(1000);
@@ -226,14 +226,14 @@ namespace Nocturnal.src.events.prologue
             await AboutParadiseLost();
         }
 
-        public static async Task DialogueWithBob_05()
+        private static async Task DialogueWithBob_05()
         {
             await Globals.Npcs["Bob"].SetAttitude(Attitudes.Angry);
             await Task.Delay(500);
             await Display.WriteDialogue($"\t{LocalizationService.GetString("DARK_ALLEY.DIA_BOB_18")}");
         }
 
-        public static async Task AboutParadiseLost()
+        private static async Task AboutParadiseLost()
         {
             await Task.Run(() =>
             {
@@ -247,7 +247,7 @@ namespace Nocturnal.src.events.prologue
             });
         }
 
-        public static async Task AboutParadiseLost_01()
+        private static async Task AboutParadiseLost_01()
         {
             await Display.WriteDialogue($"\t{LocalizationService.GetString("DARK_ALLEY.ABOUT_PARADISE_LOST_01")}");
             await Task.Delay(500);
@@ -262,8 +262,7 @@ namespace Nocturnal.src.events.prologue
             await Display.WriteDialogue($" {LocalizationService.GetString("DARK_ALLEY.ABOUT_PARADISE_LOST_06")}");
         }
 
-        public static async Task AboutParadiseLost_02()
-        {
+        private static async Task AboutParadiseLost_02() {
             await Task.Run(() => {});
         }
 
@@ -307,7 +306,7 @@ namespace Nocturnal.src.events.prologue
             await Game.Instance.SetCurrentLocation(Globals.Locations["Street"]);
         }
 
-        public static async Task Crossroads_01()
+        private static async Task Crossroads_01()
         {
             await AcceleratorFinding();
             await Display.WriteNarration($"{LocalizationService.GetString("DARK_ALLEY.CROSSROADS_04")}");
@@ -316,7 +315,7 @@ namespace Nocturnal.src.events.prologue
             await Game.Instance.SetCurrentLocation(Globals.Locations["Street"]);
         }
 
-        public static async Task Crossroads_02()
+        private static async Task Crossroads_02()
         {
             Console.Clear();
             await Game.Instance.SetCurrentLocation(Globals.Locations["Street"]);

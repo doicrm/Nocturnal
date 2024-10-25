@@ -1,8 +1,8 @@
-﻿using Nocturnal.src.core;
-using Nocturnal.src.services;
-using Nocturnal.src.ui;
+﻿using Nocturnal.core;
+using Nocturnal.services;
+using Nocturnal.ui;
 
-namespace Nocturnal.src.events.prologue
+namespace Nocturnal.events.prologue
 {
     public static class RandomEvents
     {
@@ -59,20 +59,20 @@ namespace Nocturnal.src.events.prologue
             });
         }
 
-        public static async Task EndHookersMeeting_01()
+        private static async Task EndHookersMeeting_01()
         {
             await Display.WriteNarration($"\t{LocalizationService.GetString("STREET.HOOKERS_MEETING_08")}");
             await Display.WriteNarration($"\n\t{LocalizationService.GetString("STREET.HOOKERS_MEETING_09")}\n");
             await GunShopEvents.Crossroads();
         }
 
-        public static async Task EndHookersMeeting_02()
+        private static async Task EndHookersMeeting_02()
         {
             await Display.WriteNarration($"\t{LocalizationService.GetString("STREET.HOOKERS_MEETING_09")}\n");
             await GunShopEvents.Crossroads();
         }
 
-        public static async Task EndHookersMeeting_03()
+        private static async Task EndHookersMeeting_03()
         {
             await Display.WriteNarration($"\t{LocalizationService.GetString("STREET.HOOKERS_MEETING_10")}\n");
             

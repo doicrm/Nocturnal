@@ -1,8 +1,8 @@
-﻿using Nocturnal.src.entitites;
+﻿using Nocturnal.entitites;
 
-namespace Nocturnal.src.services
+namespace Nocturnal.services
 {
-    public class SaveInfoPrinter
+    public static class SaveInfoPrinter
     {
         public static string GetName(string name)
         {
@@ -11,18 +11,17 @@ namespace Nocturnal.src.services
 
         public static string GetChapterToString(uint chapter)
         {
-            if (chapter == 0)
-                return LocalizationService.GetString("PROLOGUE");
-
-            if (chapter >= 1 && chapter <= 3)
-                return $"{LocalizationService.GetString("CHAPTER")} {chapter}";
-
-            return LocalizationService.GetString("EPILOGUE");
+            return chapter switch
+            {
+                0 => LocalizationService.GetString("PROLOGUE"),
+                >= 1 and <= 3 => $"{LocalizationService.GetString("CHAPTER")} {chapter}",
+                _ => LocalizationService.GetString("EPILOGUE")
+            };
         }
 
         public static string GetLocationName(Location location)
         {
-            return SaveService.locationNames.TryGetValue(location.ID, out var locationKey)
+            return SaveService.LocationNames.TryGetValue(location.Id, out var locationKey)
                 ? $": {LocalizationService.GetString(locationKey)}"
                 : string.Empty;
         }

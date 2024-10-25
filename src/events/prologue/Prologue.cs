@@ -1,8 +1,9 @@
-﻿using Nocturnal.src.core;
-using Nocturnal.src.services;
-using Nocturnal.src.ui;
+﻿using Nocturnal.core;
+using Nocturnal.entitites;
+using Nocturnal.services;
+using Nocturnal.ui;
 
-namespace Nocturnal.src.events.prologue
+namespace Nocturnal.events.prologue
 {
     public static class PrologueEvents
     {
@@ -17,7 +18,7 @@ namespace Nocturnal.src.events.prologue
             await Intro();
         }
 
-        public static async Task Intro()
+        private static async Task Intro()
         {
             await Display.Write($"\n\t{LocalizationService.GetString("INTRO_01")}");
             await Task.Delay(1000);
@@ -34,7 +35,7 @@ namespace Nocturnal.src.events.prologue
             await Task.Delay(3000);
             Console.Clear();
 
-            if (Globals.Locations.TryGetValue("DarkAlley", out entitites.Location? value))
+            if (Globals.Locations.TryGetValue("DarkAlley", out Location? value))
                 await Game.Instance.SetCurrentLocation(value);
         }
 
@@ -55,8 +56,8 @@ namespace Nocturnal.src.events.prologue
         {
             if (Game.Instance.Weather != Weather.Rainy)
             {
-                int rand = new Random().Next(0, 10);
-                if (rand > 5 && rand <= 10)
+                var rand = new Random().Next(0, 10);
+                if (rand is > 5 and <= 10)
                     await RandomEvents.StartRaining();
             }
 

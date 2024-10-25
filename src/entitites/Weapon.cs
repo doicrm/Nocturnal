@@ -1,18 +1,17 @@
-﻿using Nocturnal.src.core;
-using Nocturnal.src.services;
-using Nocturnal.src.ui;
-using System.Text;
+﻿using System.Text;
+using Nocturnal.core;
+using Nocturnal.services;
 
-namespace Nocturnal.src.entitites
+namespace Nocturnal.entitites
 {
     public class Weapon : Item
     {
-        public int DamageMin { get; set; }
-        public int DamageMax { get; set; }
+        private int DamageMin { get; }
+        private int DamageMax { get; }
 
-        public Weapon(string id, string? name, string? description, int damageMin, int damageMax, float value) : base()
+        private Weapon(string id, string? name, string? description, int damageMin, int damageMax, float value) : base()
         {
-            ID = id;
+            Id = id;
             Name = name;
             Type = ItemType.Weapon;
             Description = description;
@@ -28,23 +27,21 @@ namespace Nocturnal.src.entitites
             sb.AppendLine($"{LocalizationService.GetString("NAME")}: {Name}");
             sb.AppendLine($"{LocalizationService.GetString("DESCRIPTION")}: {Description}");
             sb.AppendLine($"{LocalizationService.GetString("DAMAGE_MIN")}: {DamageMin}");
-            sb.AppendLine($"{LocalizationService.GetString("DAMAGE_MAX")}: {DamageMin}");
+            sb.AppendLine($"{LocalizationService.GetString("DAMAGE_MAX")}: {DamageMax}");
             sb.AppendLine($"{LocalizationService.GetString("TYPE")}: {Type}");
             sb.AppendLine($"{LocalizationService.GetString("VALUE")}: {Value}");
 
             return sb.ToString();
         }
 
-        public static new void InsertInstances()
+        public new static void InsertInstances()
         {
-            var weapons = new[]
-{
+            var weapons = new[] {
                 new Weapon("Pistol", LocalizationService.GetString("WEAPON.PISTOL.NAME"), LocalizationService.GetString("WEAPON.PISTOL.DESCRIPTION"), 10, 15, 250)
             };
 
-            foreach (var weapon in weapons)
-            {
-                Globals.Items.Add(weapon.ID, weapon);
+            foreach (var weapon in weapons) {
+                Globals.Items.Add(weapon.Id, weapon);
             }
         }
     }

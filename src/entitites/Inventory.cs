@@ -1,8 +1,7 @@
-﻿using Nocturnal.src.services;
-using Nocturnal.src.ui;
-using System.Text;
+﻿using System.Text;
+using Nocturnal.services;
 
-namespace Nocturnal.src.entitites
+namespace Nocturnal.entitites
 {
     public class Inventory
     {
@@ -59,7 +58,7 @@ namespace Nocturnal.src.entitites
 
         public async Task UpdateFile()
         {
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "Inventory.txt");
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "Inventory.txt");
 
             var sb = new StringBuilder();
 
@@ -70,7 +69,7 @@ namespace Nocturnal.src.entitites
                 return;
             }
 
-            foreach (Item item in Items)
+            foreach (var item in Items)
             {
                 sb.AppendLine($"{LocalizationService.GetString("NAME")}: {item.Name}");
                 sb.AppendLine($"{LocalizationService.GetString("TYPE")}: {item.Type}");
@@ -83,16 +82,16 @@ namespace Nocturnal.src.entitites
         }
     }
 
-    class ItemEqualityComparer : IEqualityComparer<Item>
+    internal class ItemEqualityComparer : IEqualityComparer<Item>
     {
         public bool Equals(Item? item1, Item? item2)
         {
-            return item1?.ID == item2?.ID && item1?.Name == item2?.Name;
+            return item1?.Id == item2?.Id && item1?.Name == item2?.Name;
         }
 
         public int GetHashCode(Item item)
         {
-            return HashCode.Combine(item.ID, item.Name);
+            return HashCode.Combine(item.Id, item.Name);
         }
     }
 }

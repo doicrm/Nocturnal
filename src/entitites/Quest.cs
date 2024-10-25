@@ -1,23 +1,23 @@
-﻿using Nocturnal.src.core;
-using Nocturnal.src.services;
-using System.Text;
+﻿using System.Text;
+using Nocturnal.core;
+using Nocturnal.services;
 
-namespace Nocturnal.src.entitites
+namespace Nocturnal.entitites
 {
     public enum QuestStatus { NotStarted, Running, Success, Failed, Obsolete }
 
     public class Quest
     {
-        public string ID { get; set; }
+        private string Id { get; set; }
         public string Name { get; set; }
-        public string Description { get; set; }
-        public QuestStatus Status { get; set; }
-        public bool IsRunning { get; set; }
-        public bool IsCompleted { get; set; }
+        private string Description { get; set; }
+        private QuestStatus Status { get; set; }
+        public bool IsRunning { get; private set; }
+        public bool IsCompleted { get; private set; }
 
         public Quest()
         {
-            ID = "";
+            Id = "";
             Name = "";
             Description = "";
             Status = QuestStatus.NotStarted;
@@ -25,24 +25,14 @@ namespace Nocturnal.src.entitites
             IsCompleted = false;
         }
 
-        public Quest(string id, string name, string description)
+        private Quest(string id, string name, string description)
         {
-            ID = id;
+            Id = id;
             Name = name;
             Description = description;
             Status = QuestStatus.NotStarted;
             IsRunning = false;
             IsCompleted = false;
-        }
-
-        public Quest(string id, string name, string description, QuestStatus status, bool isRunning, bool isCompleted)
-        {
-            ID = id;
-            Name = name;
-            Description = description;
-            Status = status;
-            IsRunning = isRunning;
-            IsCompleted = isCompleted;
         }
 
         public void Start()
@@ -95,7 +85,7 @@ namespace Nocturnal.src.entitites
                 new Quest("ZedAccelerator", LocalizationService.GetString("QUEST.ZED_ACCELERATOR.NAME"), LocalizationService.GetString("QUEST.ZED_ACCELERATOR.DESCRIPTION"))
             };
 
-            Globals.Quests = quests.ToDictionary(quest => quest.ID);
+            Globals.Quests = quests.ToDictionary(quest => quest.Id);
         }
     }
 }

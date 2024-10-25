@@ -1,24 +1,24 @@
-﻿using Nocturnal.src.events;
+﻿using Nocturnal.events;
 
-namespace Nocturnal.src.entitites
+namespace Nocturnal.entitites
 {
     public class Player : Npc
     {
         public float Money { get; set; }
         public Weapon? Weapon { get; set; }
-        public Journal? Journal = new();
+        public readonly Journal? Journal;
 
         public Player() : base()
         {
-            ID = "Player";
+            Id = "Player";
             Money = 0.0f;
             Weapon = null;
-            Journal = new();
+            Journal = new Journal();
         }
 
         public Player(float money, Weapon weapon, /*Clothes clothes,*/ Inventory inventory, Journal journal) : base()
         {
-            ID = "Player";
+            Id = "Player";
             Money = money;
             Weapon = weapon;
             //Clothes = clothes;

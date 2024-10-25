@@ -1,11 +1,11 @@
-﻿using Nocturnal.src.core;
-using Nocturnal.src.interfaces;
+﻿using Nocturnal.core;
+using Nocturnal.interfaces;
 
-namespace Nocturnal.src.services
+namespace Nocturnal.services
 {
-    public class ConsoleService : IConsoleInitiator
+    public abstract class ConsoleService : IConsoleInitiator
     {
         public static void InitConsole()
-            => Console.Title = $"{Constants.GAME_NAME} {Constants.GAME_VERSION}";
+            => Console.Title = $"{Constants.GameName} {Constants.GameVersion}";
     }
 }

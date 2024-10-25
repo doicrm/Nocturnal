@@ -1,19 +1,19 @@
-﻿using Nocturnal.src.core.utilities;
-using Nocturnal.src.core;
-using Nocturnal.src.entitites;
-using System.Reflection;
+﻿using System.Reflection;
 using Newtonsoft.Json;
+using Nocturnal.core;
+using Nocturnal.core.utils;
+using Nocturnal.entitites;
 
-namespace Nocturnal.src.services
+namespace Nocturnal.services
 {
-    public class JsonService
+    public abstract class JsonService
     {
         public static async ValueTask<bool> LoadAndParseLocalizationFile(GameLanguages lang)
         {
             try
             {
-                string path = GetLocalizationFilePath(lang);
-                string jsonString = await File.ReadAllTextAsync(path).ConfigureAwait(false);
+                var path = GetLocalizationFilePath(lang);
+                var jsonString = await File.ReadAllTextAsync(path).ConfigureAwait(false);
 
                 var localizationStrings = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonString) ?? [];
 
@@ -38,14 +38,10 @@ namespace Nocturnal.src.services
 
         public static async ValueTask<string> GetJsonStringAsync(string stringName)
         {
-            if (LocalizationService.LocalizationStrings == null
-                || !LocalizationService.LocalizationStrings.TryGetValue(stringName, out string? value))
-            {
-                await Logger.WriteLog($"Key '{stringName}' not found in LocalizationStrings.").ConfigureAwait(false);
-                return string.Empty;
-            }
-
-            return value?.ToString() ?? string.Empty;
+            if (LocalizationService.LocalizationStrings.TryGetValue(stringName, out string? value))
+                return value?.ToString() ?? string.Empty;
+            await Logger.WriteLog($"Key '{stringName}' not found in LocalizationStrings.").ConfigureAwait(false);
+            return string.Empty;
         }
 
         public static async ValueTask<Dictionary<string, dynamic>> LocationsToJson()
@@ -54,7 +50,7 @@ namespace Nocturnal.src.services
 
             foreach (var location in Globals.Locations)
             {
-                dynamic tempLocation = await Task.Run(() => location.Value.ToJson()).ConfigureAwait(false);
+                var tempLocation = await Task.Run(() => location.Value.ToJson()).ConfigureAwait(false);
                 tempLocations.Add(location.Key, tempLocation);
             }
 
@@ -86,11 +82,9 @@ namespace Nocturnal.src.services
                         continue;
                     }
 
-                    if (method.CreateDelegate(typeof(Action)) is Action eventDelegate)
-                    {
-                        location.Value.Events = eventDelegate;
-                        tempLocations.Add(location.Key, location.Value);
-                    }
+                    if (method.CreateDelegate(typeof(Action)) is not Action eventDelegate) continue;
+                    location.Value.Events = eventDelegate;
+                    tempLocations.Add(location.Key, location.Value);
                 }
 
                 return tempLocations;
@@ -108,13 +102,13 @@ namespace Nocturnal.src.services
 
                 Console.WriteLine($"{loc.EventType}.{loc.EventName}");
 
-                Type? type = Type.GetType(loc.EventType);
+                var type = Type.GetType(loc.EventType);
                 if (type == null)
                 {
                     return loc;
                 }
 
-                MethodInfo? method = type.GetMethod(loc.EventName, BindingFlags.Static | BindingFlags.Public);
+                var method = type.GetMethod(loc.EventName, BindingFlags.Static | BindingFlags.Public);
                 if (method == null)
                 {
                     return loc;

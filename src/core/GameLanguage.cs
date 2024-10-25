@@ -1,29 +1,28 @@
-﻿using Nocturnal.src.ui;
-using Nocturnal.src.services;
+﻿using Nocturnal.services;
+using Nocturnal.ui;
 using Spectre.Console;
 
-namespace Nocturnal.src.core
+namespace Nocturnal.core
 {
     public enum GameLanguages {
         None = 0,
-        EN = 1,
-        PL = 2
+        En = 1,
+        Pl = 2
     }
 
     public class GameLanguage
     {
-        public static readonly Dictionary<GameLanguages, string> LocalizationFileNames = new()
+        private static readonly Dictionary<GameLanguages, string> LocalizationFileNames = new()
         {
-            { GameLanguages.EN, "en" },
-            { GameLanguages.PL, "pl" }
+            { GameLanguages.En, "en" },
+            { GameLanguages.Pl, "pl" }
         };
 
-        public GameLanguages Language { get; private set; } = GameLanguages.None;
+        private GameLanguages Language { get; set; } = GameLanguages.None;
 
         public GameLanguage() {}
 
-        public GameLanguages GetLanguage()
-        {
+        public GameLanguages GetLanguage() {
             return Language;
         }
 

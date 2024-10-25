@@ -1,15 +1,16 @@
-﻿using Nocturnal.src.core;
-using Nocturnal.src.ui;
+﻿using Nocturnal.core;
+using Nocturnal.ui;
 using Spectre.Console;
+using static Nocturnal.services.JsonService;
 
-namespace Nocturnal.src.services
+namespace Nocturnal.services
 {
-    public class LocalizationService
+    public static class LocalizationService
     {
         private static readonly Dictionary<string, (string LanguageName, GameLanguages LanguageEnum)> LanguageMap = new()
         {
-            { "en", ("English", GameLanguages.EN) },
-            { "pl", ("Polski", GameLanguages.PL) }
+            { "en", ("English", GameLanguages.En) },
+            { "pl", ("Polski", GameLanguages.Pl) }
         };
 
         public static Dictionary<string, string> LocalizationStrings { get; private set; } = [];
@@ -20,32 +21,28 @@ namespace Nocturnal.src.services
 
             var localizationFiles = FindLocalizationFiles();
 
-            foreach (string file in localizationFiles)
+            foreach (var fileName in localizationFiles.Select(Path.GetFileNameWithoutExtension))
             {
-                string fileName = Path.GetFileNameWithoutExtension(file);
+                if (!LanguageMap.TryGetValue(fileName ?? string.Empty, out var languageInfo)) continue;
+                var languageName = languageInfo.LanguageName;
+                var languageEnum = languageInfo.LanguageEnum;
 
-                if (LanguageMap.TryGetValue(fileName, out var languageInfo))
+                options.Add(languageName, async () =>
                 {
-                    string languageName = languageInfo.LanguageName;
-                    GameLanguages languageEnum = languageInfo.LanguageEnum;
-
-                    options.Add(languageName, async () =>
-                    {
-                        Game.Instance.Settings.SetLanguage(languageEnum);
-                        await Task.CompletedTask;
-                    });
-                }
+                    Game.Instance.Settings.SetLanguage(languageEnum);
+                    await Task.CompletedTask;
+                });
             }
 
             return options;
         }
 
-        public static List<string> FindLocalizationFiles()
+        private static List<string> FindLocalizationFiles()
         {
-            string localizationDirectory = Path.Combine(Directory.GetCurrentDirectory(), "localization");
+            var localizationDirectory = Path.Combine(Directory.GetCurrentDirectory(), "localization");
 
             if (Directory.Exists(localizationDirectory))
-                return new List<string>(Directory.GetFiles(localizationDirectory, "*.json"));
+                return [..Directory.GetFiles(localizationDirectory, "*.json")];
 
             AnsiConsole.MarkupLine("[bold red]ERROR:[/] [red]The 'localization' directory does not exist.[/]");
             return [];
@@ -56,7 +53,7 @@ namespace Nocturnal.src.services
 
         public static string GetString(string stringName)
         {
-            return JsonService.GetJsonStringAsync(stringName).ConfigureAwait(false).GetAwaiter().GetResult();
+            return GetJsonStringAsync(stringName).ConfigureAwait(false).GetAwaiter().GetResult();
         }
     }
 }

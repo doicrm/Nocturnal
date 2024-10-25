@@ -1,18 +1,14 @@
-﻿namespace Nocturnal.src.core
+﻿namespace Nocturnal.core
 {
     public class GameSettings
     {
-        public GameLanguage Language { get; private set; }
+        private GameLanguage Language { get; set; } = new();
 
-        public GameSettings() { Language = new GameLanguage(); }
-
-        public GameLanguages GetLanguage()
-        {
+        public GameLanguages GetLanguage() {
             return Language.GetLanguage();
         }
 
-        public void SetLanguage(GameLanguages newLanguage)
-        {
+        public void SetLanguage(GameLanguages newLanguage) {
             Language.SetLanguage(newLanguage);
         }
     }

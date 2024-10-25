@@ -1,75 +1,73 @@
-﻿using Nocturnal.src.core;
-using Nocturnal.src.services;
-using Nocturnal.src.ui;
-using System.Reflection;
+﻿using System.Reflection;
+using Nocturnal.core;
+using Nocturnal.services;
+using Nocturnal.ui;
 
-namespace Nocturnal.src.entitites
+namespace Nocturnal.entitites
 {
     public enum Genders { Male, Female, Undefined }
     public enum NpcStatus { Normal, Unconscious, Dead }
 
     public class Npc
     {
-        public string ID { get; set; }
+        protected string Id { get; init; }
         public string Name { get; set; }
         public Genders Sex { get; set; }
-        public Attributes Attributes { get; set; }
+        protected Attributes Attributes { get; set; }
         public Fraction? Fraction { get; set; }
-        public Attitudes Attitude { get; set; }
+        public Attitudes Attitude { get; private set; }
         public NpcStatus Status { get; set; }
-        public Inventory? Inventory { get; set; }
+        public Inventory? Inventory { get; protected init; }
         public bool IsKnowHero { get; set; }
 
-        public Npc()
+        protected Npc()
         {
-            ID = "";
+            Id = "";
             Name = "";
             Sex = Genders.Undefined;
             Attributes = Attributes.Default();
             Fraction = null;
             Attitude = Attitudes.Neutral;
             Status = NpcStatus.Normal;
-            Inventory = new();
+            Inventory = new Inventory();
             IsKnowHero = false;
         }
 
-        public Npc(string id, string name, Genders sex, Fraction fraction)
+        private Npc(string id, string name, Genders sex, Fraction fraction)
         {
-            ID = id;
+            Id = id;
             Name = name;
             Sex = sex;
             Attributes = Attributes.Default();
             Fraction = fraction;
             Attitude = Attitudes.Neutral;
             Status = NpcStatus.Normal;
-            Inventory = new();
+            Inventory = new Inventory();
             IsKnowHero = false;
         }
 
         public Npc(string id, string name, Genders sex, Fraction fraction, Attitudes attitude, NpcStatus status, bool isKnowHero)
         {
-            ID = id;
+            Id = id;
             Name = name;
             Sex = sex;
             Attributes = Attributes.Default();
             Fraction = fraction;
             Attitude = attitude;
             Status = status;
-            Inventory = new();
+            Inventory = new Inventory();
             IsKnowHero = isKnowHero;
         }
 
         public void RaiseAttribute(string attributeName, int value)
         {
-            PropertyInfo? property = typeof(Attributes).GetProperty(attributeName);
+            var property = typeof(Attributes).GetProperty(attributeName);
             if (property != null && property.PropertyType == typeof(int?))
             {
-                int? attributeValue = (int?)property.GetValue(Attributes);
-                if (attributeValue != null)
-                {
-                    int newValue = attributeValue.Value + value;
-                    property.SetValue(Attributes, newValue);
-                }
+                var attributeValue = (int?)property.GetValue(Attributes);
+                if (attributeValue == null) return;
+                var newValue = attributeValue.Value + value;
+                property.SetValue(Attributes, newValue);
             }
             else
             {
@@ -79,16 +77,12 @@ namespace Nocturnal.src.entitites
 
         public void DropAttribute(string attributeName, int value)
         {
-            PropertyInfo? property = typeof(Attributes).GetProperty(attributeName);
-            if (property != null && property.PropertyType == typeof(int?))
-            {
-                int? attributeValue = (int?)property.GetValue(Attributes);
-                if (attributeValue != null)
-                {
-                    int newValue = attributeValue.Value - value;
-                    property.SetValue(Attributes, newValue);
-                }
-            }
+            var property = typeof(Attributes).GetProperty(attributeName);
+            if (property == null || property.PropertyType != typeof(int?)) return;
+            var attributeValue = (int?)property.GetValue(Attributes);
+            if (attributeValue == null) return;
+            var newValue = attributeValue.Value - value;
+            property.SetValue(Attributes, newValue);
         }
 
         public async Task SetAttitude(Attitudes newAttitude)
@@ -98,7 +92,7 @@ namespace Nocturnal.src.entitites
             await PrintAttitude();
         }
 
-        public async Task PrintAttitude()
+        private async Task PrintAttitude()
         {
             var (attitude, color) = Attitude switch
             {
@@ -113,7 +107,7 @@ namespace Nocturnal.src.entitites
             else
                 Console.ResetColor();
 
-            string message = Game.Instance.Settings.GetLanguage() == GameLanguages.EN
+            var message = Game.Instance.Settings.GetLanguage() == GameLanguages.En
                 ? $"\t{Name} is {attitude} now.\n"
                 : $"\t{Name} jest teraz {attitude}.\n";
 
@@ -143,7 +137,7 @@ namespace Nocturnal.src.entitites
                 new("Enigma", "Enigma", Genders.Male, null!)
             };
 
-            Globals.Npcs = npcs.ToDictionary(npc => npc.ID);
+            Globals.Npcs = npcs.ToDictionary(npc => npc.Id);
         }
     }
 }

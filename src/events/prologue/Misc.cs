@@ -1,9 +1,9 @@
-﻿using Nocturnal.src.core;
-using Nocturnal.src.core.utils;
-using Nocturnal.src.services;
-using Nocturnal.src.ui;
+﻿using Nocturnal.core;
+using Nocturnal.core.utils;
+using Nocturnal.services;
+using Nocturnal.ui;
 
-namespace Nocturnal.src.events.prologue
+namespace Nocturnal.events.prologue
 {
     public static class MiscEvents
     {
@@ -12,7 +12,7 @@ namespace Nocturnal.src.events.prologue
             Console.ForegroundColor = ConsoleColor.White;
             await Display.Write("\t||", 100);
 
-            for (int i = 0; i < 21; i++)
+            for (var i = 0; i < 21; i++)
             {
                 await Task.Delay(1000);
                 await Display.Write("=", 100);

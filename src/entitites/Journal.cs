@@ -1,12 +1,11 @@
-﻿using Nocturnal.src.services;
-using Nocturnal.src.ui;
-using System.Text;
+﻿using System.Text;
+using Nocturnal.services;
 
-namespace Nocturnal.src.entitites
+namespace Nocturnal.entitites
 {
     public class Journal
     {
-        public List<Quest> Quests { get; set; } = [];
+        private List<Quest> Quests { get; set; } = [];
 
         public Journal()
         {
@@ -34,7 +33,7 @@ namespace Nocturnal.src.entitites
 
         public async Task UpdatedJournalFile()
         {
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "journal.txt");
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "journal.txt");
 
             var sb = new StringBuilder();
 
@@ -45,7 +44,7 @@ namespace Nocturnal.src.entitites
                 return;
             }
 
-            foreach (Quest quest in Quests)
+            foreach (var quest in Quests)
             {
                 sb.AppendLine(quest.PrintInfo());
                 sb.AppendLine("..............................................................................");
@@ -57,7 +56,6 @@ namespace Nocturnal.src.entitites
         public void Show()
         {
             if (IsEmpty()) return;
-
             Quests.ForEach(quest => Console.WriteLine(quest.Name));
         }
 

@@ -1,13 +1,13 @@
-﻿using Nocturnal.src.core;
-using Nocturnal.src.events.prologue;
-using Nocturnal.src.services;
-using System.Reflection;
+﻿using System.Reflection;
+using Nocturnal.core;
+using Nocturnal.events.prologue;
+using Nocturnal.services;
 
-namespace Nocturnal.src.entitites
+namespace Nocturnal.entitites
 {
     public class Location
     {
-        public string ID { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
         public Fraction? Occupation { get; set; }
         public Func<Task>? Events { get; set; }
@@ -17,7 +17,7 @@ namespace Nocturnal.src.entitites
 
         public Location()
         {
-            ID = "";
+            Id = "";
             Name = "";
             Occupation = null;
             Events = null;
@@ -26,9 +26,9 @@ namespace Nocturnal.src.entitites
             EventType = "";
         }
 
-        public Location(string id, string name, Fraction occupation, Func<Task> events)
+        private Location(string id, string name, Fraction occupation, Func<Task> events)
         {
-            ID = id;
+            Id = id;
             Name = name;
             Occupation = occupation;
             Events = events;
@@ -40,7 +40,7 @@ namespace Nocturnal.src.entitites
 
         public Location(string id, string name, Fraction occupation, Func<Task> events, bool isVisited)
         {
-            ID = id;
+            Id = id;
             Name = name;
             Occupation = occupation;
             Events = events;
@@ -57,13 +57,11 @@ namespace Nocturnal.src.entitites
             if (Events == null) return;
 
             var methodInfo = Events.GetMethodInfo();
-            if (methodInfo == null) return;
 
             EventName = methodInfo.Name;
             var declaringType = methodInfo.DeclaringType;
 
-            if (declaringType != null)
-            {
+            if (declaringType != null) {
                 EventType = $"{declaringType.Namespace}.{declaringType.Name}";
             }
         }
@@ -103,14 +101,14 @@ namespace Nocturnal.src.entitites
                 new("NightclubEden", LocalizationService.GetString("LOCATION.NIGHTCLUB_EDEN"), Globals.Fractions["Police"], PrologueEvents.NightclubEden)
             };
 
-            Globals.Locations = locations.ToDictionary(location => location.ID);
+            Globals.Locations = locations.ToDictionary(location => location.Id);
         }
 
         public dynamic ToJson()
         {
             return new
             {
-                ID,
+                ID = Id,
                 Name,
                 Occupation,
                 IsVisited,

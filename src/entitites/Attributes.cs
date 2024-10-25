@@ -1,6 +1,6 @@
-﻿using Nocturnal.src.core;
+﻿using Nocturnal.core;
 
-namespace Nocturnal.src.entitites
+namespace Nocturnal.entitites
 {
     public class Attributes
     {
@@ -15,12 +15,12 @@ namespace Nocturnal.src.entitites
         {
             return new Attributes()
             {
-                Body = Constants.DEFAULT_ATTRIBUTE,
-                Reflex = Constants.DEFAULT_ATTRIBUTE,
-                Technical = Constants.DEFAULT_ATTRIBUTE,
-                Empathy = Constants.DEFAULT_ATTRIBUTE,
-                Luck = Constants.DEFAULT_ATTRIBUTE,
-                Stamina = (Constants.DEFAULT_ATTRIBUTE * 6)
+                Body = Constants.DefaultAttribute,
+                Reflex = Constants.DefaultAttribute,
+                Technical = Constants.DefaultAttribute,
+                Empathy = Constants.DefaultAttribute,
+                Luck = Constants.DefaultAttribute,
+                Stamina = (Constants.DefaultAttribute * 6)
             };
         }
     }

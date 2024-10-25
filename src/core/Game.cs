@@ -1,11 +1,10 @@
-﻿using Nocturnal.src.entitites;
-using Nocturnal.src.events.prologue;
-using Nocturnal.src.core.utilities;
-using Nocturnal.src.services;
-using Nocturnal.src.ui;
-using Spectre.Console;
+﻿using Nocturnal.core.utils;
+using Nocturnal.entitites;
+using Nocturnal.events.prologue;
+using Nocturnal.services;
+using Nocturnal.ui;
 
-namespace Nocturnal.src.core
+namespace Nocturnal.core
 {
     public enum Weather { Sunny, Cloudy, Stormy, Rainy, Snowfall }
 
@@ -17,14 +16,14 @@ namespace Nocturnal.src.core
         public GameSettings Settings { get; set; }
         public StoryGlobals StoryGlobals { get; set; }
 
-        private static Game? instance = null;
+        private static Game? _instance = null;
 
         public static Game Instance
         {
             get
             {
-                instance ??= new Game();
-                return instance;
+                _instance ??= new Game();
+                return _instance;
             }
         }
 
@@ -33,7 +32,7 @@ namespace Nocturnal.src.core
             IsPlaying = true;
             CurrentLocation = null;
             ConsoleService.InitConsole();
-            Settings = new();
+            Settings = new GameSettings();
             StoryGlobals = StoryGlobals.Instance;
             Logger.WriteLog("Game initialized").GetAwaiter().GetResult();
         }
@@ -53,10 +52,10 @@ namespace Nocturnal.src.core
         public static async Task Pause()
         {
             await Display.Write($"{LocalizationService.GetString("PRESS_ANY_KEY")}", 25);
-            await Task.Run(() => Console.ReadKey());
+            await Task.Run(Console.ReadKey);
         }
 
-        public static async Task Welcome()
+        private static async Task Welcome()
         {
             Console.Clear();
             await Task.Delay(500);
@@ -81,7 +80,7 @@ namespace Nocturnal.src.core
             });
         }
 
-        public static async Task NewGame()
+        private static async Task NewGame()
         {
             await GameDataService.InitAll();
             await SaveService.CreateSave();
@@ -89,7 +88,7 @@ namespace Nocturnal.src.core
             await PrologueEvents.Prologue();
         }
 
-        public static async Task LoadGame()
+        private static async Task LoadGame()
         {
             Console.Clear();
             await Display.Write($"\n{LocalizationService.GetString("MAIN_MENU.LOAD_GAME").ToUpper()}", 25);
@@ -97,14 +96,14 @@ namespace Nocturnal.src.core
             await SaveService.FindSaves();
         }
 
-        public async Task ChangeLanguage()
+        private async Task ChangeLanguage()
         {
             await ConfigService.CreateConfigFile();
             await JsonService.LoadAndParseLocalizationFile(Settings.GetLanguage());
             await Display.LoadLogo();
         }
 
-        public async Task EndGame()
+        private async Task EndGame()
         {
             Console.Clear();
             await Display.Write($"\n{LocalizationService.GetString("QUIT_GAME")}", 25);
@@ -130,7 +129,7 @@ namespace Nocturnal.src.core
             if (CurrentLocation != null)
             {
                 CurrentLocation.IsVisited = true;
-                Globals.Locations[CurrentLocation.ID].IsVisited = true;
+                Globals.Locations[CurrentLocation.Id].IsVisited = true;
                 await SaveService.UpdateSave();
             }
 
@@ -138,7 +137,7 @@ namespace Nocturnal.src.core
                 location = Globals.Locations["DarkAlley"];
             }
 
-            if (!Globals.Locations.ContainsKey(location.ID)) return;
+            if (!Globals.Locations.ContainsKey(location.Id)) return;
 
             CurrentLocation = location;
             await CurrentLocation.Events!.Invoke();

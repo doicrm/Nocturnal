@@ -1,6 +1,6 @@
-﻿using Nocturnal.src.ui;
+﻿using Nocturnal.ui;
 
-namespace Nocturnal.src.core.utils
+namespace Nocturnal.core.utils
 {
     public static class Input
     {
@@ -8,8 +8,8 @@ namespace Nocturnal.src.core.utils
         {
             await Display.Write("\t> ", 25);
 
-            string input = await Task.Run(() => Console.ReadLine()?.Trim() ?? string.Empty);
-            bool result = int.TryParse(input, out int choice);
+            var input = await Task.Run(() => Console.ReadLine()?.Trim() ?? string.Empty);
+            var result = int.TryParse(input, out var choice);
 
             return result ? choice : -1;
         }
@@ -26,12 +26,8 @@ namespace Nocturnal.src.core.utils
                 .Select((word, index) => index == 0 ? word : CapitalizeFirstLetter(word)));
         }
 
-        public static string CapitalizeFirstLetter(string word)
-        {
-            if (string.IsNullOrEmpty(word))
-                return word;
-
-            return $"{char.ToUpper(word[0])}{word.AsSpan(1).ToString()}";
+        private static string CapitalizeFirstLetter(string word) {
+            return string.IsNullOrEmpty(word) ? word : $"{char.ToUpper(word[0])}{word.AsSpan(1).ToString()}";
         }
     }
 }

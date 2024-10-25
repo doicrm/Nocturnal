@@ -1,10 +1,9 @@
-﻿using Nocturnal.src.core;
-using Nocturnal.src.entitites;
-using Nocturnal.src.ui;
+﻿using Nocturnal.core;
+using Nocturnal.entitites;
 
-namespace Nocturnal.src.services
+namespace Nocturnal.services
 {
-    public class GameDataService
+    public abstract class GameDataService
     {
         public static async Task InitAll()
         {
@@ -50,7 +49,7 @@ namespace Nocturnal.src.services
 
         private static async Task WriteToFile(string fileName, string content)
         {
-            string path = Path.Combine(Directory.GetCurrentDirectory(), fileName);
+            var path = Path.Combine(Directory.GetCurrentDirectory(), fileName);
             await File.WriteAllTextAsync(path, content).ConfigureAwait(false);
         }
     }

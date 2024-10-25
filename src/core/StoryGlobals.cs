@@ -1,4 +1,4 @@
-﻿namespace Nocturnal.src.core
+﻿namespace Nocturnal.core
 {
     public class StoryGlobals
     {

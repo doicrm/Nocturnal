@@ -1,16 +1,15 @@
-﻿using Nocturnal.src.core.utilities;
-using Nocturnal.src.services;
+﻿using Nocturnal.core.utils;
+using Nocturnal.services;
 
-namespace Nocturnal.src.core
+namespace Nocturnal.core
 {
-    public class Program
+    public static class Program
     {
-        static async Task Main()
+        private static async Task Main()
         {
             await Logger.WriteLog("Program runs");
 
-            if (await ConfigService.LoadConfigFile())
-            {
+            if (await ConfigService.LoadConfigFile()) {
                 await Game.Instance.Run();
             }
         }

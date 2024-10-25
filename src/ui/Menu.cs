@@ -1,14 +1,13 @@
-﻿using Nocturnal.src.core.utils;
+﻿using Nocturnal.core.utils;
 
-namespace Nocturnal.src.ui
+namespace Nocturnal.ui
 {
     public class MenuOptions : Dictionary<string, Func<Task>> { }
 
     public class Menu
     {
-        public int OptionNr { get; set; }
-        public int Choice { get; set; }
-        public IDictionary<int, KeyValuePair<string, Func<Task>>> Options { get; private set; } = new Dictionary<int, KeyValuePair<string, Func<Task>>>();
+        private int Choice { get; set; }
+        private IDictionary<int, KeyValuePair<string, Func<Task>>> Options { get; set; } = new Dictionary<int, KeyValuePair<string, Func<Task>>>();
 
         public Menu() { }
 
@@ -22,7 +21,7 @@ namespace Nocturnal.src.ui
         private static async Task ActionOption(int nr, string text, int speed = 25)
             => await Display.Write($"\n\t[{nr}] {text}", speed).ConfigureAwait(false);
 
-        public void ShowHeroChoice()
+        private void ShowHeroChoice()
         {
             Console.ResetColor();
             Console.ForegroundColor = ConsoleColor.Black;
@@ -34,7 +33,6 @@ namespace Nocturnal.src.ui
         public void ClearOptions()
         {
             Options.Clear();
-            OptionNr = 1;
             Choice = 0;
         }
 
@@ -82,7 +80,7 @@ namespace Nocturnal.src.ui
 
         private async Task ExecuteSelectedAction()
         {
-            Func<Task> selectedAction = Options[Choice].Value;
+            var selectedAction = Options[Choice].Value;
             Console.Clear();
             ShowHeroChoice();
             await selectedAction().ConfigureAwait(false);

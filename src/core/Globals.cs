@@ -1,8 +1,7 @@
-﻿using Nocturnal.src.entitites;
-using Nocturnal.src.services;
-using System.Reflection;
+﻿using Nocturnal.entitites;
+using Nocturnal.services;
 
-namespace Nocturnal.src.core
+namespace Nocturnal.core
 {
     public static class Globals
     {

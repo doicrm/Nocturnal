@@ -1,9 +1,9 @@
-﻿using Nocturnal.src.entitites;
-using Nocturnal.src.core;
-using Nocturnal.src.services;
-using Nocturnal.src.ui;
+﻿using Nocturnal.core;
+using Nocturnal.entitites;
+using Nocturnal.services;
+using Nocturnal.ui;
 
-namespace Nocturnal.src.events.prologue
+namespace Nocturnal.events.prologue
 {
     public static class NightclubEdenEvents
     {
@@ -30,7 +30,7 @@ namespace Nocturnal.src.events.prologue
             });
         }
 
-        public static async Task ClubDanceFloor()
+        private static async Task ClubDanceFloor()
         {
             if (!Globals.Npcs["Luna"].IsKnowHero)
             {
@@ -65,13 +65,13 @@ namespace Nocturnal.src.events.prologue
             }
         }
 
-        public static async Task ClubDanceFloor_01()
+        private static async Task ClubDanceFloor_01()
         {
             await Display.WriteNarration($"\t{LocalizationService.GetString("NIGHTCLUB_EDEN.DANCE_FLOOR_08")}");
             await Display.WriteDialogue($"\n\t{LocalizationService.GetString("NIGHTCLUB_EDEN.DANCE_FLOOR_09")}");
         }
 
-        public static async Task ClubDanceFloor_02()
+        private static async Task ClubDanceFloor_02()
         {
             await Display.WriteNarration($"\t{LocalizationService.GetString("NIGHTCLUB_EDEN.DANCE_FLOOR_08")}");
             await Display.WriteDialogue($"\n\t{LocalizationService.GetString("NIGHTCLUB_EDEN.DANCE_FLOOR_10")}");
@@ -79,20 +79,20 @@ namespace Nocturnal.src.events.prologue
             await Display.WriteDialogue($"\n\t{LocalizationService.GetString("NIGHTCLUB_EDEN.DANCE_FLOOR_12")}");
         }
 
-        public static async Task ClubDanceFloor_03()
+        private static async Task ClubDanceFloor_03()
         {
             await Display.WriteNarration($"\t{LocalizationService.GetString("NIGHTCLUB_EDEN.DANCE_FLOOR_08")}");
             await Display.WriteDialogue($"\n\t{LocalizationService.GetString("NIGHTCLUB_EDEN.DANCE_FLOOR_13")}");
         }
 
-        public static async Task ClubBar()
+        private static async Task ClubBar()
         {
             if (!Game.Instance.StoryGlobals.PC_IsAtBar)
             {
                 Game.Instance.StoryGlobals.PC_IsAtBar = true;
                 await Display.WriteNarration($"\t{LocalizationService.GetString("NIGHTCLUB_EDEN.BAR_01")}");
                 await Display.WriteDialogue($"\n\t{LocalizationService.GetString("NIGHTCLUB_EDEN.BAR_02")}");
-            };
+            }
 
             _ = new InteractiveMenu(new MenuOptions
             {
@@ -102,7 +102,7 @@ namespace Nocturnal.src.events.prologue
             });
         }
 
-        public static async Task ClubBar_01()
+        private static async Task ClubBar_01()
         {
             await Display.WriteDialogue($"\t{LocalizationService.GetString("NIGHTCLUB_EDEN.BAR_03")}");
             await Task.Delay(1000);
@@ -117,7 +117,7 @@ namespace Nocturnal.src.events.prologue
             await ClubBar();
         }
 
-        public static async Task ClubBar_02()
+        private static async Task ClubBar_02()
         {
             await Display.WriteNarration($"\t{LocalizationService.GetString("NIGHTCLUB_EDEN.BAR_09")}");
             await Display.WriteDialogue($"\n\t{LocalizationService.GetString("NIGHTCLUB_EDEN.BAR_10")}");
@@ -128,7 +128,7 @@ namespace Nocturnal.src.events.prologue
             await ClubBar();
         }
 
-        public static async Task ClubBar_03()
+        private static async Task ClubBar_03()
         {
             await Display.WriteNarration($"\t{LocalizationService.GetString("NIGHTCLUB_EDEN.BAR_13")}");
             await Display.WriteDialogue($"\n\t{LocalizationService.GetString("NIGHTCLUB_EDEN.BAR_14")}\n");
@@ -136,7 +136,7 @@ namespace Nocturnal.src.events.prologue
             await Crossroads();
         }
 
-        public static async Task LunaMeeting()
+        private static async Task LunaMeeting()
         {
             Console.WriteLine();
 
@@ -181,17 +181,16 @@ namespace Nocturnal.src.events.prologue
             await Crossroads();
         }
 
-        public static async Task LunaMeeting_01()
-        {
+        private static async Task LunaMeeting_01() {
             await Task.Run(() => {});
         }
 
-        public static async Task LunaMeeting_02()
+        private static async Task LunaMeeting_02()
         {
             await Task.Run(() => { });
         }
 
-        public static async Task ClubUpstairs()
+        private static async Task ClubUpstairs()
         {
             await Display.WriteNarration($"\t{LocalizationService.GetString("NIGHTCLUB_EDEN.UPSTAIRS_01")}");
 
@@ -202,7 +201,7 @@ namespace Nocturnal.src.events.prologue
             });
         }
 
-        public static async Task ClubUpstairs_01()
+        private static async Task ClubUpstairs_01()
         {
             await Display.WriteNarration($"\t{LocalizationService.GetString("NIGHTCLUB_EDEN.UPSTAIRS_02")}");
             await Display.WriteDialogue($"\n\t{LocalizationService.GetString("NIGHTCLUB_EDEN.UPSTAIRS_03")}");
@@ -210,13 +209,13 @@ namespace Nocturnal.src.events.prologue
             await DialogueWithJet();
         }
 
-        public static async Task ClubUpstairs_02()
+        private static async Task ClubUpstairs_02()
         {
             await Display.WriteNarration($"\t{LocalizationService.GetString("NIGHTCLUB_EDEN.UPSTAIRS_04")}\n");
             await Crossroads();
         }
 
-        public static async Task DialogueWithJet()
+        private static async Task DialogueWithJet()
         {
             Menu dialogueWithJetMenu = new();
             dialogueWithJetMenu.ClearOptions();
@@ -239,7 +238,7 @@ namespace Nocturnal.src.events.prologue
             await dialogueWithJetMenu.InputChoice();
         }
 
-        public static async Task DialogueWithJet_01()
+        private static async Task DialogueWithJet_01()
         {
             await Display.WriteNarration($"\t{LocalizationService.GetString("NIGHTCLUB_EDEN.DIA_JET_01")}");
             await Display.WriteDialogue($"\n\t{LocalizationService.GetString("NIGHTCLUB_EDEN.DIA_JET_02")}");
@@ -247,7 +246,7 @@ namespace Nocturnal.src.events.prologue
             await DialogueWithJet();
         }
 
-        public static async Task DialogueWithJet_02()
+        private static async Task DialogueWithJet_02()
         {
             await Display.WriteNarration($"\t{LocalizationService.GetString("NIGHTCLUB_EDEN.DIA_JET_03")}");
             await Display.WriteDialogue($"\n\t{LocalizationService.GetString("NIGHTCLUB_EDEN.DIA_JET_04")}");
@@ -255,7 +254,7 @@ namespace Nocturnal.src.events.prologue
             await DialogueWithJet();
         }
 
-        public static async Task DialogueWithJet_03()
+        private static async Task DialogueWithJet_03()
         {
             await Display.WriteNarration($"\t{LocalizationService.GetString("NIGHTCLUB_EDEN.DIA_JET_05")}");
             await Display.WriteNarration($" {LocalizationService.GetString("NIGHTCLUB_EDEN.DIA_JET_06")}");
@@ -264,7 +263,7 @@ namespace Nocturnal.src.events.prologue
             await HexOffice();
         }
 
-        public static async Task DialogueWithJet_04()
+        private static async Task DialogueWithJet_04()
         {
             await Display.WriteNarration($"\t{LocalizationService.GetString("NIGHTCLUB_EDEN.DIA_JET_09")}");
             await Display.WriteNarration($" {LocalizationService.GetString("NIGHTCLUB_EDEN.DIA_JET_10")}");
@@ -273,47 +272,45 @@ namespace Nocturnal.src.events.prologue
             await HexOffice();
         }
 
-        public static async Task DialogueWithJet_05()
+        private static async Task DialogueWithJet_05()
         {
             await Display.WriteDialogue($"\t{LocalizationService.GetString("NIGHTCLUB_EDEN.DIA_JET_13")}");
             await Display.WriteNarration($"\n\t{LocalizationService.GetString("NIGHTCLUB_EDEN.DIA_JET_14")}");
             await Crossroads();
         }
 
-        public static async Task JetGetsAngry(int angerPoints)
+        private static async Task JetGetsAngry(int angerPoints)
         {
-            if (angerPoints < 2
-                && !Game.Instance.StoryGlobals.Jet_WarnedPlayer
-                && !Game.Instance.StoryGlobals.Jet_BeatedPlayer)
-                return;
-
-            if (angerPoints == 2 && !Game.Instance.StoryGlobals.Jet_WarnedPlayer)
+            switch (angerPoints)
             {
-                Game.Instance.StoryGlobals.Jet_WarnedPlayer = true;
-                Console.WriteLine();
-                await Globals.Npcs["Jet"].SetAttitude(Attitudes.Angry);
-                await Display.WriteDialogue($"\t{LocalizationService.GetString("NIGHTCLUB_EDEN.DIA_JET_15")}");
-                return;
-            }
-
-            if (angerPoints > 2
-                && Game.Instance.StoryGlobals.Jet_WarnedPlayer
-                && !Game.Instance.StoryGlobals.Jet_BeatedPlayer)
-            {
-                Game.Instance.StoryGlobals.Jet_BeatedPlayer = true;
-                Game.Instance.StoryGlobals.Jet_Points = 0;
-                Console.WriteLine();
-                await Globals.Npcs["Jet"].SetAttitude(Attitudes.Hostile);
-                await Display.WriteDialogue($"\t{LocalizationService.GetString("NIGHTCLUB_EDEN.DIA_JET_16")}");
-                await Display.WriteNarration($"\n\t{LocalizationService.GetString("NIGHTCLUB_EDEN.DIA_JET_17")}");
-                await Task.Delay(2500);
-                Console.Clear();
-                await Task.Delay(2500);
-                await WakeUpAfterMeetingWithJet();
+                case < 2 
+                when !Game.Instance.StoryGlobals.Jet_WarnedPlayer
+                     && !Game.Instance.StoryGlobals.Jet_BeatedPlayer:
+                    return;
+                case 2 when !Game.Instance.StoryGlobals.Jet_WarnedPlayer:
+                    Game.Instance.StoryGlobals.Jet_WarnedPlayer = true;
+                    Console.WriteLine();
+                    await Globals.Npcs["Jet"].SetAttitude(Attitudes.Angry);
+                    await Display.WriteDialogue($"\t{LocalizationService.GetString("NIGHTCLUB_EDEN.DIA_JET_15")}");
+                    return;
+                case > 2 
+                when Game.Instance.StoryGlobals.Jet_WarnedPlayer
+                     && !Game.Instance.StoryGlobals.Jet_BeatedPlayer:
+                    Game.Instance.StoryGlobals.Jet_BeatedPlayer = true;
+                    Game.Instance.StoryGlobals.Jet_Points = 0;
+                    Console.WriteLine();
+                    await Globals.Npcs["Jet"].SetAttitude(Attitudes.Hostile);
+                    await Display.WriteDialogue($"\t{LocalizationService.GetString("NIGHTCLUB_EDEN.DIA_JET_16")}");
+                    await Display.WriteNarration($"\n\t{LocalizationService.GetString("NIGHTCLUB_EDEN.DIA_JET_17")}");
+                    await Task.Delay(2500);
+                    Console.Clear();
+                    await Task.Delay(2500);
+                    await WakeUpAfterMeetingWithJet();
+                    break;
             }
         }
 
-        public static async Task WakeUpAfterMeetingWithJet()
+        private static async Task WakeUpAfterMeetingWithJet()
         {
             await Display.WriteNarration($"\n\t{LocalizationService.GetString("NIGHTCLUB_EDEN.GET_STUNNED_01")}", 65);
             await Task.Delay(1000);
@@ -329,15 +326,15 @@ namespace Nocturnal.src.events.prologue
             await Task.Delay(1000);
             await Display.WriteNarration($"\n\t{LocalizationService.GetString("NIGHTCLUB_EDEN.GET_STUNNED_07")}");
 
-            Random rnd = new(); int rand = rnd.Next(0, 10);
+            Random rnd = new(); var rand = rnd.Next(0, 10);
 
-            if (rand > 5 && rand <= 10)
+            if (rand is > 5 and <= 10)
                 await RandomEvents.NickHandDiscovered();
 
             await Game.Instance.SetCurrentLocation(Globals.Locations["Street"]);
         }
 
-        public static async Task HexOffice()
+        private static async Task HexOffice()
         {
             await Display.WriteNarration($"\t{LocalizationService.GetString("NIGHTCLUB_EDEN.HEX_OFFICE")}");
 
@@ -348,7 +345,7 @@ namespace Nocturnal.src.events.prologue
             });
         }
 
-        public static async Task CheckHexDesk()
+        private static async Task CheckHexDesk()
         {
             Game.Instance.StoryGlobals.PC_KnowsHexCode = true;
             await Display.WriteNarration($"\t{LocalizationService.GetString("NIGHTCLUB_EDEN.CHECK_HEX_DESK")}");
@@ -356,7 +353,7 @@ namespace Nocturnal.src.events.prologue
             await HexHideoutCode();
         }
 
-        public static async Task HexHideoutCode()
+        private static async Task HexHideoutCode()
         {
             await Display.WriteNarration($"\t{LocalizationService.GetString("NIGHTCLUB_EDEN.HEX_HIDEOUT_CODE_01")}");
             await Task.Delay(1500);
@@ -376,15 +373,15 @@ namespace Nocturnal.src.events.prologue
             });
         }
 
-        public static async Task RightAccessCode()
+        private static async Task RightAccessCode()
         {
-            await Display.WriteNarration($"\t{LocalizationService.GetString("NIGHTCLUB_EDEN.RIGHT_ACCES_CODE_01")}");
+            await Display.WriteNarration($"\t{LocalizationService.GetString("NIGHTCLUB_EDEN.RIGHT_ACCESS_CODE_01")}");
             await Task.Delay(2000);
-            await Display.WriteNarration($" {LocalizationService.GetString("NIGHTCLUB_EDEN.RIGHT_ACCES_CODE_02")}");
+            await Display.WriteNarration($" {LocalizationService.GetString("NIGHTCLUB_EDEN.RIGHT_ACCESS_CODE_02")}");
             await HexHideout();
         }
 
-        public static async Task HexHideout()
+        private static async Task HexHideout()
         {
             Globals.Npcs["HexFolstam"].Status = NpcStatus.Unconscious;
             await Display.WriteNarration($"\n\t{LocalizationService.GetString("NIGHTCLUB_EDEN.HEX_HIDEOUT_01")}");
@@ -402,7 +399,7 @@ namespace Nocturnal.src.events.prologue
             });
         }
 
-        public static async Task HexHideout_01()
+        private static async Task HexHideout_01()
         {
             await Display.WriteNarration($"\t{LocalizationService.GetString("NIGHTCLUB_EDEN.HEX_HIDEOUT_05")}");
             await Task.Delay(1500);
@@ -411,7 +408,7 @@ namespace Nocturnal.src.events.prologue
             await LunaAppears();
         }
 
-        public static async Task HexHideout_02()
+        private static async Task HexHideout_02()
         {
             await Display.WriteNarration($"\t{LocalizationService.GetString("NIGHTCLUB_EDEN.HEX_HIDEOUT_07")}");
             await Task.Delay(1000);
@@ -425,7 +422,7 @@ namespace Nocturnal.src.events.prologue
             await DialogueWithHex();
         }
 
-        public static async Task DialogueWithHex()
+        private static async Task DialogueWithHex()
         {
             await Task.Run(() =>
             {
@@ -444,7 +441,7 @@ namespace Nocturnal.src.events.prologue
             });
         }
 
-        public static async Task LunaAppears()
+        private static async Task LunaAppears()
         {
             await Display.WriteNarration($"\n\t{LocalizationService.GetString("NIGHTCLUB_EDEN.LUNA_APPEARS_01")}");
             await Task.Delay(1000);
@@ -466,7 +463,7 @@ namespace Nocturnal.src.events.prologue
             await HexResurrection();
         }
 
-        public static async Task DialogueWithHex_01()
+        private static async Task DialogueWithHex_01()
         {
             await Display.WriteNarration($"\t{LocalizationService.GetString("NIGHTCLUB_EDEN.DIA_HEX_01")}");
             await Display.WriteDialogue($"\n\t{LocalizationService.GetString("NIGHTCLUB_EDEN.DIA_HEX_02")}");
@@ -476,45 +473,45 @@ namespace Nocturnal.src.events.prologue
             await Display.WriteDialogue($" {LocalizationService.GetString("NIGHTCLUB_EDEN.DIA_HEX_04")}");
         }
 
-        public static async Task DialogueWithHex_02()
+        private static async Task DialogueWithHex_02()
         {
             await Display.WriteDialogue($"\t{LocalizationService.GetString("NIGHTCLUB_EDEN.DIA_HEX_05")}");
             await Task.Delay(1000);
             await HexDeath();
         }
 
-        public static async Task DialogueWithHex_03()
+        private static async Task DialogueWithHex_03()
         {
             await DialogueWithHex_05();
         }
 
-        public static async Task DialogueWithHex_04()
+        private static async Task DialogueWithHex_04()
         {
             await Display.WriteDialogue($"\t{LocalizationService.GetString("NIGHTCLUB_EDEN.DIA_HEX_06")}");
             await Task.Delay(1500);
             await HexDeath();
         }
 
-        public static async Task DialogueWithHex_05()
+        private static async Task DialogueWithHex_05()
         {
             await Display.WriteDialogue($"\t{LocalizationService.GetString("NIGHTCLUB_EDEN.DIA_HEX_07")}");
             await Display.WriteDialogue($" {LocalizationService.GetString("NIGHTCLUB_EDEN.DIA_HEX_08")}");
             await HexDeath();
         }
 
-        public static async Task DialogueWithHex_06()
+        private static async Task DialogueWithHex_06()
         {
             await Display.WriteNarration($"\t{LocalizationService.GetString("NIGHTCLUB_EDEN.DIA_HEX_09")}");
             await Display.WriteDialogue($"\n\t{LocalizationService.GetString("NIGHTCLUB_EDEN.DIA_HEX_10")}");
         }
 
-        public static async Task DialogueWithHex_07()
+        private static async Task DialogueWithHex_07()
         {
             await Display.WriteDialogue($"\t{LocalizationService.GetString("NIGHTCLUB_EDEN.DIA_HEX_11")}");
             await Display.WriteNarration($"\n\t{LocalizationService.GetString("NIGHTCLUB_EDEN.DIA_HEX_12")}");
         }
 
-        public static async Task HexDeath()
+        private static async Task HexDeath()
         {
             await Display.WriteNarration($"\n\t{LocalizationService.GetString("NIGHTCLUB_EDEN.HEX_DEATH_01")}");
             await Task.Delay(1000);
@@ -528,26 +525,26 @@ namespace Nocturnal.src.events.prologue
             await LunaAppears();
         }
 
-        public static async Task HexResurrection()
+        private static async Task HexResurrection()
         {
-            await Display.WriteNarration($"\n\t{LocalizationService.GetString("NIGHTCLUB_EDEN.HEX_RESSURECTION_01")}");
+            await Display.WriteNarration($"\n\t{LocalizationService.GetString("NIGHTCLUB_EDEN.HEX_RESURRECTION_01")}");
             await Task.Delay(1000);
-            await Display.WriteNarration($" {LocalizationService.GetString("NIGHTCLUB_EDEN.HEX_RESSURECTION_02")}");
+            await Display.WriteNarration($" {LocalizationService.GetString("NIGHTCLUB_EDEN.HEX_RESURRECTION_02")}");
             Console.ForegroundColor = ConsoleColor.Blue;
-            await Display.Write($"\n\t{LocalizationService.GetString("NIGHTCLUB_EDEN.HEX_RESSURECTION_03")}");
+            await Display.Write($"\n\t{LocalizationService.GetString("NIGHTCLUB_EDEN.HEX_RESURRECTION_03")}");
             await Task.Delay(1000);
-            await Display.Write($" {LocalizationService.GetString("NIGHTCLUB_EDEN.HEX_RESSURECTION_04")}");
+            await Display.Write($" {LocalizationService.GetString("NIGHTCLUB_EDEN.HEX_RESURRECTION_04")}");
             await Task.Delay(1000);
-            await Display.Write($" {LocalizationService.GetString("NIGHTCLUB_EDEN.HEX_RESSURECTION_05")}");
-            await Display.WriteNarration($"\n\t{LocalizationService.GetString("NIGHTCLUB_EDEN.HEX_RESSURECTION_06")}");
-            await Display.WriteDialogue($"\n\t{LocalizationService.GetString("NIGHTCLUB_EDEN.HEX_RESSURECTION_07")}");
+            await Display.Write($" {LocalizationService.GetString("NIGHTCLUB_EDEN.HEX_RESURRECTION_05")}");
+            await Display.WriteNarration($"\n\t{LocalizationService.GetString("NIGHTCLUB_EDEN.HEX_RESURRECTION_06")}");
+            await Display.WriteDialogue($"\n\t{LocalizationService.GetString("NIGHTCLUB_EDEN.HEX_RESURRECTION_07")}");
             Console.ForegroundColor = ConsoleColor.Blue;
-            await Display.Write($"\n\t{LocalizationService.GetString("NIGHTCLUB_EDEN.HEX_RESSURECTION_08")}");
+            await Display.Write($"\n\t{LocalizationService.GetString("NIGHTCLUB_EDEN.HEX_RESURRECTION_08")}");
             await Task.Delay(1500);
             Console.ForegroundColor = ConsoleColor.Blue;
-            await Display.Write($" {LocalizationService.GetString("NIGHTCLUB_EDEN.HEX_RESSURECTION_09")}");
+            await Display.Write($" {LocalizationService.GetString("NIGHTCLUB_EDEN.HEX_RESURRECTION_09")}");
             await Task.Delay(1000);
-            await Display.Write($" {LocalizationService.GetString("NIGHTCLUB_EDEN.HEX_RESSURECTION_10")}");
+            await Display.Write($" {LocalizationService.GetString("NIGHTCLUB_EDEN.HEX_RESURRECTION_10")}");
             await Task.Delay(3000);
             await Event.EndGame();
         }

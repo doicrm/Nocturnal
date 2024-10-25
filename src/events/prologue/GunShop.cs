@@ -1,9 +1,9 @@
-﻿using Nocturnal.src.entitites;
-using Nocturnal.src.core;
-using Nocturnal.src.ui;
-using Nocturnal.src.services;
+﻿using Nocturnal.core;
+using Nocturnal.entitites;
+using Nocturnal.services;
+using Nocturnal.ui;
 
-namespace Nocturnal.src.events.prologue
+namespace Nocturnal.events.prologue
 {
     public static class GunShopEvents
     {
@@ -36,7 +36,7 @@ namespace Nocturnal.src.events.prologue
             await DialogueWithZed();
         }
 
-        public static async Task DialogueWithZed()
+        private static async Task DialogueWithZed()
         {
             Console.WriteLine();
 
@@ -60,12 +60,11 @@ namespace Nocturnal.src.events.prologue
             await dialogueWithZedMenu.InputChoice();
         }
 
-        public static async Task DialogueWithZed_01()
-        {
+        private static async Task DialogueWithZed_01() {
             await ZedTrade();
         }
 
-        public static async Task DialogueWithZed_02()
+        private static async Task DialogueWithZed_02()
         {
             if (Game.Instance.StoryGlobals.PC_TalkedAboutBusinessWithZed)
                 await Display.WriteDialogue($"\t{LocalizationService.GetString("GUN_SHOP.DIA_ZED_01")}");
@@ -78,7 +77,7 @@ namespace Nocturnal.src.events.prologue
             await DialogueWithZed();
         }
 
-        public static async Task DialogueWithZed_03()
+        private static async Task DialogueWithZed_03()
         {
             Game.Instance.StoryGlobals.Zed_KnowsAboutBobAndZed = true;
             await Display.WriteDialogue($"\t{LocalizationService.GetString("GUN_SHOP.DIA_ZED_03")}");
@@ -88,13 +87,13 @@ namespace Nocturnal.src.events.prologue
             await DialogueWithZed();
         }
 
-        public static async Task DialogueWithZed_04()
+        private static async Task DialogueWithZed_04()
         {
             await ZedGetsAnAccelerator();
             await DialogueWithZed();
         }
 
-        public static async Task DialogueWithZed_05()
+        private static async Task DialogueWithZed_05()
         {
             await Display.WriteDialogue($"\t{LocalizationService.GetString("GUN_SHOP.DIA_ZED_05")}\n");
             Console.Clear();
@@ -105,7 +104,7 @@ namespace Nocturnal.src.events.prologue
                 await Game.Instance.SetCurrentLocation(Globals.Locations["Street"]);
         }
 
-        public static async Task ZedGetsAnAccelerator()
+        private static async Task ZedGetsAnAccelerator()
         {
             await Display.WriteDialogue($"\t{LocalizationService.GetString("GUN_SHOP.DIA_ZED_06")}");
             await Task.Delay(1000);
@@ -126,7 +125,7 @@ namespace Nocturnal.src.events.prologue
             await DialogueWithZed();
         }
 
-        public static async Task ZedTrade()
+        private static async Task ZedTrade()
         {
             if (Globals.Player.HasItem(Globals.Items["Pistol"]))
             {
@@ -170,14 +169,14 @@ namespace Nocturnal.src.events.prologue
             await DialogueWithZed();
         }
 
-        public static async Task ZedTrade_01()
+        private static async Task ZedTrade_01()
         {
             await Display.WriteNarration($"\t{LocalizationService.GetString("GUN_SHOP.DIA_ZED_14")}");
             await Display.WriteDialogue($"\n\t{LocalizationService.GetString("GUN_SHOP.DIA_ZED_15")}");
             await DialogueWithZed();
         }
 
-        public static async Task BuyPistol()
+        private static async Task BuyPistol()
         {
             if (Globals.Player.Money <= 250.0f)
             {
@@ -226,8 +225,7 @@ namespace Nocturnal.src.events.prologue
             await DialogueWithZed();
         }
 
-        public static async Task Crossroads()
-        {
+        public static async Task Crossroads() {
             await EnterGunShop();
         }
     }

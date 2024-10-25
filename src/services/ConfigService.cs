@@ -1,9 +1,9 @@
 ﻿using Newtonsoft.Json;
-using Nocturnal.src.core.utilities;
-using Nocturnal.src.core;
-using Nocturnal.src.interfaces;
+using Nocturnal.core;
+using Nocturnal.core.utils;
+using Nocturnal.interfaces;
 
-namespace Nocturnal.src.services
+namespace Nocturnal.services
 {
     public struct ConfigFileData(string? username, GameLanguages language)
     {
@@ -11,7 +11,7 @@ namespace Nocturnal.src.services
         public GameLanguages Language { get; set; } = language;
     }
 
-    public class ConfigService : IConfigCreator, IConfigLoader
+    public abstract class ConfigService : IConfigCreator, IConfigLoader
     {
         private const string ConfigDirectory = "data\\config";
         private const string ConfigFileName = "config.json";
@@ -21,7 +21,7 @@ namespace Nocturnal.src.services
 
         public static async Task CreateConfigFile()
         {
-            string path = GetConfigFilePath();
+            var path = GetConfigFilePath();
 
             if (!Directory.Exists(ConfigDirectory))
                 Directory.CreateDirectory(ConfigDirectory);
@@ -36,7 +36,7 @@ namespace Nocturnal.src.services
 
             try
             {
-                string jsonString = JsonConvert.SerializeObject(configFileData, Formatting.Indented);
+                var jsonString = JsonConvert.SerializeObject(configFileData, Formatting.Indented);
                 await File.WriteAllTextAsync(path, jsonString).ConfigureAwait(false);
             }
             catch (JsonException jsonEx)
@@ -51,7 +51,7 @@ namespace Nocturnal.src.services
 
         public static async ValueTask<bool> LoadConfigFile()
         {
-            string path = GetConfigFilePath();
+            var path = GetConfigFilePath();
 
             if (!File.Exists(path))
             {
@@ -61,7 +61,7 @@ namespace Nocturnal.src.services
             {
                 try
                 {
-                    string jsonString = await File.ReadAllTextAsync(path);
+                    var jsonString = await File.ReadAllTextAsync(path);
 
                     ConfigFileData? configFileData = JsonConvert.DeserializeObject<ConfigFileData>(jsonString);
 

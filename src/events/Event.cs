@@ -1,8 +1,8 @@
-﻿using Nocturnal.src.core;
-using Nocturnal.src.ui;
-using Nocturnal.src.services;
+﻿using Nocturnal.core;
+using Nocturnal.services;
+using Nocturnal.ui;
 
-namespace Nocturnal.src.events
+namespace Nocturnal.events
 {
     public static class Event
     {

@@ -1,4 +1,4 @@
-﻿namespace Nocturnal.src.interfaces
+﻿namespace Nocturnal.interfaces
 {
     public interface ISaveCreator
     {

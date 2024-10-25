@@ -1,28 +1,28 @@
-﻿using Nocturnal.src.core;
-using Nocturnal.src.services;
+﻿using Nocturnal.core;
+using Nocturnal.services;
 
-namespace Nocturnal.src.entitites
+namespace Nocturnal.entitites
 {
     public enum Attitudes { Neutral, Angry, Hostile, Friendly }
 
     public class Fraction
     {
-        public string ID { get; set; }
+        private string Id { get; set; }
         public string Name { get; set; }
-        public uint HeroReputation { get; set; }
-        public Attitudes Attitude { get; set; }
+        private uint HeroReputation { get; set; }
+        private Attitudes Attitude { get; set; }
 
         public Fraction()
         {
-            ID = "";
+            Id = "";
             Name = "";
             HeroReputation = 0;
             Attitude = Attitudes.Neutral;
         }
 
-        public Fraction(string id, string name, uint heroReputation, Attitudes attitude)
+        private Fraction(string id, string name, uint heroReputation, Attitudes attitude)
         {
-            ID = id;
+            Id = id;
             Name = name;
             HeroReputation = heroReputation;
             Attitude = attitude;
@@ -33,13 +33,13 @@ namespace Nocturnal.src.entitites
         public void SetAttitude(Attitudes attitude) => Attitude = attitude;
         public string PrintAttitude()
         {
-            if (Attitude is Attitudes.Angry)
-                return LocalizationService.GetString("ATTITUDE.ANGRY").ToLower();
-            if (Attitude is Attitudes.Hostile)
-                return LocalizationService.GetString("ATTITUDE.HOSTILE").ToLower();
-            if (Attitude is Attitudes.Friendly)
-                return LocalizationService.GetString("ATTITUDE.FRIENDLY").ToLower();
-            return LocalizationService.GetString("ATTITUDE.NEUTRAL").ToLower();
+            return Attitude switch
+            {
+                Attitudes.Angry => LocalizationService.GetString("ATTITUDE.ANGRY").ToLower(),
+                Attitudes.Hostile => LocalizationService.GetString("ATTITUDE.HOSTILE").ToLower(),
+                Attitudes.Friendly => LocalizationService.GetString("ATTITUDE.FRIENDLY").ToLower(),
+                _ => LocalizationService.GetString("ATTITUDE.NEUTRAL").ToLower()
+            };
         }
 
         public static void InsertInstances()
@@ -51,7 +51,7 @@ namespace Nocturnal.src.entitites
                 new Fraction("Hammers", LocalizationService.GetString("FRACTION.HAMMERS"), 0, Attitudes.Neutral)
             };
 
-            Globals.Fractions = fractions.ToDictionary(fraction => fraction.ID);
+            Globals.Fractions = fractions.ToDictionary(fraction => fraction.Id);
         }
     }
 }

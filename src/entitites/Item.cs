@@ -1,31 +1,33 @@
-﻿using Nocturnal.src.core;
-using Nocturnal.src.services;
-using System.Text;
+﻿using System.Text;
+using Nocturnal.core;
+using Nocturnal.services;
 
-namespace Nocturnal.src.entitites
+namespace Nocturnal.entitites
 {
     public enum ItemType { None, Weapon, Clothes, Food, Quest, Written, Misc }
 
     public class Item
     {
-        public string ID { get; set; }
-        public string? Name { get; set; }
-        public ItemType Type { get; set; }
-        public string? Description { get; set; }
-        public float Value { get; set; }
+        public string Id { get; protected init; }
+        public string? Name { get; protected init; }
+        public ItemType Type { get; protected init; }
+        public string? Description { get; protected init; }
+        public float Value { get; protected init; }
 
-        public Item(string id, string? name, ItemType type, string? description, float value)
+        private Item(string id, string? name, ItemType type, string? description, float value)
         {
-            ID = id;
+            Id = id;
             Name = name;
             Type = type;
             Description = description;
             Value = value;
         }
 
-        public Item() { }
+        protected Item() {
+            throw new NotImplementedException();
+        }
 
-        virtual public string PrintInfo()
+        public virtual string PrintInfo()
         {
             var sb = new StringBuilder();
             sb.AppendLine($"{LocalizationService.GetString("NAME")}: {Name}");
@@ -44,7 +46,7 @@ namespace Nocturnal.src.entitites
                 new Item("AccessCard", LocalizationService.GetString("ITEM.ACCESS_CARD.NAME"), ItemType.Misc, LocalizationService.GetString("ITEM.ACCESS_CARD.DESCRIPTION"), 0)
             };
 
-            Globals.Items = items.ToDictionary(item => item.ID);
+            Globals.Items = items.ToDictionary(item => item.Id);
             Weapon.InsertInstances();
         }
     }

@@ -1,89 +1,85 @@
 ﻿using Newtonsoft.Json;
-using Nocturnal.src.core;
-using Nocturnal.src.core.utils;
-using Nocturnal.src.entitites;
-using Nocturnal.src.interfaces;
-using Nocturnal.src.ui;
+using Nocturnal.core;
+using Nocturnal.core.utils;
+using Nocturnal.entitites;
+using Nocturnal.interfaces;
+using Nocturnal.ui;
 
-namespace Nocturnal.src.services
+namespace Nocturnal.services
 {
     public struct SaveData(string timestamp, Player player, dynamic npcs, dynamic locations, dynamic fractions, dynamic quests, uint chapter, dynamic currentLocation, Weather weather, dynamic storyGlobals)
     {
-        public string Timestamp = timestamp;
-        public Player Player = player;
-        public dynamic Npcs = npcs;
-        public dynamic Locations = locations;
-        public dynamic Fractions = fractions;
-        public dynamic Quests = quests;
-        public uint Chapter = chapter;
-        public dynamic CurrentLocation = currentLocation;
-        public Weather Weather = weather;
-        public dynamic StoryGlobals = storyGlobals;
+        public readonly string Timestamp = timestamp;
+        public readonly Player Player = player;
+        public readonly dynamic Npcs = npcs;
+        public readonly dynamic Locations = locations;
+        public readonly dynamic Fractions = fractions;
+        public readonly dynamic Quests = quests;
+        public readonly uint Chapter = chapter;
+        public readonly dynamic CurrentLocation = currentLocation;
+        public readonly Weather Weather = weather;
+        public readonly dynamic StoryGlobals = storyGlobals;
     };
 
-    public class SaveService : ISaveCreator, ISaveLoader, ISaveUpdater, ISaveFinder
+    public abstract class SaveService : ISaveCreator, ISaveLoader, ISaveUpdater, ISaveFinder
     {
-        private static readonly Dictionary<Genders, string> genderMap = new()
+        private static readonly Dictionary<Genders, string> GenderMap = new()
         {
             { Genders.Male, "SEX.MALE" },
             { Genders.Female, "SEX.FEMALE" }
         };
 
-        public static readonly Dictionary<string, string> locationNames = new()
+        public static readonly Dictionary<string, string> LocationNames = new()
         {
             { "DarkAlley", "LOCATION.DARK_ALLEY" },
             { "Street", "LOCATION.STREET" },
             { "GunShop", "LOCATION.GUN_SHOP" },
             { "NightclubEden", "LOCATION.NIGHTCLUB_EDEN" }
         };
+        
+        private static uint _currentSaveNr = 0;
 
-
-        private static uint CurrentSaveNr = 0;
-
-        private static string GetSaveDirectory()
-        {
+        private static string GetSaveDirectory() {
             return Path.Combine(Directory.GetCurrentDirectory(), "data", "saves");
         }
 
         public static async Task CreateSave()
         {
-            string saveDirectory = GetSaveDirectory();
+            var saveDirectory = GetSaveDirectory();
 
             if (!Directory.Exists(saveDirectory))
                 Directory.CreateDirectory(saveDirectory);
 
-            for (int i = 0; i < Constants.MAX_SAVES; i++)
+            for (var i = 0; i < Constants.MaxSaves; i++)
             {
-                string path = Path.Combine(saveDirectory, $"Save{i}.dat");
+                var path = Path.Combine(saveDirectory, $"Save{i}.dat");
 
-                if (!File.Exists(path))
+                if (File.Exists(path)) continue;
+                try
                 {
-                    try
-                    {
-                        using var newSave = File.CreateText(path);
-                        CurrentSaveNr = (uint)i;
+                    await using var newSave = File.CreateText(path);
+                    _currentSaveNr = (uint)i;
 
-                        var save = new SaveData(
-                            TimeFormatter.GetFormattedTimestamp(),
-                            Globals.Player,
-                            Globals.Npcs,
-                            await JsonService.LocationsToJson().ConfigureAwait(false),
-                            Globals.Fractions,
-                            Globals.Quests,
-                            Globals.Chapter,
-                            null!,
-                            Game.Instance.Weather,
-                            Game.Instance.StoryGlobals
-                        );
+                    var save = new SaveData(
+                        TimeFormatter.GetFormattedTimestamp(),
+                        Globals.Player,
+                        Globals.Npcs,
+                        await JsonService.LocationsToJson().ConfigureAwait(false),
+                        Globals.Fractions,
+                        Globals.Quests,
+                        Globals.Chapter,
+                        null!,
+                        Game.Instance.Weather,
+                        Game.Instance.StoryGlobals
+                    );
 
-                        var serializedObject = JsonConvert.SerializeObject(save, Formatting.Indented);
-                        await newSave.WriteAsync(serializedObject).ConfigureAwait(false);
-                        break;
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"Error creating save file: {ex.Message}");
-                    }
+                    var serializedObject = JsonConvert.SerializeObject(save, Formatting.Indented);
+                    await newSave.WriteAsync(serializedObject).ConfigureAwait(false);
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error creating save file: {ex.Message}");
                 }
             }
         }
@@ -92,7 +88,7 @@ namespace Nocturnal.src.services
         {
             Item.InsertInstances();
 
-            string path = Path.Combine(GetSaveDirectory(), $"Save{nr}.dat");
+            var path = Path.Combine(GetSaveDirectory(), $"Save{nr}.dat");
 
             if (!File.Exists(path))
             {
@@ -102,18 +98,18 @@ namespace Nocturnal.src.services
 
             try
             {
-                string content = await File.ReadAllTextAsync(path).ConfigureAwait(false);
-                SaveData saveInfo = JsonConvert.DeserializeObject<SaveData>(content)!;
-                CurrentSaveNr = nr;
+                var content = await File.ReadAllTextAsync(path).ConfigureAwait(false);
+                var saveInfo = JsonConvert.DeserializeObject<SaveData>(content)!;
+                _currentSaveNr = nr;
 
                 Globals.UpdateGlobalsFromSave(saveInfo);
-                Location currentLocation = DetermineCurrentLocation(saveInfo);
+                var currentLocation = DetermineCurrentLocation(saveInfo);
 
                 await GameDataService.InitHeroInventory().ConfigureAwait(false);
                 await GameDataService.InitHeroJournal().ConfigureAwait(false);
                 Console.Clear();
 
-                await Game.Instance.SetCurrentLocation(Globals.Locations[currentLocation.ID]).ConfigureAwait(false);
+                await Game.Instance.SetCurrentLocation(Globals.Locations[currentLocation.Id]).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -125,7 +121,7 @@ namespace Nocturnal.src.services
         {
             Location? currentLocation = saveInfo.CurrentLocation?.ToObject<Location>();
 
-            if (currentLocation == null || !Globals.Locations.ContainsKey(currentLocation.ID))
+            if (currentLocation == null || !Globals.Locations.ContainsKey(currentLocation.Id))
             {
                 if (!Globals.Locations.TryGetValue("DarkAlley", out currentLocation))
                 {
@@ -133,11 +129,7 @@ namespace Nocturnal.src.services
                 }
             }
 
-            if (!Globals.Locations.ContainsKey(currentLocation.ID))
-            {
-                Globals.Locations.Add(currentLocation.ID, currentLocation);
-            }
-
+            Globals.Locations.TryAdd(currentLocation.Id, currentLocation);
             foreach (var location in Globals.Locations.Values)
             {
                 location.SetEvent();
@@ -150,7 +142,7 @@ namespace Nocturnal.src.services
         {
             try
             {
-                string path = Path.Combine(GetSaveDirectory(), $"Save{CurrentSaveNr}.dat");
+                var path = Path.Combine(GetSaveDirectory(), $"Save{_currentSaveNr}.dat");
 
                 if (!Directory.Exists(GetSaveDirectory()))
                     Directory.CreateDirectory(GetSaveDirectory());
@@ -184,7 +176,7 @@ namespace Nocturnal.src.services
 
             try
             {
-                string content = await File.ReadAllTextAsync(saveToLoad).ConfigureAwait(false);
+                var content = await File.ReadAllTextAsync(saveToLoad).ConfigureAwait(false);
                 var saveInfo = JsonConvert.DeserializeObject<SaveData>(content);
 
                 Location currentLocation = saveInfo.CurrentLocation != null
@@ -206,7 +198,7 @@ namespace Nocturnal.src.services
 
         public static async Task FindSaves()
         {
-            string path = GetSaveDirectory();
+            var path = GetSaveDirectory();
 
             if (!Directory.Exists(path))
             {
@@ -216,13 +208,14 @@ namespace Nocturnal.src.services
 
             var files = Directory.EnumerateFiles(path, "Save*.dat", SearchOption.TopDirectoryOnly);
 
-            if (!files.Any())
+            var enumerable = files.ToList();
+            if (enumerable.Count == 0)
             {
                 await NoSavesFound().ConfigureAwait(false);
                 return;
             }
 
-            _ = new InteractiveMenu(await CreateSaveOptions(files).ConfigureAwait(false));
+            _ = new InteractiveMenu(await CreateSaveOptions(enumerable).ConfigureAwait(false));
         }
 
         private static async Task<MenuOptions> CreateSaveOptions(IEnumerable<string> files)
@@ -232,7 +225,7 @@ namespace Nocturnal.src.services
 
             foreach (var file in files)
             {
-                uint currentIndex = i;
+                var currentIndex = i;
                 var saveInfo = await LoadSaveInfo(file).ConfigureAwait(false);
                 options.Add(saveInfo, async () => await LoadSave(currentIndex).ConfigureAwait(false));
                 i++;
@@ -250,9 +243,9 @@ namespace Nocturnal.src.services
             await Display.LoadLogo().ConfigureAwait(false);
         }
 
-        public static string GetSex(Genders sex)
+        private static string GetSex(Genders sex)
         {
-            return genderMap.TryGetValue(sex, out var genderKey)
+            return GenderMap.TryGetValue(sex, out var genderKey)
                 ? LocalizationService.GetString(genderKey)
                 : LocalizationService.GetString("SEX.UNDEFINED");
         }
