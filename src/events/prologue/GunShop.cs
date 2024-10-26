@@ -3,162 +3,150 @@ using Nocturnal.entitites;
 using Nocturnal.services;
 using Nocturnal.ui;
 
-namespace Nocturnal.events.prologue
+namespace Nocturnal.events.prologue;
+
+public static class GunShopEvents
 {
-    public static class GunShopEvents
+    ///////////////////////////////////////////////////////////////////////
+    //	ZED'S GUN SHOP
+    ///////////////////////////////////////////////////////////////////////
+
+    public static async Task EnterGunShop()
     {
-        ///////////////////////////////////////////////////////////////////////
-        //	ZED'S GUN SHOP
-        ///////////////////////////////////////////////////////////////////////
+        await Display.WriteNarration($"\n\t{Localizator.GetString("GUN_SHOP.ENTER_01")}");
 
-        public static async Task EnterGunShop()
+        if (!Globals.Npcs["Zed"].IsKnowHero)
         {
-            await Display.WriteNarration($"\n\t{Localizator.GetString("GUN_SHOP.ENTER_01")}");
-
-            if (!Globals.Npcs["Zed"].IsKnowHero)
-            {
-                await Task.Delay(1000);
-                await Display.WriteNarration($" {Localizator.GetString("GUN_SHOP.ENTER_02")}");
-                await Task.Delay(1500);
-                await Display.WriteNarration($" {Localizator.GetString("GUN_SHOP.ENTER_03")}");
-                await Display.WriteDialogue($"\n\t{Localizator.GetString("GUN_SHOP.ENTER_04")}");
-                Globals.Npcs["Zed"].IsKnowHero = true;
-                await DialogueWithZed();
-                return;
-            }
-
             await Task.Delay(1000);
-            await Display.WriteNarration($" {Localizator.GetString("GUN_SHOP.ENTER_05")}");
-
-            if (Globals.Player.HasItem(Globals.Items["Pistol"]))
-                await Display.WriteDialogue($"\n\t{Localizator.GetString("GUN_SHOP.ENTER_06")}");
-
+            await Display.WriteNarration($" {Localizator.GetString("GUN_SHOP.ENTER_02")}");
+            await Task.Delay(1500);
+            await Display.WriteNarration($" {Localizator.GetString("GUN_SHOP.ENTER_03")}");
+            await Display.WriteDialogue($"\n\t{Localizator.GetString("GUN_SHOP.ENTER_04")}");
+            Globals.Npcs["Zed"].IsKnowHero = true;
             await DialogueWithZed();
+            return;
         }
 
-        private static async Task DialogueWithZed()
+        await Task.Delay(1000);
+        await Display.WriteNarration($" {Localizator.GetString("GUN_SHOP.ENTER_05")}");
+
+        if (Globals.Player.HasItem(Globals.Items["Pistol"]))
+            await Display.WriteDialogue($"\n\t{Localizator.GetString("GUN_SHOP.ENTER_06")}");
+
+        await DialogueWithZed();
+    }
+
+    private static async Task DialogueWithZed()
+    {
+        Console.WriteLine();
+
+        InteractiveMenu dialogueWithZedMenu = new();
+        dialogueWithZedMenu.ClearOptions();
+        var options = new MenuOptions()
         {
-            Console.WriteLine();
+            { Localizator.GetString("GUN_SHOP.DIA_ZED_MENU.01"), DialogueWithZed_01 },
+            { Localizator.GetString("GUN_SHOP.DIA_ZED_MENU.02"), DialogueWithZed_02 }
+        };
 
-            InteractiveMenu dialogueWithZedMenu = new();
-            dialogueWithZedMenu.ClearOptions();
-            var options = new MenuOptions()
-            {
-                { Localizator.GetString("GUN_SHOP.DIA_ZED_MENU.01"), DialogueWithZed_01 },
-                { Localizator.GetString("GUN_SHOP.DIA_ZED_MENU.02"), DialogueWithZed_02 }
-            };
+        if (Game.Instance.StoryGlobals.Bob_RecommendsZed && !Game.Instance.StoryGlobals.Zed_KnowsAboutBobAndZed)
+            options.Add(Localizator.GetString("GUN_SHOP.DIA_ZED_MENU.03"), DialogueWithZed_03);
 
-            if (Game.Instance.StoryGlobals.Bob_RecommendsZed && !Game.Instance.StoryGlobals.Zed_KnowsAboutBobAndZed)
-                options.Add(Localizator.GetString("GUN_SHOP.DIA_ZED_MENU.03"), DialogueWithZed_03);
+        if (Globals.Quests["ZedAccelerator"].IsRunning && Globals.Player.HasItem(Globals.Items["AD13"]))
+            options.Add(Localizator.GetString("GUN_SHOP.DIA_ZED_MENU.04"), DialogueWithZed_04);
 
-            if (Globals.Quests["ZedAccelerator"].IsRunning && Globals.Player.HasItem(Globals.Items["AD13"]))
-                options.Add(Localizator.GetString("GUN_SHOP.DIA_ZED_MENU.04"), DialogueWithZed_04);
+        options.Add(Localizator.GetString("GUN_SHOP.DIA_ZED_MENU.05"), DialogueWithZed_05);
+        dialogueWithZedMenu.AddOptions(options);
+        dialogueWithZedMenu.ShowOptions();
+        await dialogueWithZedMenu.InputChoice();
+    }
 
-            options.Add(Localizator.GetString("GUN_SHOP.DIA_ZED_MENU.05"), DialogueWithZed_05);
-            dialogueWithZedMenu.AddOptions(options);
-            dialogueWithZedMenu.ShowOptions();
-            await dialogueWithZedMenu.InputChoice();
-        }
+    private static async Task DialogueWithZed_01() {
+        await ZedTrade();
+    }
 
-        private static async Task DialogueWithZed_01() {
-            await ZedTrade();
-        }
-
-        private static async Task DialogueWithZed_02()
+    private static async Task DialogueWithZed_02()
+    {
+        if (Game.Instance.StoryGlobals.PC_TalkedAboutBusinessWithZed)
+            await Display.WriteDialogue($"\t{Localizator.GetString("GUN_SHOP.DIA_ZED_01")}");
+        else
         {
-            if (Game.Instance.StoryGlobals.PC_TalkedAboutBusinessWithZed)
-                await Display.WriteDialogue($"\t{Localizator.GetString("GUN_SHOP.DIA_ZED_01")}");
-            else
-            {
-                Game.Instance.StoryGlobals.PC_TalkedAboutBusinessWithZed = true;
-                await Display.WriteDialogue($"\t{Localizator.GetString("GUN_SHOP.DIA_ZED_02")}");
-            }
-
-            await DialogueWithZed();
+            Game.Instance.StoryGlobals.PC_TalkedAboutBusinessWithZed = true;
+            await Display.WriteDialogue($"\t{Localizator.GetString("GUN_SHOP.DIA_ZED_02")}");
         }
 
-        private static async Task DialogueWithZed_03()
+        await DialogueWithZed();
+    }
+
+    private static async Task DialogueWithZed_03()
+    {
+        Game.Instance.StoryGlobals.Zed_KnowsAboutBobAndZed = true;
+        await Display.WriteDialogue($"\t{Localizator.GetString("GUN_SHOP.DIA_ZED_03")}");
+        await Task.Delay(1000);
+        await Display.WriteDialogue($" {Localizator.GetString("GUN_SHOP.DIA_ZED_04")}");
+        await Globals.Npcs["Zed"].SetAttitude(Attitudes.Friendly);
+        await DialogueWithZed();
+    }
+
+    private static async Task DialogueWithZed_04()
+    {
+        await ZedGetsAnAccelerator();
+        await DialogueWithZed();
+    }
+
+    private static async Task DialogueWithZed_05()
+    {
+        await Display.WriteDialogue($"\t{Localizator.GetString("GUN_SHOP.DIA_ZED_05")}\n");
+        Console.Clear();
+
+        if (!Globals.Npcs["Caden"].IsKnowHero && !Globals.Npcs["CadensPartner"].IsKnowHero)
+            await StreetEvents.MeetingWithPolicemans();
+        else
+            await Game.Instance.SetCurrentLocation(Globals.Locations["Street"]);
+    }
+
+    private static async Task ZedGetsAnAccelerator()
+    {
+        await Display.WriteDialogue($"\t{Localizator.GetString("GUN_SHOP.DIA_ZED_06")}");
+        await Task.Delay(1000);
+        await Display.WriteDialogue($"\n\t{Localizator.GetString("GUN_SHOP.DIA_ZED_07")}");
+        await Globals.Player.RemoveItem(Globals.Items["AD13"]);
+        Globals.Player.Weapon = (Weapon)Globals.Items["Pistol"];
+        await Globals.Player.AddItem(Globals.Items["Pistol"]);
+
+        await Display.Write($"\n\n\t{Localizator.GetString("ITEM_GIVEN")}");
+        Console.ForegroundColor = ConsoleColor.Blue;
+        await Display.Write(Globals.Items["AD13"].Name!);
+        Console.ResetColor();
+        await Display.Write($"\n\t{Localizator.GetString("ITEM_GAINED")}");
+        Console.ForegroundColor = ConsoleColor.Blue;
+        await Display.Write($"{Globals.Items["Pistol"].Name!}\n\n");
+        Console.ResetColor();
+        await Globals.Player.EndQuest(Globals.Quests["ZedAccelerator"], QuestStatus.Success);
+        await DialogueWithZed();
+    }
+
+    private static async Task ZedTrade()
+    {
+        if (Globals.Player.HasItem(Globals.Items["Pistol"]))
         {
-            Game.Instance.StoryGlobals.Zed_KnowsAboutBobAndZed = true;
-            await Display.WriteDialogue($"\t{Localizator.GetString("GUN_SHOP.DIA_ZED_03")}");
-            await Task.Delay(1000);
-            await Display.WriteDialogue($" {Localizator.GetString("GUN_SHOP.DIA_ZED_04")}");
-            await Globals.Npcs["Zed"].SetAttitude(Attitudes.Friendly);
-            await DialogueWithZed();
-        }
-
-        private static async Task DialogueWithZed_04()
-        {
-            await ZedGetsAnAccelerator();
-            await DialogueWithZed();
-        }
-
-        private static async Task DialogueWithZed_05()
-        {
-            await Display.WriteDialogue($"\t{Localizator.GetString("GUN_SHOP.DIA_ZED_05")}\n");
-            Console.Clear();
-
-            if (!Globals.Npcs["Caden"].IsKnowHero && !Globals.Npcs["CadensPartner"].IsKnowHero)
-                await StreetEvents.MeetingWithPolicemans();
-            else
-                await Game.Instance.SetCurrentLocation(Globals.Locations["Street"]);
-        }
-
-        private static async Task ZedGetsAnAccelerator()
-        {
-            await Display.WriteDialogue($"\t{Localizator.GetString("GUN_SHOP.DIA_ZED_06")}");
-            await Task.Delay(1000);
-            await Display.WriteDialogue($"\n\t{Localizator.GetString("GUN_SHOP.DIA_ZED_07")}");
-            await Globals.Player.RemoveItem(Globals.Items["AD13"]);
-            Globals.Player.Weapon = (Weapon)Globals.Items["Pistol"];
-            await Globals.Player.AddItem(Globals.Items["Pistol"]);
-
-            await Display.Write($"\n\n\t{Localizator.GetString("ITEM_GIVEN")}");
-            Console.ForegroundColor = ConsoleColor.Blue;
-            await Display.Write(Globals.Items["AD13"].Name!);
             Console.ResetColor();
-            await Display.Write($"\n\t{Localizator.GetString("ITEM_GAINED")}");
-            Console.ForegroundColor = ConsoleColor.Blue;
-            await Display.Write($"{Globals.Items["Pistol"].Name!}\n\n");
-            Console.ResetColor();
-            await Globals.Player.EndQuest(Globals.Quests["ZedAccelerator"], QuestStatus.Success);
+            await Display.Write($"\t{Localizator.GetString("GUN_SHOP.DIA_ZED_13")}");
             await DialogueWithZed();
+            return;
         }
 
-        private static async Task ZedTrade()
+        if (!Game.Instance.StoryGlobals.Zed_TellsAboutWeapons)
         {
-            if (Globals.Player.HasItem(Globals.Items["Pistol"]))
-            {
-                Console.ResetColor();
-                await Display.Write($"\t{Localizator.GetString("GUN_SHOP.DIA_ZED_13")}");
-                await DialogueWithZed();
-                return;
-            }
-
-            if (!Game.Instance.StoryGlobals.Zed_TellsAboutWeapons)
-            {
-                Game.Instance.StoryGlobals.Zed_TellsAboutWeapons = true;
-                await Display.WriteDialogue($"\t{Localizator.GetString("GUN_SHOP.DIA_ZED_08")}");
-                await Task.Delay(1000);
-                await Display.WriteDialogue($" {Localizator.GetString("GUN_SHOP.DIA_ZED_09")} ");
-                await Task.Delay(1000);
-                await Display.WriteDialogue($"{Localizator.GetString("GUN_SHOP.DIA_ZED_10")}");
-                await Task.Delay(1500);
-                await Display.WriteDialogue($" {Localizator.GetString("GUN_SHOP.DIA_ZED_11")}");
-                await Task.Delay(1500);
-                await Display.WriteDialogue($" {Localizator.GetString("GUN_SHOP.DIA_ZED_12")}");
-
-                _ = new InteractiveMenu(new MenuOptions
-                {
-                    { Localizator.GetString("GUN_SHOP.BUY_PISTOL_MENU.BUY_IT"), BuyPistol },
-                    { Localizator.GetString("GUN_SHOP.BUY_PISTOL_MENU.MADE_UP_MIND"), ZedTrade_01 }
-                });
-
-                await DialogueWithZed();
-                return;
-            }
-
-            Console.WriteLine();
+            Game.Instance.StoryGlobals.Zed_TellsAboutWeapons = true;
+            await Display.WriteDialogue($"\t{Localizator.GetString("GUN_SHOP.DIA_ZED_08")}");
+            await Task.Delay(1000);
+            await Display.WriteDialogue($" {Localizator.GetString("GUN_SHOP.DIA_ZED_09")} ");
+            await Task.Delay(1000);
+            await Display.WriteDialogue($"{Localizator.GetString("GUN_SHOP.DIA_ZED_10")}");
+            await Task.Delay(1500);
+            await Display.WriteDialogue($" {Localizator.GetString("GUN_SHOP.DIA_ZED_11")}");
+            await Task.Delay(1500);
+            await Display.WriteDialogue($" {Localizator.GetString("GUN_SHOP.DIA_ZED_12")}");
 
             _ = new InteractiveMenu(new MenuOptions
             {
@@ -167,66 +155,77 @@ namespace Nocturnal.events.prologue
             });
 
             await DialogueWithZed();
+            return;
         }
 
-        private static async Task ZedTrade_01()
-        {
-            await Display.WriteNarration($"\t{Localizator.GetString("GUN_SHOP.DIA_ZED_14")}");
-            await Display.WriteDialogue($"\n\t{Localizator.GetString("GUN_SHOP.DIA_ZED_15")}");
-            await DialogueWithZed();
-        }
+        Console.WriteLine();
 
-        private static async Task BuyPistol()
+        _ = new InteractiveMenu(new MenuOptions
         {
-            if (Globals.Player.Money <= 250.0f)
+            { Localizator.GetString("GUN_SHOP.BUY_PISTOL_MENU.BUY_IT"), BuyPistol },
+            { Localizator.GetString("GUN_SHOP.BUY_PISTOL_MENU.MADE_UP_MIND"), ZedTrade_01 }
+        });
+
+        await DialogueWithZed();
+    }
+
+    private static async Task ZedTrade_01()
+    {
+        await Display.WriteNarration($"\t{Localizator.GetString("GUN_SHOP.DIA_ZED_14")}");
+        await Display.WriteDialogue($"\n\t{Localizator.GetString("GUN_SHOP.DIA_ZED_15")}");
+        await DialogueWithZed();
+    }
+
+    private static async Task BuyPistol()
+    {
+        if (Globals.Player.Money <= 250.0f)
+        {
+            await Display.WriteDialogue($"\t{Localizator.GetString("GUN_SHOP.DIA_ZED_16")}");
+            await Task.Delay(1000);
+            await Display.WriteDialogue($" {Localizator.GetString("GUN_SHOP.DIA_ZED_17")}");
+            await Task.Delay(1500);
+
+            if (Game.Instance.StoryGlobals.Zed_KnowsAboutBobAndZed)
             {
-                await Display.WriteDialogue($"\t{Localizator.GetString("GUN_SHOP.DIA_ZED_16")}");
+                await Display.WriteDialogue($" {Localizator.GetString("GUN_SHOP.DIA_ZED_18")}");
                 await Task.Delay(1000);
-                await Display.WriteDialogue($" {Localizator.GetString("GUN_SHOP.DIA_ZED_17")}");
-                await Task.Delay(1500);
+                await Display.WriteDialogue($" {Localizator.GetString("GUN_SHOP.DIA_ZED_19")}");
+                await Globals.Player.AddItem(Globals.Items["Pistol"]);
+                Globals.Player.Weapon = (Weapon)Globals.Items["Pistol"];
 
-                if (Game.Instance.StoryGlobals.Zed_KnowsAboutBobAndZed)
-                {
-                    await Display.WriteDialogue($" {Localizator.GetString("GUN_SHOP.DIA_ZED_18")}");
-                    await Task.Delay(1000);
-                    await Display.WriteDialogue($" {Localizator.GetString("GUN_SHOP.DIA_ZED_19")}");
-                    await Globals.Player.AddItem(Globals.Items["Pistol"]);
-                    Globals.Player.Weapon = (Weapon)Globals.Items["Pistol"];
-
-                    await Display.Write($"\n\n\t{Localizator.GetString("ITEM_GAINED")}");
-                    Console.ForegroundColor = ConsoleColor.Blue;
-                    await Display.Write($"{Globals.Items["Pistol"].Name!}\n\n");
-                    Console.ResetColor();
-                }
-                else
-                {
-                    await Display.WriteDialogue($" {Localizator.GetString("GUN_SHOP.DIA_ZED_20")}");
-                    await Task.Delay(1000);
-                    await Display.WriteDialogue($" {Localizator.GetString("GUN_SHOP.DIA_ZED_21")}");
-                    await Task.Delay(1000);
-                    await Display.WriteDialogue($" {Localizator.GetString("GUN_SHOP.DIA_ZED_22")}");
-                    await Task.Delay(1500);
-                    await Display.WriteDialogue($" {Localizator.GetString("GUN_SHOP.DIA_ZED_23")}");
-                    await Globals.Player.AddQuest(Globals.Quests["ZedAccelerator"]);
-                }
+                await Display.Write($"\n\n\t{Localizator.GetString("ITEM_GAINED")}");
+                Console.ForegroundColor = ConsoleColor.Blue;
+                await Display.Write($"{Globals.Items["Pistol"].Name!}\n\n");
+                Console.ResetColor();
             }
             else
             {
-                await Display.WriteDialogue($"\n\t{Localizator.GetString("GUN_SHOP.DIA_ZED_24")}");
-                await Globals.Player.AddItem(Globals.Items["Pistol"]);
-                Globals.Player.Money -= 250.0f;
-
-                await Display.Write($"\n\n\t{Localizator.GetString("ITEM_BOUGHT")}");
-                Console.ForegroundColor = ConsoleColor.Blue;
-                await Display.Write($"{Globals.Items["Pistol"].Name!}");
-                Console.ResetColor();
+                await Display.WriteDialogue($" {Localizator.GetString("GUN_SHOP.DIA_ZED_20")}");
+                await Task.Delay(1000);
+                await Display.WriteDialogue($" {Localizator.GetString("GUN_SHOP.DIA_ZED_21")}");
+                await Task.Delay(1000);
+                await Display.WriteDialogue($" {Localizator.GetString("GUN_SHOP.DIA_ZED_22")}");
+                await Task.Delay(1500);
+                await Display.WriteDialogue($" {Localizator.GetString("GUN_SHOP.DIA_ZED_23")}");
+                await Globals.Player.AddQuest(Globals.Quests["ZedAccelerator"]);
             }
+        }
+        else
+        {
+            await Display.WriteDialogue($"\n\t{Localizator.GetString("GUN_SHOP.DIA_ZED_24")}");
+            await Globals.Player.AddItem(Globals.Items["Pistol"]);
+            Globals.Player.Money -= 250.0f;
 
-            await DialogueWithZed();
+            await Display.Write($"\n\n\t{Localizator.GetString("ITEM_BOUGHT")}");
+            Console.ForegroundColor = ConsoleColor.Blue;
+            await Display.Write($"{Globals.Items["Pistol"].Name!}");
+            Console.ResetColor();
         }
 
-        public static async Task Crossroads() {
-            await EnterGunShop();
-        }
+        await DialogueWithZed();
+    }
+
+    public static async Task Crossroads() {
+        await EnterGunShop();
     }
 }

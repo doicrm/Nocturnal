@@ -1,7 +1,6 @@
-﻿namespace Nocturnal.interfaces
+﻿namespace Nocturnal.interfaces;
+
+public interface IConfigLoader
 {
-    public interface IConfigLoader
-    {
-        static abstract ValueTask<bool> LoadConfigFile();
-    }
+    static abstract ValueTask<bool> LoadConfigFile();
 }

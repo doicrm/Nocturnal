@@ -1,7 +1,6 @@
-﻿namespace Nocturnal.interfaces
+﻿namespace Nocturnal.interfaces;
+
+public interface ISaveCreator
 {
-    public interface ISaveCreator
-    {
-        static abstract Task CreateSave();
-    }
+    static abstract Task CreateSave();
 }

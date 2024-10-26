@@ -3,118 +3,117 @@ using Nocturnal.core;
 using Nocturnal.events.prologue;
 using Nocturnal.services;
 
-namespace Nocturnal.entitites
+namespace Nocturnal.entitites;
+
+public class Location
 {
-    public class Location
+    public string Id { get; }
+    public string Name { get; }
+    private Fraction? Occupation { get; }
+    public Func<Task>? Events { get; set; }
+    public bool IsVisited { get; set; }
+    public string? EventName { get; private set; }
+    public string? EventType { get; private set; }
+
+    public Location()
     {
-        public string Id { get; set; }
-        public string Name { get; set; }
-        public Fraction? Occupation { get; set; }
-        public Func<Task>? Events { get; set; }
-        public bool IsVisited { get; set; }
-        public string? EventName { get; set; }
-        public string? EventType { get; set; }
+        Id = "";
+        Name = "";
+        Occupation = null;
+        Events = null;
+        IsVisited = false;
+        EventName = "";
+        EventType = "";
+    }
 
-        public Location()
+    private Location(string id, string name, Fraction occupation, Func<Task> events)
+    {
+        Id = id;
+        Name = name;
+        Occupation = occupation;
+        Events = events;
+        IsVisited = false;
+        EventName = "";
+        EventType = "";
+        SetEventNameAndType();
+    }
+
+    public Location(string id, string name, Fraction occupation, Func<Task> events, bool isVisited)
+    {
+        Id = id;
+        Name = name;
+        Occupation = occupation;
+        Events = events;
+        IsVisited = isVisited;
+        EventName = "";
+        EventType = "";
+
+        SetEventNameAndType();
+        SetEvent();
+    }
+
+    private void SetEventNameAndType()
+    {
+        if (Events == null) return;
+
+        var methodInfo = Events.GetMethodInfo();
+
+        EventName = methodInfo.Name;
+        var declaringType = methodInfo.DeclaringType;
+
+        if (declaringType != null) {
+            EventType = $"{declaringType.Namespace}.{declaringType.Name}";
+        }
+    }
+
+    public void SetEvent()
+    {
+        if (string.IsNullOrEmpty(EventType) || string.IsNullOrEmpty(EventName))
         {
-            Id = "";
-            Name = "";
-            Occupation = null;
             Events = null;
-            IsVisited = false;
-            EventName = "";
-            EventType = "";
+            return;
         }
 
-        private Location(string id, string name, Fraction occupation, Func<Task> events)
+        var type = Type.GetType(EventType);
+        if (type == null)
         {
-            Id = id;
-            Name = name;
-            Occupation = occupation;
-            Events = events;
-            IsVisited = false;
-            EventName = "";
-            EventType = "";
-            SetEventNameAndType();
-        }
-
-        public Location(string id, string name, Fraction occupation, Func<Task> events, bool isVisited)
-        {
-            Id = id;
-            Name = name;
-            Occupation = occupation;
-            Events = events;
-            IsVisited = isVisited;
-            EventName = "";
-            EventType = "";
-
-            SetEventNameAndType();
-            SetEvent();
-        }
-
-        private void SetEventNameAndType()
-        {
-            if (Events == null) return;
-
-            var methodInfo = Events.GetMethodInfo();
-
-            EventName = methodInfo.Name;
-            var declaringType = methodInfo.DeclaringType;
-
-            if (declaringType != null) {
-                EventType = $"{declaringType.Namespace}.{declaringType.Name}";
-            }
-        }
-
-        public void SetEvent()
-        {
-            if (string.IsNullOrEmpty(EventType) || string.IsNullOrEmpty(EventName))
-            {
-                Events = null;
-                return;
-            }
-
-            var type = Type.GetType(EventType);
-            if (type == null)
-            {
-                Events = null;
-                return;
-            }
-
-            var methodInfo = type.GetMethod(EventName);
-            if (methodInfo != null)
-            {
-                Events = (Func<Task>)Delegate.CreateDelegate(typeof(Func<Task>), methodInfo);
-                return;
-            }
-
             Events = null;
+            return;
         }
 
-        public static void InsertInstances()
+        var methodInfo = type.GetMethod(EventName);
+        if (methodInfo != null)
         {
-            var locations = new List<Location>
-            {
-                new("DarkAlley", Localizator.GetString("LOCATION.DARK_ALLEY"), null!, PrologueEvents.DarkAlley),
-                new("Street", Localizator.GetString("LOCATION.STREET"), Globals.Fractions["Police"], PrologueEvents.Street),
-                new("GunShop", Localizator.GetString("LOCATION.GUN_SHOP"), Globals.Fractions["Police"], PrologueEvents.GunShop),
-                new("NightclubEden", Localizator.GetString("LOCATION.NIGHTCLUB_EDEN"), Globals.Fractions["Police"], PrologueEvents.NightclubEden)
-            };
-
-            Globals.Locations = locations.ToDictionary(location => location.Id);
+            Events = (Func<Task>)Delegate.CreateDelegate(typeof(Func<Task>), methodInfo);
+            return;
         }
 
-        public dynamic ToJson()
+        Events = null;
+    }
+
+    public static void InsertInstances()
+    {
+        var locations = new List<Location>
         {
-            return new
-            {
-                ID = Id,
-                Name,
-                Occupation,
-                IsVisited,
-                EventName,
-                EventType
-            };
-        }
+            new("DarkAlley", Localizator.GetString("LOCATION.DARK_ALLEY"), null!, PrologueEvents.DarkAlley),
+            new("Street", Localizator.GetString("LOCATION.STREET"), Globals.Fractions["Police"], PrologueEvents.Street),
+            new("GunShop", Localizator.GetString("LOCATION.GUN_SHOP"), Globals.Fractions["Police"], PrologueEvents.GunShop),
+            new("NightclubEden", Localizator.GetString("LOCATION.NIGHTCLUB_EDEN"), Globals.Fractions["Police"], PrologueEvents.NightclubEden)
+        };
+
+        Globals.Locations = locations.ToDictionary(location => location.Id);
+    }
+
+    public dynamic ToJson()
+    {
+        return new
+        {
+            ID = Id,
+            Name,
+            Occupation,
+            IsVisited,
+            EventName,
+            EventType
+        };
     }
 }

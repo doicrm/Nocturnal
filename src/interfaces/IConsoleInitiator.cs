@@ -1,7 +1,6 @@
-﻿namespace Nocturnal.interfaces
+﻿namespace Nocturnal.interfaces;
+
+public interface IConsoleInitiator
 {
-    public interface IConsoleInitiator
-    {
-        static abstract void InitConsole();
-    }
+    static abstract void InitConsole();
 }

@@ -1,7 +1,6 @@
-﻿namespace Nocturnal.interfaces
+﻿namespace Nocturnal.interfaces;
+
+public interface ISaveLoader
 {
-    public interface ISaveLoader
-    {
-        static abstract Task LoadSave(uint nr);
-    }
+    static abstract Task LoadSave(uint nr);
 }

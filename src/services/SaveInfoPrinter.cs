@@ -1,29 +1,29 @@
 ﻿using Nocturnal.entitites;
 
-namespace Nocturnal.services
+namespace Nocturnal.services;
+
+public static class SaveInfoPrinter
 {
-    public static class SaveInfoPrinter
+    public static string GetName(string name) {
+        return !string.IsNullOrEmpty(name) ? name : Localizator.GetString("UNKNOWN");
+    }
+
+    public static string GetChapterToString(uint chapter)
     {
-        public static string GetName(string name)
+        return chapter switch
         {
-            return !string.IsNullOrEmpty(name) ? name : Localizator.GetString("UNKNOWN");
-        }
+            0 => Localizator.GetString("PROLOGUE"),
+            >= 1 and <= 3 => $"{Localizator.GetString("CHAPTER")} {chapter}",
+            _ => Localizator.GetString("EPILOGUE")
+        };
+    }
 
-        public static string GetChapterToString(uint chapter)
-        {
-            return chapter switch
-            {
-                0 => Localizator.GetString("PROLOGUE"),
-                >= 1 and <= 3 => $"{Localizator.GetString("CHAPTER")} {chapter}",
-                _ => Localizator.GetString("EPILOGUE")
-            };
-        }
-
-        public static string GetLocationName(Location location)
-        {
-            return SaveService.LocationNames.TryGetValue(location.Id, out var locationKey)
-                ? $": {Localizator.GetString(locationKey)}"
-                : string.Empty;
-        }
+    public static string GetLocationName(Location location)
+    {
+        var locationKey = "LOCATION." + 
+                          string.Concat(location.Id.Select(c => char.IsUpper(c) ? "_" + c : c.ToString()))
+                              .TrimStart('_')
+                              .ToUpper();
+        return $": {Localizator.GetString(locationKey)}";
     }
 }

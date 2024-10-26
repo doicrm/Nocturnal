@@ -1,7 +1,6 @@
-﻿namespace Nocturnal.interfaces
+﻿namespace Nocturnal.interfaces;
+
+public interface ISaveUpdater
 {
-    public interface ISaveUpdater
-    {
-        static abstract Task UpdateSave();
-    }
+    static abstract Task UpdateSave();
 }

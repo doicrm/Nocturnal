@@ -1,7 +1,6 @@
-﻿namespace Nocturnal.interfaces
+﻿namespace Nocturnal.interfaces;
+
+public interface ISaveFinder
 {
-    public interface ISaveFinder
-    {
-        static abstract Task FindSaves();
-    }
+    static abstract Task FindSaves();
 }
