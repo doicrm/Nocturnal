@@ -95,10 +95,10 @@ namespace Nocturnal.entitites
         {
             var locations = new List<Location>
             {
-                new("DarkAlley", LocalizationService.GetString("LOCATION.DARK_ALLEY"), null!, PrologueEvents.DarkAlley),
-                new("Street", LocalizationService.GetString("LOCATION.STREET"), Globals.Fractions["Police"], PrologueEvents.Street),
-                new("GunShop", LocalizationService.GetString("LOCATION.GUN_SHOP"), Globals.Fractions["Police"], PrologueEvents.GunShop),
-                new("NightclubEden", LocalizationService.GetString("LOCATION.NIGHTCLUB_EDEN"), Globals.Fractions["Police"], PrologueEvents.NightclubEden)
+                new("DarkAlley", Localizator.GetString("LOCATION.DARK_ALLEY"), null!, PrologueEvents.DarkAlley),
+                new("Street", Localizator.GetString("LOCATION.STREET"), Globals.Fractions["Police"], PrologueEvents.Street),
+                new("GunShop", Localizator.GetString("LOCATION.GUN_SHOP"), Globals.Fractions["Police"], PrologueEvents.GunShop),
+                new("NightclubEden", Localizator.GetString("LOCATION.NIGHTCLUB_EDEN"), Globals.Fractions["Police"], PrologueEvents.NightclubEden)
             };
 
             Globals.Locations = locations.ToDictionary(location => location.Id);

@@ -10,9 +10,9 @@ namespace Nocturnal.events.prologue
         public static async Task Prologue()
         {
             Globals.Chapter = 0;
-            await Display.Write($"\n\t{LocalizationService.GetString("PROLOGUE")}");
+            await Display.Write($"\n\t{Localizator.GetString("PROLOGUE")}");
             await Task.Delay(2000);
-            await Display.Write($"\n\n\t{LocalizationService.GetString("PARADISE_LOST")}");
+            await Display.Write($"\n\n\t{Localizator.GetString("PARADISE_LOST")}");
             await Task.Delay(5000);
             Console.Clear();
             await Intro();
@@ -20,18 +20,18 @@ namespace Nocturnal.events.prologue
 
         private static async Task Intro()
         {
-            await Display.Write($"\n\t{LocalizationService.GetString("INTRO_01")}");
+            await Display.Write($"\n\t{Localizator.GetString("INTRO_01")}");
             await Task.Delay(1000);
-            await Display.Write($" {LocalizationService.GetString("INTRO_02")}\n\n", 20);
+            await Display.Write($" {Localizator.GetString("INTRO_02")}\n\n", 20);
             await Game.Pause();
             Console.Clear();
             Console.WriteLine();
             await Task.Delay(2500);
-            await Display.WriteNarration($"{LocalizationService.GetString("INTRO_03")}\n", 75);
+            await Display.WriteNarration($"{Localizator.GetString("INTRO_03")}\n", 75);
             await Task.Delay(2500);
-            await Display.WriteNarration($"{LocalizationService.GetString("INTRO_04")}\n", 75);
+            await Display.WriteNarration($"{Localizator.GetString("INTRO_04")}\n", 75);
             await Task.Delay(2500);
-            await Display.WriteNarration($"{LocalizationService.GetString("INTRO_05")}", 75);
+            await Display.WriteNarration($"{Localizator.GetString("INTRO_05")}", 75);
             await Task.Delay(3000);
             Console.Clear();
 
@@ -116,7 +116,7 @@ namespace Nocturnal.events.prologue
 
         public static async Task VisitGunShop()
         {
-            await Display.WriteNarration($"\n\t{LocalizationService.GetString("NIGHTCLUB_EDEN.VISIT_CLUB")}");
+            await Display.WriteNarration($"\n\t{Localizator.GetString("NIGHTCLUB_EDEN.VISIT_CLUB")}");
             await Game.Instance.SetCurrentLocation(Globals.Locations["GunShop"]);
         }
     }

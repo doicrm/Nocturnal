@@ -64,17 +64,17 @@ namespace Nocturnal.entitites
 
             if (Items.Count <= 0)
             {
-                sb.AppendLine(LocalizationService.GetString("INVENTORY.NO_ITEMS"));
+                sb.AppendLine(Localizator.GetString("INVENTORY.NO_ITEMS"));
                 await File.WriteAllTextAsync(path, sb.ToString());
                 return;
             }
 
             foreach (var item in Items)
             {
-                sb.AppendLine($"{LocalizationService.GetString("NAME")}: {item.Name}");
-                sb.AppendLine($"{LocalizationService.GetString("TYPE")}: {item.Type}");
-                sb.AppendLine($"{LocalizationService.GetString("DESCRIPTION")}: {item.Description}");
-                sb.AppendLine($"{LocalizationService.GetString("VALUE")}: {item.Value}$");
+                sb.AppendLine($"{Localizator.GetString("NAME")}: {item.Name}");
+                sb.AppendLine($"{Localizator.GetString("TYPE")}: {item.Type}");
+                sb.AppendLine($"{Localizator.GetString("DESCRIPTION")}: {item.Description}");
+                sb.AppendLine($"{Localizator.GetString("VALUE")}: {item.Value}$");
                 sb.AppendLine("...........................................................................");
             }
 
@@ -84,13 +84,11 @@ namespace Nocturnal.entitites
 
     internal class ItemEqualityComparer : IEqualityComparer<Item>
     {
-        public bool Equals(Item? item1, Item? item2)
-        {
+        public bool Equals(Item? item1, Item? item2) {
             return item1?.Id == item2?.Id && item1?.Name == item2?.Name;
         }
 
-        public int GetHashCode(Item item)
-        {
+        public int GetHashCode(Item item) {
             return HashCode.Combine(item.Id, item.Name);
         }
     }

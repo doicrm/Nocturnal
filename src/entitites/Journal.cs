@@ -39,7 +39,7 @@ namespace Nocturnal.entitites
 
             if (IsEmpty())
             {
-                sb.AppendLine(LocalizationService.GetString("JOURNAL.NO_QUESTS"));
+                sb.AppendLine(Localizator.GetString("JOURNAL.NO_QUESTS"));
                 await File.WriteAllTextAsync(path, sb.ToString());
                 return;
             }

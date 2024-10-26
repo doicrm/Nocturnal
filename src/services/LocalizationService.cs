@@ -1,7 +1,6 @@
 ﻿using Nocturnal.core;
 using Nocturnal.ui;
 using Spectre.Console;
-using static Nocturnal.services.JsonService;
 
 namespace Nocturnal.services
 {
@@ -50,10 +49,5 @@ namespace Nocturnal.services
 
         public static void InitLocalizationStrings(Dictionary<string, string> localizationStringsDictionary)
             => LocalizationStrings = localizationStringsDictionary;
-
-        public static string GetString(string stringName)
-        {
-            return GetJsonStringAsync(stringName).ConfigureAwait(false).GetAwaiter().GetResult();
-        }
     }
 }

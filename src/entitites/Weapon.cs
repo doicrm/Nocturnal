@@ -24,12 +24,12 @@ namespace Nocturnal.entitites
         {
             var sb = new StringBuilder();
 
-            sb.AppendLine($"{LocalizationService.GetString("NAME")}: {Name}");
-            sb.AppendLine($"{LocalizationService.GetString("DESCRIPTION")}: {Description}");
-            sb.AppendLine($"{LocalizationService.GetString("DAMAGE_MIN")}: {DamageMin}");
-            sb.AppendLine($"{LocalizationService.GetString("DAMAGE_MAX")}: {DamageMax}");
-            sb.AppendLine($"{LocalizationService.GetString("TYPE")}: {Type}");
-            sb.AppendLine($"{LocalizationService.GetString("VALUE")}: {Value}");
+            sb.AppendLine($"{Localizator.GetString("NAME")}: {Name}");
+            sb.AppendLine($"{Localizator.GetString("DESCRIPTION")}: {Description}");
+            sb.AppendLine($"{Localizator.GetString("DAMAGE_MIN")}: {DamageMin}");
+            sb.AppendLine($"{Localizator.GetString("DAMAGE_MAX")}: {DamageMax}");
+            sb.AppendLine($"{Localizator.GetString("TYPE")}: {Type}");
+            sb.AppendLine($"{Localizator.GetString("VALUE")}: {Value}");
 
             return sb.ToString();
         }
@@ -37,7 +37,7 @@ namespace Nocturnal.entitites
         public new static void InsertInstances()
         {
             var weapons = new[] {
-                new Weapon("Pistol", LocalizationService.GetString("WEAPON.PISTOL.NAME"), LocalizationService.GetString("WEAPON.PISTOL.DESCRIPTION"), 10, 15, 250)
+                new Weapon("Pistol", Localizator.GetString("WEAPON.PISTOL.NAME"), Localizator.GetString("WEAPON.PISTOL.DESCRIPTION"), 10, 15, 250)
             };
 
             foreach (var weapon in weapons) {

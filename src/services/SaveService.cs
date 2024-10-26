@@ -231,14 +231,14 @@ namespace Nocturnal.services
                 i++;
             }
 
-            options.Add(LocalizationService.GetString("BACK_TO_MAIN_MENU"), Display.LoadLogo);
+            options.Add(Localizator.GetString("BACK_TO_MAIN_MENU"), Display.LoadLogo);
             return options;
         }
 
         private static async Task NoSavesFound()
         {
             Console.ForegroundColor = ConsoleColor.Gray;
-            Console.WriteLine($"\n\n\t{LocalizationService.GetString("LOAD_GAME.NO_SAVES_FOUND")}");
+            Console.WriteLine($"\n\n\t{Localizator.GetString("LOAD_GAME.NO_SAVES_FOUND")}");
             await Task.Delay(2000).ConfigureAwait(false);
             await Display.LoadLogo().ConfigureAwait(false);
         }
@@ -246,8 +246,8 @@ namespace Nocturnal.services
         private static string GetSex(Genders sex)
         {
             return GenderMap.TryGetValue(sex, out var genderKey)
-                ? LocalizationService.GetString(genderKey)
-                : LocalizationService.GetString("SEX.UNDEFINED");
+                ? Localizator.GetString(genderKey)
+                : Localizator.GetString("SEX.UNDEFINED");
         }
     }
 }

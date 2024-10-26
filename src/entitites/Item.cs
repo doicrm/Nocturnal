@@ -24,16 +24,16 @@ namespace Nocturnal.entitites
         }
 
         protected Item() {
-            throw new NotImplementedException();
+            // TODO!!!
         }
 
         public virtual string PrintInfo()
         {
             var sb = new StringBuilder();
-            sb.AppendLine($"{LocalizationService.GetString("NAME")}: {Name}");
-            sb.AppendLine($"{LocalizationService.GetString("DESCRIPTION")}: {Description}");
-            sb.AppendLine($"{LocalizationService.GetString("TYPE")}: {Type}");
-            sb.AppendLine($"{LocalizationService.GetString("VALUE")}: {Value}");
+            sb.AppendLine($"{Localizator.GetString("NAME")}: {Name}");
+            sb.AppendLine($"{Localizator.GetString("DESCRIPTION")}: {Description}");
+            sb.AppendLine($"{Localizator.GetString("TYPE")}: {Type}");
+            sb.AppendLine($"{Localizator.GetString("VALUE")}: {Value}");
 
             return sb.ToString();
         }
@@ -42,8 +42,8 @@ namespace Nocturnal.entitites
         {
             var items = new[]
             {
-                new Item("AD13", LocalizationService.GetString("ITEM.AD13.NAME"), ItemType.Quest, LocalizationService.GetString("ITEM.AD13.DESCRIPTION"), 50),
-                new Item("AccessCard", LocalizationService.GetString("ITEM.ACCESS_CARD.NAME"), ItemType.Misc, LocalizationService.GetString("ITEM.ACCESS_CARD.DESCRIPTION"), 0)
+                new Item("AD13", Localizator.GetString("ITEM.AD13.NAME"), ItemType.Quest, Localizator.GetString("ITEM.AD13.DESCRIPTION"), 50),
+                new Item("AccessCard", Localizator.GetString("ITEM.ACCESS_CARD.NAME"), ItemType.Misc, Localizator.GetString("ITEM.ACCESS_CARD.DESCRIPTION"), 0)
             };
 
             Globals.Items = items.ToDictionary(item => item.Id);

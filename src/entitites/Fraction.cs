@@ -35,10 +35,10 @@ namespace Nocturnal.entitites
         {
             return Attitude switch
             {
-                Attitudes.Angry => LocalizationService.GetString("ATTITUDE.ANGRY").ToLower(),
-                Attitudes.Hostile => LocalizationService.GetString("ATTITUDE.HOSTILE").ToLower(),
-                Attitudes.Friendly => LocalizationService.GetString("ATTITUDE.FRIENDLY").ToLower(),
-                _ => LocalizationService.GetString("ATTITUDE.NEUTRAL").ToLower()
+                Attitudes.Angry => Localizator.GetString("ATTITUDE.ANGRY").ToLower(),
+                Attitudes.Hostile => Localizator.GetString("ATTITUDE.HOSTILE").ToLower(),
+                Attitudes.Friendly => Localizator.GetString("ATTITUDE.FRIENDLY").ToLower(),
+                _ => Localizator.GetString("ATTITUDE.NEUTRAL").ToLower()
             };
         }
 
@@ -46,9 +46,9 @@ namespace Nocturnal.entitites
         {
             var fractions = new[]
             {
-                new Fraction("Beggars", LocalizationService.GetString("FRACTION.BEGGARS"), 0, Attitudes.Neutral),
-                new Fraction("Police", LocalizationService.GetString("FRACTION.POLICE"), 0, Attitudes.Neutral),
-                new Fraction("Hammers", LocalizationService.GetString("FRACTION.HAMMERS"), 0, Attitudes.Neutral)
+                new Fraction("Beggars", Localizator.GetString("FRACTION.BEGGARS"), 0, Attitudes.Neutral),
+                new Fraction("Police", Localizator.GetString("FRACTION.POLICE"), 0, Attitudes.Neutral),
+                new Fraction("Hammers", Localizator.GetString("FRACTION.HAMMERS"), 0, Attitudes.Neutral)
             };
 
             Globals.Fractions = fractions.ToDictionary(fraction => fraction.Id);
