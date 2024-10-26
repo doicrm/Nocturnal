@@ -7,8 +7,8 @@ public abstract class GameDataService
 {
     public static async Task InitAll()
     {
-        await InitHeroInventory().ConfigureAwait(false);
-        await InitHeroJournal().ConfigureAwait(false);
+        await InitHeroInventory();
+        await InitHeroJournal();
         InsertInstances();
     }
 
@@ -27,11 +27,11 @@ public abstract class GameDataService
 
         if (inventory != null && !inventory.IsEmpty())
         {
-            await inventory.UpdateFile().ConfigureAwait(false);
+            await inventory.UpdateFile();
             return;
         }
 
-        await WriteToFile("Inventory.txt", Localizator.GetString("INVENTORY.NO_ITEMS")).ConfigureAwait(false);
+        await WriteToFile("Inventory.txt", Localizator.GetString("INVENTORY.NO_ITEMS"));
     }
 
     public static async Task InitHeroJournal()
@@ -44,12 +44,12 @@ public abstract class GameDataService
             return;
         }
 
-        await WriteToFile("Journal.txt", Localizator.GetString("JOURNAL.NO_QUESTS")).ConfigureAwait(false);
+        await WriteToFile("Journal.txt", Localizator.GetString("JOURNAL.NO_QUESTS"));
     }
 
     private static async Task WriteToFile(string fileName, string content)
     {
         var path = Path.Combine(Directory.GetCurrentDirectory(), fileName);
-        await File.WriteAllTextAsync(path, content).ConfigureAwait(false);
+        await File.WriteAllTextAsync(path, content);
     }
 }

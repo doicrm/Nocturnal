@@ -15,8 +15,7 @@ public static class Logger
         await File.AppendAllTextAsync(logPath, logMessage + Environment.NewLine);
     }
 
-    public static async Task WriteStartFunctionLog([CallerMemberName] string funcName = "")
-    {
+    public static async Task WriteStartFunctionLog([CallerMemberName] string funcName = "") {
         await WriteLog($"Function {funcName} started");
     }
 

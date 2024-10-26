@@ -54,8 +54,7 @@ public class InteractiveMenu
         Console.ResetColor();
         Console.WriteLine();
 
-        foreach (var option in Options)
-        {
+        foreach (var option in Options) {
             ActionOption(option.Key, option.Value.Key);
         }
     }
@@ -114,9 +113,8 @@ public class InteractiveMenu
 
         Choice++;
 
-        if (Options.ContainsKey(Choice))
-        {
-            await ExecuteSelectedAction().ConfigureAwait(false);
+        if (Options.ContainsKey(Choice)) {
+            await ExecuteSelectedAction();
         }
     }
 
@@ -124,6 +122,6 @@ public class InteractiveMenu
     {
         Console.Clear();
         ShowHeroChoice();
-        await Options[Choice].Value().ConfigureAwait(false);
+        await Options[Choice].Value();
     }
 }

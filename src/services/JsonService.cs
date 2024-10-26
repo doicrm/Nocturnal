@@ -13,7 +13,7 @@ public abstract class JsonService
         try
         {
             var path = GetLocalizationFilePath(lang);
-            var jsonString = await File.ReadAllTextAsync(path).ConfigureAwait(false);
+            var jsonString = await File.ReadAllTextAsync(path);
 
             var localizationStrings = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonString) ?? [];
 
@@ -23,7 +23,7 @@ public abstract class JsonService
         }
         catch (Exception ex)
         {
-            await Logger.WriteLog($"Error loading localization file: {ex.Message}").ConfigureAwait(false);
+            await Logger.WriteLog($"Error loading localization file: {ex.Message}");
             return false;
         }
     }
@@ -38,9 +38,9 @@ public abstract class JsonService
 
     public static async ValueTask<string> GetJsonStringAsync(string stringName)
     {
-        if (LocalizationService.LocalizationStrings.TryGetValue(stringName, out string? value))
-            return value?.ToString() ?? string.Empty;
-        await Logger.WriteLog($"Key '{stringName}' not found in LocalizationStrings.").ConfigureAwait(false);
+        if (LocalizationService.LocalizationStrings.TryGetValue(stringName, out var value))
+            return value;
+        await Logger.WriteLog($"Key '{stringName}' not found in LocalizationStrings.");
         return string.Empty;
     }
 
@@ -65,20 +65,17 @@ public abstract class JsonService
 
             foreach (var location in locations)
             {
-                if (location.Value?.EventType == null || location.Value?.EventName == null)
-                {
+                if (location.Value?.EventType == null || location.Value?.EventName == null) {
                     continue;
                 }
 
                 Type? type = Type.GetType(location.Value.EventType);
-                if (type == null)
-                {
+                if (type == null) {
                     continue;
                 }
 
                 MethodInfo? method = type.GetMethod(location.Value.EventName, BindingFlags.Static | BindingFlags.Public);
-                if (method == null)
-                {
+                if (method == null) {
                     continue;
                 }
 
@@ -88,38 +85,34 @@ public abstract class JsonService
             }
 
             return tempLocations;
-        }).ConfigureAwait(false);
+        });
     }
 
     public static async ValueTask<Location> LocationFromJson(Location loc)
     {
         return await Task.Run(() =>
         {
-            if (string.IsNullOrEmpty(loc.EventType) || string.IsNullOrEmpty(loc.EventName))
-            {
+            if (string.IsNullOrEmpty(loc.EventType) || string.IsNullOrEmpty(loc.EventName)) {
                 return loc;
             }
 
             Console.WriteLine($"{loc.EventType}.{loc.EventName}");
 
             var type = Type.GetType(loc.EventType);
-            if (type == null)
-            {
+            if (type == null) {
                 return loc;
             }
 
             var method = type.GetMethod(loc.EventName, BindingFlags.Static | BindingFlags.Public);
-            if (method == null)
-            {
+            if (method == null) {
                 return loc;
             }
 
-            if (Delegate.CreateDelegate(typeof(Func<Task>), method) is Func<Task> eventFunc)
-            {
+            if (Delegate.CreateDelegate(typeof(Func<Task>), method) is Func<Task> eventFunc) {
                 loc.Events = eventFunc;
             }
 
             return loc;
-        }).ConfigureAwait(false);
+        });
     }
 }

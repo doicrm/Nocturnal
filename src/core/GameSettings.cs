@@ -2,7 +2,7 @@
 
 public class GameSettings
 {
-    private GameLanguage Language { get; set; } = new();
+    private GameLanguage Language { get; } = new();
 
     public GameLanguages GetLanguage() {
         return Language.GetLanguage();

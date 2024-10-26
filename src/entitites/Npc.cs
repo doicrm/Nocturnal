@@ -11,8 +11,8 @@ public class Npc
 {
     protected string Id { get; init; }
     public string Name { get; set; }
-    public Genders Sex { get; set; }
-    protected Attributes Attributes { get; set; }
+    public Genders Sex { get; }
+    protected Attributes Attributes { get; }
     public Fraction? Fraction { get; set; }
     public Attitudes Attitude { get; private set; }
     public NpcStatus Status { get; set; }
@@ -67,9 +67,7 @@ public class Npc
             if (attributeValue == null) return;
             var newValue = attributeValue.Value + value;
             property.SetValue(Attributes, newValue);
-        }
-        else
-        {
+        } else {
             Console.WriteLine("Invalid attribute name.");
         }
     }

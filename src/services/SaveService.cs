@@ -56,7 +56,7 @@ public abstract class SaveService : ISaveCreator, ISaveLoader, ISaveUpdater, ISa
                     TimeFormatter.GetFormattedTimestamp(),
                     Globals.Player,
                     Globals.Npcs,
-                    await JsonService.LocationsToJson().ConfigureAwait(false),
+                    await JsonService.LocationsToJson(),
                     Globals.Fractions,
                     Globals.Quests,
                     Globals.Chapter,
@@ -66,7 +66,7 @@ public abstract class SaveService : ISaveCreator, ISaveLoader, ISaveUpdater, ISa
                 );
 
                 var serializedObject = JsonConvert.SerializeObject(save, Formatting.Indented);
-                await newSave.WriteAsync(serializedObject).ConfigureAwait(false);
+                await newSave.WriteAsync(serializedObject);
                 break;
             }
             catch (Exception ex)
@@ -84,27 +84,26 @@ public abstract class SaveService : ISaveCreator, ISaveLoader, ISaveUpdater, ISa
 
         if (!File.Exists(path))
         {
-            await Display.LoadLogo().ConfigureAwait(false);
+            await Display.LoadLogo();
             return;
         }
 
         try
         {
-            var content = await File.ReadAllTextAsync(path).ConfigureAwait(false);
+            var content = await File.ReadAllTextAsync(path);
             var saveInfo = JsonConvert.DeserializeObject<SaveData>(content)!;
             _currentSaveNr = nr;
 
             Globals.UpdateGlobalsFromSave(saveInfo);
             var currentLocation = DetermineCurrentLocation(saveInfo);
 
-            await GameDataService.InitHeroInventory().ConfigureAwait(false);
-            await GameDataService.InitHeroJournal().ConfigureAwait(false);
+            await GameDataService.InitHeroInventory();
+            await GameDataService.InitHeroJournal();
             Console.Clear();
 
-            await Game.Instance.SetCurrentLocation(Globals.Locations[currentLocation.Id]).ConfigureAwait(false);
+            await Game.Instance.SetCurrentLocation(Globals.Locations[currentLocation.Id]);
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             Console.WriteLine($"Failed to load save file: {ex.Message}");
         }
     }
@@ -153,8 +152,7 @@ public abstract class SaveService : ISaveCreator, ISaveLoader, ISaveUpdater, ISa
             var serializedObject = JsonConvert.SerializeObject(save, Formatting.Indented);
             await File.WriteAllTextAsync(path, serializedObject);
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             Console.WriteLine($"An error occurred during a save update: {ex.Message}");
         }
     }
@@ -192,7 +190,7 @@ public abstract class SaveService : ISaveCreator, ISaveLoader, ISaveUpdater, ISa
 
         if (!Directory.Exists(path))
         {
-            await NoSavesFound().ConfigureAwait(false);
+            await NoSavesFound();
             return;
         }
 
@@ -201,11 +199,11 @@ public abstract class SaveService : ISaveCreator, ISaveLoader, ISaveUpdater, ISa
         var enumerable = files.ToList();
         if (enumerable.Count == 0)
         {
-            await NoSavesFound().ConfigureAwait(false);
+            await NoSavesFound();
             return;
         }
 
-        _ = new InteractiveMenu(await CreateSaveOptions(enumerable).ConfigureAwait(false));
+        _ = new InteractiveMenu(await CreateSaveOptions(enumerable));
     }
 
     private static async Task<MenuOptions> CreateSaveOptions(IEnumerable<string> files)
@@ -216,8 +214,8 @@ public abstract class SaveService : ISaveCreator, ISaveLoader, ISaveUpdater, ISa
         foreach (var file in files)
         {
             var currentIndex = i;
-            var saveInfo = await LoadSaveInfo(file).ConfigureAwait(false);
-            options.Add(saveInfo, async () => await LoadSave(currentIndex).ConfigureAwait(false));
+            var saveInfo = await LoadSaveInfo(file);
+            options.Add(saveInfo, async () => await LoadSave(currentIndex));
             i++;
         }
 
@@ -229,8 +227,8 @@ public abstract class SaveService : ISaveCreator, ISaveLoader, ISaveUpdater, ISa
     {
         Console.ForegroundColor = ConsoleColor.Gray;
         Console.WriteLine($"\n\n\t{Localizator.GetString("LOAD_GAME.NO_SAVES_FOUND")}");
-        await Task.Delay(2000).ConfigureAwait(false);
-        await Display.LoadLogo().ConfigureAwait(false);
+        await Task.Delay(2000);
+        await Display.LoadLogo();
     }
 
     private static string GetSex(Genders sex)

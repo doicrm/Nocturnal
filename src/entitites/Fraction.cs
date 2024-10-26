@@ -7,7 +7,7 @@ namespace Nocturnal.entitites
 
     public class Fraction
     {
-        private string Id { get; set; }
+        private string Id { get; }
         public string Name { get; set; }
         private uint HeroReputation { get; set; }
         private Attitudes Attitude { get; set; }

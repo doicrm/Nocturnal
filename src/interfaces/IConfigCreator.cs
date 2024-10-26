@@ -1,6 +1,5 @@
 ﻿namespace Nocturnal.interfaces;
 
-public interface IConfigCreator
-{
+public interface IConfigCreator {
     static abstract Task CreateConfigFile();
 }

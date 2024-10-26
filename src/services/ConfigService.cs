@@ -41,11 +41,11 @@ public abstract class ConfigService : IConfigCreator, IConfigLoader
         }
         catch (JsonException jsonEx)
         {
-            await Logger.WriteLog($"JSON Error: {jsonEx.Message}").ConfigureAwait(false);
+            await Logger.WriteLog($"JSON Error: {jsonEx.Message}");
         }
         catch (Exception ex)
         {
-            await Logger.WriteLog($"Error writing config file: {ex.Message}").ConfigureAwait(false);
+            await Logger.WriteLog($"Error writing config file: {ex.Message}");
         }
     }
 
@@ -55,7 +55,7 @@ public abstract class ConfigService : IConfigCreator, IConfigLoader
 
         if (!File.Exists(path))
         {
-            await CreateConfigFile().ConfigureAwait(false);
+            await CreateConfigFile();
         }
         else
         {
@@ -82,6 +82,6 @@ public abstract class ConfigService : IConfigCreator, IConfigLoader
             }
         }
 
-        return await JsonService.LoadAndParseLocalizationFile(Game.Instance.Settings.GetLanguage()).ConfigureAwait(false);
+        return await JsonService.LoadAndParseLocalizationFile(Game.Instance.Settings.GetLanguage());
     }
 }

@@ -43,6 +43,6 @@ public static class Display
         foreach (var s in Constants.GameLogo)
             Console.Write(s);
         Console.ResetColor();
-        await Game.Instance.MainMenu().ConfigureAwait(false);
+        await Game.Instance.MainMenu();
     }
 }

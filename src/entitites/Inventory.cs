@@ -29,8 +29,7 @@ public class Inventory
     {
         if (IsEmpty()) return;
 
-        foreach (var item in Items)
-        {
+        foreach (var item in Items) {
             Console.WriteLine(item.Name);
         }
     }
@@ -49,8 +48,7 @@ public class Inventory
         await SaveService.UpdateSave();
     }
 
-    public bool HasItem(Item item)
-    {
+    public bool HasItem(Item item) {
         return Items.Contains(item, new ItemEqualityComparer());
     }
 

@@ -7,10 +7,8 @@ public static class Input
     public static async ValueTask<int> GetChoice()
     {
         await Display.Write("\t> ", 25);
-
         var input = await Task.Run(() => Console.ReadLine()?.Trim() ?? string.Empty);
         var result = int.TryParse(input, out var choice);
-
         return result ? choice : -1;
     }
 

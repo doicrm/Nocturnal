@@ -19,7 +19,7 @@ public class Menu
     }
 
     private static async Task ActionOption(int nr, string text, int speed = 25)
-        => await Display.Write($"\n\t[{nr}] {text}", speed).ConfigureAwait(false);
+        => await Display.Write($"\n\t[{nr}] {text}", speed);
 
     private void ShowHeroChoice()
     {
@@ -51,9 +51,8 @@ public class Menu
         Console.ResetColor();
         Console.WriteLine();
 
-        foreach (var option in Options)
-        {
-            await ActionOption(option.Key, option.Value.Key, seconds).ConfigureAwait(false);
+        foreach (var option in Options) {
+            await ActionOption(option.Key, option.Value.Key, seconds);
         }
     }
 
@@ -62,10 +61,10 @@ public class Menu
         Console.WriteLine();
         while (true)
         {
-            Choice = await Input.GetChoice().ConfigureAwait(false);
+            Choice = await Input.GetChoice();
             if (Options.ContainsKey(Choice))
             {
-                await ExecuteSelectedAction().ConfigureAwait(false);
+                await ExecuteSelectedAction();
                 break;
             }
             Console.WriteLine("Invalid choice. Please select a valid option.");
@@ -74,7 +73,7 @@ public class Menu
 
     public async ValueTask<int> GetInputChoice()
     {
-        Choice = await Input.GetChoice().ConfigureAwait(false);
+        Choice = await Input.GetChoice();
         return Choice;
     }
 
@@ -83,6 +82,6 @@ public class Menu
         var selectedAction = Options[Choice].Value;
         Console.Clear();
         ShowHeroChoice();
-        await selectedAction().ConfigureAwait(false);
+        await selectedAction();
     }
 }
