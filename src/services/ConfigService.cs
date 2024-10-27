@@ -13,11 +13,11 @@ public struct ConfigFileData(string? username, GameLanguages language)
 
 public abstract class ConfigService : IConfigCreator, IConfigLoader
 {
-    private const string ConfigDirectory = "data\\config";
+    private static readonly string ConfigDirectory = Path.Combine(Directory.GetCurrentDirectory(), "data", "config");
     private const string ConfigFileName = "config.json";
 
     private static string GetConfigFilePath() =>
-        Path.Combine(Directory.GetCurrentDirectory(), ConfigDirectory, ConfigFileName);
+        Path.Combine(ConfigDirectory, ConfigFileName);
 
     public static async Task CreateConfigFile()
     {
@@ -37,14 +37,12 @@ public abstract class ConfigService : IConfigCreator, IConfigLoader
         try
         {
             var jsonString = JsonConvert.SerializeObject(configFileData, Formatting.Indented);
-            await File.WriteAllTextAsync(path, jsonString).ConfigureAwait(false);
+            await File.WriteAllTextAsync(path, jsonString);
         }
-        catch (JsonException jsonEx)
-        {
+        catch (JsonException jsonEx) {
             await Logger.WriteLog($"JSON Error: {jsonEx.Message}");
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             await Logger.WriteLog($"Error writing config file: {ex.Message}");
         }
     }
@@ -53,8 +51,7 @@ public abstract class ConfigService : IConfigCreator, IConfigLoader
     {
         var path = GetConfigFilePath();
 
-        if (!File.Exists(path))
-        {
+        if (!File.Exists(path)) {
             await CreateConfigFile();
         }
         else
@@ -62,15 +59,11 @@ public abstract class ConfigService : IConfigCreator, IConfigLoader
             try
             {
                 var jsonString = await File.ReadAllTextAsync(path);
-
                 ConfigFileData? configFileData = JsonConvert.DeserializeObject<ConfigFileData>(jsonString);
 
-                if (configFileData.HasValue)
-                {
+                if (configFileData.HasValue) {
                     Game.Instance.Settings.SetLanguage(configFileData.Value.Language);
-                }
-                else
-                {
+                } else {
                     throw new InvalidOperationException("Configuration data is null or invalid.");
                 }
             }

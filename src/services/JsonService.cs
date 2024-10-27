@@ -14,11 +14,8 @@ public abstract class JsonService
         {
             var path = GetLocalizationFilePath(lang);
             var jsonString = await File.ReadAllTextAsync(path);
-
             var localizationStrings = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonString) ?? [];
-
             LocalizationService.InitLocalizationStrings(localizationStrings);
-
             return true;
         }
         catch (Exception ex)
